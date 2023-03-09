@@ -1,28 +1,37 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  Input,
-  AfterContentInit,
-} from '@angular/core';
-import { DirectedGraphExperimentService } from './directed-graph-experiment.service';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
+import { ContextMenuService } from 'ngx-contextmenu';
+import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 
 @Component({
   selector: 'dge-directed-graph-experiment',
   template: `
+  <div class="page">
   <button (click)="newData()">New data</button>
-     <svg #svgId width="500" height="700"><g [zoomableOf]="svgId"></g></svg>
+
+  <app-context-menus
+  (entityDetailsContextMenuEvent)="showEntityContextMenuEvent()"
+  (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
+  (createLinkContextMenuEvent)="siCreateLinkEvent()"
+  (editLinkContextMenuEvent)="siEditLinkEvent()"
+></app-context-menus>
+
+     <svg #svgId width="500" height="700" (contextmenu)="visualiserContextMenus($event)"><g [zoomableOf]="svgId"></g></svg>
+     </div>
   `,
 })
-export class DirectedGraphExperimentComponent
-  implements OnInit, AfterContentInit
-{
+export class DirectedGraphExperimentComponent implements OnInit {
   @ViewChild('svgId') graphElement: ElementRef;
+  @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
+
   public createLinkArray;
   public selectedNodeId;
+  public editLinkArray;
+  @Input() readOnly: boolean;
+
   constructor(
-    private directedGraphExperimentService: DirectedGraphExperimentService
+    private directedGraphExperimentService: DirectedGraphExperimentService,
+    private contextMenuService: ContextMenuService
   ) {}
 
   public ngOnInit() {
@@ -37,19 +46,76 @@ export class DirectedGraphExperimentComponent
     this.directedGraphExperimentService.dblClickPayload.subscribe(
       (dblClickPayload) => {
         this.selectedNodeId = dblClickPayload[0].id;
-        alert(`node id: ${this.selectedNodeId} was double clicked`, )
+        alert(`node id: ${this.selectedNodeId} was double clicked`);
+      }
+    );
+
+    this.directedGraphExperimentService.editLinkArray.subscribe(
+      (editLinkArray) => {
+        this.editLinkArray = editLinkArray;
       }
     );
   }
 
   @Input()
   set data(data: any) {
-    this.directedGraphExperimentService.update(
-      data,
-      this.graphElement.nativeElement
-    );
+    // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
+    setTimeout(() => {
+      this.directedGraphExperimentService.update(
+        data,
+        this.graphElement.nativeElement
+      );
+    }, 500);
   }
 
+  public visualiserContextMenus(event): void {
+    if (!this.readOnly) {
+      // ctrl + click on two nodes for link menu
+      if (this.createLinkArray?.length === 2) {
+        this.contextMenuService.show.next({
+          contextMenu: this.contextMenu.createLinkContextMenu,
+          event: event,
+          item: this.createLinkArray,
+        });
+        event.stopPropagation();
+      } else {
+        // We get the ids from different dom levels depending on a click on node text or the node image
+        if (
+          event.target.localName === 'image' ||
+          event.srcElement.parentNode.id === 'nodeText'
+        ) {
+          this.selectedNodeId =
+            event.srcElement.id || event.srcElement.parentNode.__data__.id;
+          this.contextMenuService.show.next({
+            contextMenu: this.contextMenu.nodeContextMenu,
+            event: event,
+            item: this.selectedNodeId,
+          });
+          event.stopPropagation();
+        }
+
+        if (event.target.localName === 'textPath') {
+          this.contextMenuService.show.next({
+            contextMenu: this.contextMenu.editLinkContextMenu,
+            event: event,
+            item: this.editLinkArray,
+          });
+          event.stopPropagation();
+        }
+
+        if (event.target.localName === 'svg') {
+          this.contextMenuService.show.next({
+            contextMenu: this.contextMenu.canvasContextMenu,
+            event: event,
+            item: 'item',
+          });
+
+          event.stopPropagation();
+        }
+      }
+      event.preventDefault();
+    }
+  }
 
   newData() {
     this.data = {

@@ -1,5 +1,5 @@
 import { Directive, Input, ElementRef, OnInit } from '@angular/core';
-import { DirectedGraphExperimentService } from './directed-graph-experiment.service';
+import { DirectedGraphExperimentService } from '../../visualiser/services/directed-graph-experiment.service';
 
 @Directive({
   selector: '[zoomableOf]',
