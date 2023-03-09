@@ -208,12 +208,6 @@ export class DirectedGraphExperimentService {
     const zoomContainer = _d3.select('svg g');
 
 
-
-  //   _d3.select('svg')
-  // .on("mousedown", function(){ d3.event.stopPropagation, _d3.select(this).style('cursor', 'grab')})
-  // .on("mouseout", function(){ d3.event.stopPropagation, _d3.select(this).style('cursor', 'move')});
-    
-
     const link = zoomContainer.selectAll('.link').data(this.links);
 
     //	link.exit().remove();
@@ -252,7 +246,7 @@ export class DirectedGraphExperimentService {
     });
 
     const edgepaths = zoomContainer.selectAll('.edgepath').data(this.links);
-    //	edgepaths.exit().remove();
+
     zoomContainer.selectAll('path').data(edgepaths).exit().remove();
     const edgepathsEnter = edgepaths
       .join('svg:path')
@@ -341,48 +335,40 @@ export class DirectedGraphExperimentService {
 			self.dblClickPayload.next(dblClick);
 		});
 
-      svg.selectAll('.node-wrapper').on('click', function () {
-        // so we dont activate the canvas .click event
-        _d3.event.stopPropagation();
-  
-  
-        // If ctrl key is held on click
-        if (_d3.event.ctrlKey) {
-          // toggle the class on and off when ctrl click is active
-          d3.select(this).classed(
-            'selected',
-            !d3.select(this).classed('selected')
-          );
-          _d3.selectAll('.edgelabel').style('fill', '#999');
-          _d3.selectAll('.nodeText').style('fill', 'black');
-          // counts number of selected classes to not exceed 2
-          const selectedSize = svg.selectAll('.selected').size();
-  
-          if (selectedSize <= 2) {
-            
-            svg
-              .selectAll('.selected')
-              .selectAll('.nodeText')
-              .style('fill', 'blue');
-            // get data from node
-            const localCreateLinkArray = _d3.selectAll('.selected').style('fill', 'blue').data();
-            const filterId = localCreateLinkArray.filter((x) => x);
-            self.createLinkArray.next(filterId);
-            // remove undefined and get ID of node and add to array
-            return filterId;
-          }
-        }
-  
-        // remove style from selected node before the class is removed
-        _d3.selectAll('.selected').selectAll('.nodeText').style('fill', 'black');
-        // remove class when another node is clicked and ctrl is not held
-        _d3.selectAll('.selected').classed('selected', false);
-        // Remove styles from all other nodes on single left click
-        _d3.selectAll('.edgelabel').style('fill', '#999');
-        _d3.selectAll('.nodeText').style('fill', 'black');
-        // Add style on single left click
-        _d3.select(this).select('.nodeText').style('fill', 'blue');
-      });
+		// node click and ctrl + click
+		svg.selectAll('.node-wrapper').on('click', function () {
+			// so we don't activate the canvas .click event
+			_d3.event.stopPropagation();
+			// If ctrl key is held on click
+			if (_d3.event.ctrlKey) {
+				// toggle the class on and off when ctrl click is active
+				d3.select(this).classed('selected', !d3.select(this).classed('selected'));
+				// remove the single click styling on other nodes and labels
+				_d3.selectAll('.edgelabel').style('fill', '#999');
+				_d3.selectAll('.nodeText').style('fill', 'black');
+				// counts number of selected classes to not exceed 2
+				const selectedSize = svg.selectAll('.selected').size();
+
+				if (selectedSize <= 2) {
+					svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue');
+					// get data from node
+					const localCreateLinkArray = _d3.selectAll('.selected').data();
+					const filterId = localCreateLinkArray.filter(x => x);
+					self.createLinkArray.next(filterId);
+					return filterId;
+				}
+			}
+			// remove style from selected node before the class is removed
+			_d3.selectAll('.selected').selectAll('.nodeText').style('fill', 'black');
+			// remove class when another node is clicked and ctrl is not held
+			_d3.selectAll('.selected').classed('selected', false);
+			// Remove styles from all other nodes and labels on single left click
+			_d3.selectAll('.edgelabel').style('fill', '#999');
+			_d3.selectAll('.nodeText').style('fill', 'black');
+			// Add style on single left click
+			_d3.select(this).select('.nodeText').style('fill', 'blue');
+			self.createLinkArray.next([]);
+		});
   
       //click on canvas to remove selected nodes
       _d3.select('svg').on('click', () => {
