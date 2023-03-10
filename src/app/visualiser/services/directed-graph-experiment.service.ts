@@ -305,6 +305,16 @@ export class DirectedGraphExperimentService {
       self.createLinkArray.next([]);
     });
 
+    // on right label link click - hightlight labels and package data for context menu
+    svg.selectAll('.edgelabel').on('contextmenu', function (d) {
+      self.createLinkArray.next([]);
+      _d3.selectAll('.nodeText').style('fill', 'black');
+      _d3.selectAll('.edgelabel').style('fill', '#999');
+      _d3.select(this).style('fill', 'blue');
+      const localEditLinkArray = d3.select(this).data();
+      self.editLinkArray.next(localEditLinkArray);
+    });
+
     const node = zoomContainer.selectAll().data(this.nodes, function (d) {
       return d.id;
     });
