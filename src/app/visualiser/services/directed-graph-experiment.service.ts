@@ -217,7 +217,7 @@ export class DirectedGraphExperimentService {
 
     const filteredLine = this.links.filter(({source, target}, index, self) => {
       // Filter out any objects that have matching source and target property values
-      // To display only one line (parentLineStyle)
+      // To display only one line (parentLineStyle) - removes html bloat and a darkened line
       return index === self.findIndex(obj => obj.source === source && obj.target === target);
     });
     
