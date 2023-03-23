@@ -215,7 +215,13 @@ export class DirectedGraphExperimentService {
 
     const zoomContainer = _d3.select('svg g');
 
-    const link = zoomContainer.selectAll('.link').data(this.links);
+    const filteredLine = this.links.filter(({source, target}, index, self) => {
+      // Filter out any objects that have matching source and target property values
+      // To display only one line (parentLineStyle)
+      return index === self.findIndex(obj => obj.source === source && obj.target === target);
+    });
+    
+    const link = zoomContainer.selectAll('.link').data(filteredLine);
 
     //	link.exit().remove();
 
