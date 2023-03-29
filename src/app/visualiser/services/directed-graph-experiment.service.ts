@@ -220,10 +220,12 @@ export class DirectedGraphExperimentService {
       // To display only one line (parentLineStyle) - removes html bloat and a darkened line
       return index === self.findIndex(obj => obj.source === source && obj.target === target);
     });
-    
-    const link = zoomContainer.selectAll('.link').data(filteredLine);
 
-    //	link.exit().remove();
+		const link = zoomContainer.selectAll().data(filteredLine, function (d) {
+			return d.id;
+		});
+    
+    zoomContainer.selectAll('line').data(link).exit().remove();
 
     const linkEnter = link
       .join('line')
@@ -258,7 +260,9 @@ export class DirectedGraphExperimentService {
       return d.label;
     });
 
-    const edgepaths = zoomContainer.selectAll('.edgepath').data(this.links);
+    const edgepaths = zoomContainer.selectAll('.edgepath').data(this.links, function (d) {
+			return d.id;
+		});
 
     zoomContainer.selectAll('path').data(edgepaths).exit().remove();
     const edgepathsEnter = edgepaths
@@ -270,8 +274,7 @@ export class DirectedGraphExperimentService {
         return 'edgepath' + i;
       });
 
-    const edgelabels = zoomContainer
-      .selectAll('.edgelabel')
+    const edgelabels = zoomContainer.selectAll()
       .data(this.links, function (d) {
         return d.id;
       });
