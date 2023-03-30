@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
 import { ContextMenuService } from 'ngx-contextmenu';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
@@ -23,7 +23,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 export class DirectedGraphExperimentComponent implements OnInit {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
-
+  @Output() editLinkContextMenuEvent = new EventEmitter<any>();
   public createLinkArray;
   public selectedNodeId;
   public editLinkArray;
@@ -33,6 +33,17 @@ export class DirectedGraphExperimentComponent implements OnInit {
     private directedGraphExperimentService: DirectedGraphExperimentService,
     private contextMenuService: ContextMenuService
   ) {}
+
+  @Input()
+  set data(data: any) {
+    // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
+    setTimeout(() => {
+      this.directedGraphExperimentService.update(
+        data,
+        this.graphElement.nativeElement
+      );
+    }, 500);
+  }
 
   public ngOnInit() {
     // Subscribe to the link selections in d3
@@ -55,17 +66,6 @@ export class DirectedGraphExperimentComponent implements OnInit {
         this.editLinkArray = editLinkArray;
       }
     );
-  }
-
-  @Input()
-  set data(data: any) {
-    // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
-    setTimeout(() => {
-      this.directedGraphExperimentService.update(
-        data,
-        this.graphElement.nativeElement
-      );
-    }, 500);
   }
 
   public visualiserContextMenus(event): void {
@@ -116,6 +116,11 @@ export class DirectedGraphExperimentComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  public siEditLinkEvent() {
+    console.log(this.editLinkArray)
+		this.editLinkContextMenuEvent.emit(this.editLinkArray);
+	}
 
   newData() {
     this.data = {

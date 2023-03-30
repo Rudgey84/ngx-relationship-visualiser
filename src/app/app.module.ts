@@ -5,6 +5,8 @@ import { ZoomableDirective } from './visualiser/directives/zoomable.directive';
 import { AppComponent } from './app.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -12,7 +14,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
     ZoomableDirective,
     ContextMenusComponent
   ],
-  imports: [ContextMenuModule.forRoot({useBootstrap4: true}), BrowserModule],
+  imports: [ContextMenuModule.forRoot({useBootstrap4: true}), BrowserModule, ModalModule.forRoot(),],
   providers: [],
   bootstrap: [AppComponent],
 })

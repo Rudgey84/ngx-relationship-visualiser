@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'angular-testapp';
+  constructor(readonly modalService: BsModalService) {}
+
+  public title = 'angular-testapp';
+  readonly defaultModalConfig = { class: 'modal-xl' };
+  public modalRef?: BsModalRef;
+  public viewLinkArray;
 
   public mockedData = {
     nodes: [
@@ -30,8 +36,8 @@ export class AppComponent {
         icon: 'Car',
         xpos: 0,
         ypos: 0,
-         fx: 425,
-         fy: 225,
+        fx: 425,
+        fy: 225,
         x: -345,
         y: 403,
       },
@@ -45,8 +51,8 @@ export class AppComponent {
         ypos: 0,
         x: 3,
         y: 10,
-         fx: null,
-         fy: null,
+        fx: null,
+        fy: null,
       },
     ],
     links: [
@@ -149,4 +155,28 @@ export class AppComponent {
       },
     ],
   };
+
+  public viewLinkEvent(
+    template: TemplateRef<any>,
+    viewLinkArray,
+    config = this.defaultModalConfig
+  ) {
+    this.viewLinkArray = viewLinkArray;
+    this.openModal('modalRef', template, config);
+  }
+
+  // Open the modal
+  public openModal(
+    modalRef: string,
+    template: TemplateRef<any>,
+    config = this.defaultModalConfig
+  ) {
+    this[modalRef] = this.modalService.show(template, config);
+  }
+
+  public closeModal(modalRef: string): void {
+    if (this[modalRef]) {
+      this[modalRef].hide();
+    }
+  }
 }
