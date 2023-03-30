@@ -1,6 +1,6 @@
-<context-menu #nodeContextMenu>
-  <ng-template contextMenuItem let-item (execute)="showEntityDetails()">
-    Show Entity Details
+<context-menu #viewNodeContextMenu>
+  <ng-template contextMenuItem let-item (execute)="viewNode()">
+    View Node...
   </ng-template>
   <ng-template contextMenuItem divider="true"></ng-template>
   <ng-template contextMenuItem let-item [enabled]="false">
@@ -44,9 +44,9 @@
   </ng-template>
 </context-menu>
 
-<context-menu #editLinkContextMenu>
-  <ng-template contextMenuItem let-item (execute)="editLink()">
-    Edit Link...
+<context-menu #viewLinkContextMenu>
+  <ng-template contextMenuItem let-item (execute)="viewLink()">
+    View Link...
   </ng-template>
   <ng-template contextMenuItem divider="true"></ng-template>
   <ng-template contextMenuItem let-item [enabled]="false">

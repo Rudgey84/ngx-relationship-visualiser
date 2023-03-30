@@ -12,7 +12,7 @@ export class DirectedGraphExperimentService {
   /** RxJS subject to listen for updates of the selection */
   createLinkArray = new Subject<any[]>();
   dblClickPayload = new Subject();
-  editLinkArray = new Subject();
+  viewLinkArray = new Subject();
 
   public update(data, element) {
     const svg = d3.select(element);
@@ -224,7 +224,7 @@ export class DirectedGraphExperimentService {
 		const link = zoomContainer.selectAll().data(filteredLine, function (d) {
 			return d.id;
 		});
-    
+
     zoomContainer.selectAll('line').data(link).exit().remove();
 
     const linkEnter = link
@@ -320,8 +320,8 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.nodeText').style('fill', 'black');
       _d3.selectAll('.edgelabel').style('fill', '#999');
       _d3.select(this).style('fill', 'blue');
-      const localEditLinkArray = d3.select(this).data();
-      self.editLinkArray.next(localEditLinkArray);
+      const localViewLinkArray = d3.select(this).data();
+      self.viewLinkArray.next(localViewLinkArray);
     });
 
     const node = zoomContainer.selectAll().data(this.nodes, function (d) {

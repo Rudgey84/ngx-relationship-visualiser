@@ -12,6 +12,7 @@ export class AppComponent {
   readonly defaultModalConfig = { class: 'modal-xl' };
   public modalRef?: BsModalRef;
   public viewLinkArray;
+  public viewNodeId;
 
   public mockedData = {
     nodes: [
@@ -162,6 +163,15 @@ export class AppComponent {
     config = this.defaultModalConfig
   ) {
     this.viewLinkArray = viewLinkArray;
+    this.openModal('modalRef', template, config);
+  }
+
+  public viewNodeEvent(
+    template: TemplateRef<any>,
+    viewNodeId,
+    config = this.defaultModalConfig
+  ) {
+    this.viewNodeId = viewNodeId;
     this.openModal('modalRef', template, config);
   }
 

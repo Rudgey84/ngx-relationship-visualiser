@@ -10,10 +10,10 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <button (click)="newData()">New data</button>
 
   <app-context-menus
-  (entityDetailsContextMenuEvent)="showEntityContextMenuEvent()"
+  (viewNodeContextMenuEvent)="viewNodeEvent()"
   (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
   (createLinkContextMenuEvent)="siCreateLinkEvent()"
-  (editLinkContextMenuEvent)="siEditLinkEvent()"
+  (viewLinkContextMenuEvent)="viewLinkEvent()"
 ></app-context-menus>
 
      <svg #svgId width="500" height="700" (contextmenu)="visualiserContextMenus($event)"><g [zoomableOf]="svgId"></g></svg>
@@ -23,10 +23,11 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 export class DirectedGraphExperimentComponent implements OnInit {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
-  @Output() editLinkContextMenuEvent = new EventEmitter<any>();
+  @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
+  @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   public createLinkArray;
   public selectedNodeId;
-  public editLinkArray;
+  public viewLinkArray;
   @Input() readOnly: boolean;
 
   constructor(
@@ -61,9 +62,9 @@ export class DirectedGraphExperimentComponent implements OnInit {
       }
     );
 
-    this.directedGraphExperimentService.editLinkArray.subscribe(
-      (editLinkArray) => {
-        this.editLinkArray = editLinkArray;
+    this.directedGraphExperimentService.viewLinkArray.subscribe(
+      (viewLinkArray) => {
+        this.viewLinkArray = viewLinkArray;
       }
     );
   }
@@ -87,7 +88,7 @@ export class DirectedGraphExperimentComponent implements OnInit {
           this.selectedNodeId =
             event.srcElement.id || event.srcElement.parentNode.__data__.id;
           this.contextMenuService.show.next({
-            contextMenu: this.contextMenu.nodeContextMenu,
+            contextMenu: this.contextMenu.viewNodeContextMenu,
             event: event,
             item: this.selectedNodeId,
           });
@@ -96,9 +97,9 @@ export class DirectedGraphExperimentComponent implements OnInit {
 
         if (event.target.localName === 'textPath') {
           this.contextMenuService.show.next({
-            contextMenu: this.contextMenu.editLinkContextMenu,
+            contextMenu: this.contextMenu.viewLinkContextMenu,
             event: event,
-            item: this.editLinkArray,
+            item: this.viewLinkArray,
           });
           event.stopPropagation();
         }
@@ -117,9 +118,11 @@ export class DirectedGraphExperimentComponent implements OnInit {
     }
   }
 
-  public siEditLinkEvent() {
-    console.log(this.editLinkArray)
-		this.editLinkContextMenuEvent.emit(this.editLinkArray);
+  public viewLinkEvent() {
+		this.viewLinkContextMenuEvent.emit(this.viewLinkArray);
+	}
+  public viewNodeEvent() {
+		this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
 	}
 
   newData() {

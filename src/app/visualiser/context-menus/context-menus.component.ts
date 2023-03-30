@@ -7,19 +7,19 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
   styleUrls: ['./context-menus.component.scss'],
 })
 export class ContextMenusComponent {
-  @ViewChild('nodeContextMenu') nodeContextMenu: ContextMenuComponent;
+  @ViewChild('viewNodeContextMenu') viewNodeContextMenu: ContextMenuComponent;
   @ViewChild('canvasContextMenu') canvasContextMenu: ContextMenuComponent;
   @ViewChild('createLinkContextMenu')
   createLinkContextMenu: ContextMenuComponent;
-  @ViewChild('editLinkContextMenu') editLinkContextMenu: ContextMenuComponent;
+  @ViewChild('viewLinkContextMenu') viewLinkContextMenu: ContextMenuComponent;
 
-  @Output() entityDetailsContextMenuEvent = new EventEmitter<any>();
+  @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   @Output() findEntityContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
-  @Output() editLinkContextMenuEvent = new EventEmitter<any>();
+  @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
 
-  showEntityDetails() {
-    this.entityDetailsContextMenuEvent.emit(true);
+  viewNode() {
+    this.viewNodeContextMenuEvent.emit(true);
   }
   findEntity() {
     this.findEntityContextMenuEvent.emit(true);
@@ -28,7 +28,7 @@ export class ContextMenusComponent {
     this.createLinkContextMenuEvent.emit(true);
   }
 
-  editLink() {
-    this.editLinkContextMenuEvent.emit(true);
+  viewLink() {
+    this.viewLinkContextMenuEvent.emit(true);
   }
 }

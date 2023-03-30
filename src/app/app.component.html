@@ -1,20 +1,35 @@
 <dge-directed-graph-experiment
   [data]="mockedData"
   [readOnly]="false"
-  (editLinkContextMenuEvent)="viewLinkEvent(editLinkModal, $event)"
+  (viewLinkContextMenuEvent)="viewLinkEvent(viewLinkModal, $event)"
+  (viewNodeContextMenuEvent)="viewNodeEvent(viewNodeModal, $event)"
 ></dge-directed-graph-experiment>
 
 
-	<!--EDIT LINK MODAL-->
-	<ng-template #editLinkModal>
+	<!--VIEW LINK MODAL-->
+	<ng-template #viewLinkModal>
 		<div class="modal-header">
-			<h4 class="modal-title pull-left">Edit Link</h4>
+			<h4 class="modal-title pull-left">View Link</h4>
 			<button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
 				<span aria-hidden="true" class="visually-hidden">&times;</span>
 			</button>
 		</div>
 		<div class="modal-body">
 {{viewLinkArray[0].label}}
+		</div>
+	</ng-template>
+	<!-- ./MODAL-->
+
+  	<!--VIEW NODW MODAL-->
+	<ng-template #viewNodeModal>
+		<div class="modal-header">
+			<h4 class="modal-title pull-left">View Node</h4>
+			<button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
+				<span aria-hidden="true" class="visually-hidden">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+      {{viewNodeId}}
 		</div>
 	</ng-template>
 	<!-- ./MODAL-->
