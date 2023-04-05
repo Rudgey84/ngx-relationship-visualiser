@@ -245,6 +245,12 @@ export class DirectedGraphExperimentService {
       })
       .style('stroke-width', '2px')
       .attr('class', 'link')
+      .attr('id', function (d) {
+				const suffix = '_line';
+				const source = d.source ? d.source : '';
+				const target = d.target ? d.target : '';
+				return `${source}_${target}${suffix}`;
+			})
       .attr('marker-end', function (d) {
         if (d.parentTargetArrow === true) {
           return 'url(#arrowheadTarget)';
@@ -289,6 +295,12 @@ export class DirectedGraphExperimentService {
       .attr('id', function (d, i) {
         return 'edgelabel' + i;
       })
+      .attr('id', function (d) {
+				const suffix = '_text';
+				const source = d.source ? d.source : '';
+				const target = d.target ? d.target : '';
+				return `${source}_${target}${suffix}`;
+			})
       .attr('font-size', 10)
       .attr('dy', function (d, i) {
         return d.dy;
@@ -342,7 +354,10 @@ export class DirectedGraphExperimentService {
           })
           .on('end', (d) => this.dragended(_d3, d, simulation))
       )
-      .attr('class', 'node-wrapper');
+      .attr('class', 'node-wrapper')
+      .attr('id', function (d) {
+				return d.id;
+			});
 
     // no collision - already using this in statement
     const self = this;
@@ -412,7 +427,12 @@ export class DirectedGraphExperimentService {
 
     nodeEnter
       .append('image')
-      .attr('xlink:href', 'https://github.com/favicon.ico')
+      .attr('xlink:href', function (d) {
+				const prefixUrl = 'https://github.com/';
+				const icon = d.icon ? 'favicon' : d.icon;
+				const suffix = 'ico';
+				return `${prefixUrl}${icon}.${suffix}`;
+			})
       .attr('x', -15)
       .attr('y', -60)
       .attr('width', 16)
