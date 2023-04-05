@@ -215,15 +215,22 @@ export class DirectedGraphExperimentService {
 
     const zoomContainer = _d3.select('svg g');
 
-    const filteredLine = this.links.filter(({source, target}, index, self) => {
-      // Filter out any objects that have matching source and target property values
-      // To display only one line (parentLineStyle) - removes html bloat and a darkened line
-      return index === self.findIndex(obj => obj.source === source && obj.target === target);
-    });
+    const filteredLine = this.links.filter(
+      ({ source, target }, index, self) => {
+        // Filter out any objects that have matching source and target property values
+        // To display only one line (parentLineStyle) - removes html bloat and a darkened line
+        return (
+          index ===
+          self.findIndex(
+            (obj) => obj.source === source && obj.target === target
+          )
+        );
+      }
+    );
 
-		const link = zoomContainer.selectAll().data(filteredLine, function (d) {
-			return d.id;
-		});
+    const link = zoomContainer.selectAll().data(filteredLine, function (d) {
+      return d.id;
+    });
 
     zoomContainer.selectAll('line').data(link).exit().remove();
 
@@ -246,11 +253,11 @@ export class DirectedGraphExperimentService {
       .style('stroke-width', '2px')
       .attr('class', 'link')
       .attr('id', function (d) {
-				const suffix = '_line';
-				const source = d.source ? d.source : '';
-				const target = d.target ? d.target : '';
-				return `${source}_${target}${suffix}`;
-			})
+        const suffix = '_line';
+        const source = d.source ? d.source : '';
+        const target = d.target ? d.target : '';
+        return `${source}_${target}${suffix}`;
+      })
       .attr('marker-end', function (d) {
         if (d.parentTargetArrow === true) {
           return 'url(#arrowheadTarget)';
@@ -266,9 +273,11 @@ export class DirectedGraphExperimentService {
       return d.label;
     });
 
-    const edgepaths = zoomContainer.selectAll('.edgepath').data(this.links, function (d) {
-			return d.id;
-		});
+    const edgepaths = zoomContainer
+      .selectAll('.edgepath')
+      .data(this.links, function (d) {
+        return d.id;
+      });
 
     zoomContainer.selectAll('path').data(edgepaths).exit().remove();
     const edgepathsEnter = edgepaths
@@ -280,10 +289,9 @@ export class DirectedGraphExperimentService {
         return 'edgepath' + i;
       });
 
-    const edgelabels = zoomContainer.selectAll()
-      .data(this.links, function (d) {
-        return d.id;
-      });
+    const edgelabels = zoomContainer.selectAll().data(this.links, function (d) {
+      return d.id;
+    });
     zoomContainer.selectAll('text').data(edgelabels).exit().remove();
 
     const edgelabelsEnter = edgelabels
@@ -296,11 +304,11 @@ export class DirectedGraphExperimentService {
         return 'edgelabel' + i;
       })
       .attr('id', function (d) {
-				const suffix = '_text';
-				const source = d.source ? d.source : '';
-				const target = d.target ? d.target : '';
-				return `${source}_${target}${suffix}`;
-			})
+        const suffix = '_text';
+        const source = d.source ? d.source : '';
+        const target = d.target ? d.target : '';
+        return `${source}_${target}${suffix}`;
+      })
       .attr('font-size', 10)
       .attr('dy', function (d, i) {
         return d.dy;
@@ -356,8 +364,8 @@ export class DirectedGraphExperimentService {
       )
       .attr('class', 'node-wrapper')
       .attr('id', function (d) {
-				return d.id;
-			});
+        return d.id;
+      });
 
     // no collision - already using this in statement
     const self = this;
@@ -428,13 +436,18 @@ export class DirectedGraphExperimentService {
     nodeEnter
       .append('image')
       .attr('xlink:href', function (d) {
-				const prefixUrl = 'https://github.com/';
-				const icon = d.icon ? 'favicon' : d.icon;
-				const suffix = 'ico';
-				return `${prefixUrl}${icon}.${suffix}`;
-			})
+        const prefixUrl = 'https://github.com/';
+        const icon = d.icon ? 'favicon' : d.icon;
+        const suffix = 'ico';
+        return `${prefixUrl}${icon}.${suffix}`;
+      })
       .attr('x', -15)
       .attr('y', -60)
+      .attr('id', function (d) {
+        const suffix = '_image';
+        const id = d.id ? d.id : '';
+        return `${id}_${suffix}`;
+      })
       .attr('width', 16)
       .attr('class', 'image')
       .style('cursor', 'pointer')
@@ -447,7 +460,11 @@ export class DirectedGraphExperimentService {
       .style('cursor', 'pointer')
       .attr('dy', -3)
       .attr('y', -25)
-      .attr('id', 'nodeText');
+      .attr('id', function (d) {
+        const suffix = '_text';
+        const id = d.id ? d.id : '';
+        return `${id}_${suffix}`;
+      });
 
     nodeText
       .selectAll('tspan')
