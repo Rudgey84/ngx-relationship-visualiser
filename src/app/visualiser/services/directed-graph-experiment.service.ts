@@ -127,37 +127,27 @@ export class DirectedGraphExperimentService {
   }
 
   private initDefinitions(svg) {
-    svg
-      .append('defs')
-      .append('marker')
-      .attr('id', 'arrowheadTarget')
-      .attr('viewBox', '-0 -5 10 10')
-      .attr('refX', 0)
-      .attr('refY', 0)
-      .attr('orient', 'auto')
-      .attr('markerWidth', 8)
-      .attr('markerHeight', 8)
-      .attr('xoverflow', 'visible')
-      .append('svg:path')
-      .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-      .attr('fill', '#b4b4b4')
-      .style('stroke', 'none');
-    svg
-      .append('defs')
-      .append('marker')
-      .attr('id', 'arrowheadSource')
-      .attr('viewBox', '-0 -5 10 10')
-      .attr('refX', 2)
-      .attr('refY', 0)
-      .attr('orient', 'auto')
-      .attr('markerWidth', 8)
-      .attr('markerHeight', 8)
-      .attr('xoverflow', 'visible')
-      .append('svg:path')
-      .attr('d', 'M 10 -5 L 0 0 L 10 5')
-      .attr('fill', '#b4b4b4')
-      .style('stroke', 'none');
-
+    const defs = svg.append('defs');
+    
+    function createMarker(id, refX, path) {
+      defs.append('marker')
+        .attr('id', id)
+        .attr('viewBox', '-0 -5 10 10')
+        .attr('refX', refX)
+        .attr('refY', 0)
+        .attr('orient', 'auto')
+        .attr('markerWidth', 8)
+        .attr('markerHeight', 8)
+        .attr('xoverflow', 'visible')
+        .append('svg:path')
+        .attr('d', path)
+        .attr('fill', '#b4b4b4')
+        .style('stroke', 'none');
+    }
+  
+    createMarker('arrowheadTarget', 0, 'M 0,-5 L 10 ,0 L 0,5');
+    createMarker('arrowheadSource', 2, 'M 10 -5 L 0 0 L 10 5');
+  
     return svg;
   }
 
