@@ -241,6 +241,7 @@ export class DirectedGraphExperimentService {
         if (d.parentLineStyle === 'Unconfirmed') {
           return '8,5';
         }
+        return null;
       })
       .style('stroke-width', '2px')
       .attr('class', 'link')
@@ -254,11 +255,13 @@ export class DirectedGraphExperimentService {
         if (d.parentTargetArrow === true) {
           return 'url(#arrowheadTarget)';
         }
+        return null;
       })
       .attr('marker-start', function (d) {
         if (d.parentSourceArrow === true) {
           return 'url(#arrowheadSource)';
         }
+        return null;
       });
 
     link.append('title').text(function (d) {
@@ -400,6 +403,7 @@ export class DirectedGraphExperimentService {
           self.createLinkArray.next(filterId);
           return filterId;
         }
+        return null;
       }
       // remove style from selected node before the class is removed
       _d3.selectAll('.selected').selectAll('.nodeText').style('fill', 'black');
@@ -411,6 +415,8 @@ export class DirectedGraphExperimentService {
       // Add style on single left click
       _d3.select(this).select('.nodeText').style('fill', 'blue');
       self.createLinkArray.next([]);
+
+      return null;
     });
 
     //right click on a node highlights for context menu
@@ -457,11 +463,12 @@ export class DirectedGraphExperimentService {
     const nodeText = nodeEnter
       .append('text')
       .attr('id', 'nodeText')
+      .attr('class', 'nodeText')
       .style('text-anchor', 'middle')
       .style('cursor', 'pointer')
       .attr('dy', -3)
       .attr('y', -25)
-      .attr('class', function (d) {
+      .attr('testhook', function (d) {
         const suffix = '_text';
         const id = d.id ? d.id : '';
         return `${id}_${suffix}`;
