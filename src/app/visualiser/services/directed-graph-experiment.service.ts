@@ -32,13 +32,7 @@ export class DirectedGraphExperimentService {
       const transform = d3.event.transform;
       container.attr(
         'transform',
-        'translate(' +
-          transform.x +
-          ',' +
-          transform.y +
-          ') scale(' +
-          transform.k +
-          ')'
+        `translate(${transform.x}, ${transform.y}) scale(${transform.k})`
       );
     };
 
@@ -129,9 +123,10 @@ export class DirectedGraphExperimentService {
 
   private initDefinitions(svg) {
     const defs = svg.append('defs');
-    
+
     function createMarker(id, refX, path) {
-      defs.append('marker')
+      defs
+        .append('marker')
         .attr('id', id)
         .attr('viewBox', '-0 -5 10 10')
         .attr('refX', refX)
@@ -145,10 +140,10 @@ export class DirectedGraphExperimentService {
         .attr('fill', '#b4b4b4')
         .style('stroke', 'none');
     }
-  
+
     createMarker('arrowheadTarget', 0, 'M 0,-5 L 10 ,0 L 0,5');
     createMarker('arrowheadSource', 2, 'M 10 -5 L 0 0 L 10 5');
-  
+
     return svg;
   }
 
@@ -198,7 +193,6 @@ export class DirectedGraphExperimentService {
     this.links = relationshipsArray.reduce((acc, val) => acc.concat(val), []);
 
     this.initDefinitions(svg);
-
 
     const simulation = this.forceSimulation(_d3, {
       width: +svg.attr('width'),
@@ -309,10 +303,10 @@ export class DirectedGraphExperimentService {
         return d.dy;
       });
 
-      svg.selectAll('.edgelabel').on('dblclick', function () {
-        const dblClick = d3.select(this).data();
-        self.dblClickLinkPayload.next(dblClick);
-      });
+    svg.selectAll('.edgelabel').on('dblclick', function () {
+      const dblClick = d3.select(this).data();
+      self.dblClickLinkPayload.next(dblClick);
+    });
 
     edgelabelsEnter
       .append('textPath')
