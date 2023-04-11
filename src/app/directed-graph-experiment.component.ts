@@ -1,4 +1,12 @@
-import { Component, ViewChild, ElementRef, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+} from '@angular/core';
 import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
 import { ContextMenuService } from 'ngx-contextmenu';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
@@ -6,7 +14,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 @Component({
   selector: 'dge-directed-graph-experiment',
   template: `
-  <div class="page">
+  <div class="page" id="pageId" (window:resize)="onResize($event)">
   <button (click)="newData()">New data</button>
 
   <app-context-menus
@@ -16,7 +24,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   (viewLinkContextMenuEvent)="viewLinkEvent()"
 ></app-context-menus>
 
-     <svg #svgId width="500" height="700" (contextmenu)="visualiserContextMenus($event)"><g [zoomableOf]="svgId"></g></svg>
+     <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"><g [zoomableOf]="svgId"></g></svg>
      </div>
   `,
 })
@@ -27,7 +35,8 @@ export class DirectedGraphExperimentComponent implements OnInit {
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   public createLinkArray;
   public selectedNodeId;
-  public viewLinkArray;
+  public selectedLinkArray;
+  public width;
   @Input() readOnly: boolean;
 
   constructor(
@@ -46,7 +55,9 @@ export class DirectedGraphExperimentComponent implements OnInit {
     }, 500);
   }
 
+
   public ngOnInit() {
+    this.updateWidth();
     // Subscribe to the link selections in d3
     this.directedGraphExperimentService.createLinkArray.subscribe(
       (createLinkArray) => {
@@ -55,18 +66,31 @@ export class DirectedGraphExperimentComponent implements OnInit {
       }
     );
 
-    this.directedGraphExperimentService.dblClickPayload.subscribe(
-      (dblClickPayload) => {
-        this.selectedNodeId = dblClickPayload[0].id;
-        alert(`node id: ${this.selectedNodeId} was double clicked`);
+    this.directedGraphExperimentService.dblClickNodePayload.subscribe(
+      (dblClickNodePayload) => {
+        this.selectedNodeId = dblClickNodePayload[0].id;
+        this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
       }
     );
 
-    this.directedGraphExperimentService.viewLinkArray.subscribe(
-      (viewLinkArray) => {
-        this.viewLinkArray = viewLinkArray;
+    this.directedGraphExperimentService.dblClickLinkPayload.subscribe(dblClickLinkPayload => {
+			this.selectedLinkArray = dblClickLinkPayload;
+      this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
+		});
+
+    this.directedGraphExperimentService.selectedLinkArray.subscribe(
+      (selectedLinkArray) => {
+        this.selectedLinkArray = selectedLinkArray;
       }
     );
+  }
+
+  public onResize(event) {
+    this.updateWidth();
+  }
+
+  public updateWidth() {
+    this.width = document.getElementById("pageId").offsetWidth;
   }
 
   public visualiserContextMenus(event): void {
@@ -99,7 +123,7 @@ export class DirectedGraphExperimentComponent implements OnInit {
           this.contextMenuService.show.next({
             contextMenu: this.contextMenu.viewLinkContextMenu,
             event: event,
-            item: this.viewLinkArray,
+            item: this.selectedLinkArray,
           });
           event.stopPropagation();
         }
@@ -119,11 +143,11 @@ export class DirectedGraphExperimentComponent implements OnInit {
   }
 
   public viewLinkEvent() {
-		this.viewLinkContextMenuEvent.emit(this.viewLinkArray);
-	}
+    this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
+  }
   public viewNodeEvent() {
-		this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
-	}
+    this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
+  }
 
   newData() {
     this.data = {

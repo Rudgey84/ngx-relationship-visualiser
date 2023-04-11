@@ -11,12 +11,13 @@ export class DirectedGraphExperimentService {
   nodes = [];
   /** RxJS subject to listen for updates of the selection */
   createLinkArray = new Subject<any[]>();
-  dblClickPayload = new Subject();
-  viewLinkArray = new Subject();
+  dblClickNodePayload = new Subject();
+  dblClickLinkPayload = new Subject();
+  selectedLinkArray = new Subject();
 
   public update(data, element) {
     const svg = d3.select(element);
-    return this._update(d3, svg, data);
+    return this._update(d3, svg, data, element);
   }
 
   /** A method to bind a zoom behaviour to the svg g element */
@@ -173,7 +174,7 @@ export class DirectedGraphExperimentService {
     );
   }
 
-  _update(_d3, svg, data) {
+  _update(_d3, svg, data, element) {
     let { links, nodes } = data;
     this.links = links || [];
     this.nodes = nodes || [];
@@ -195,8 +196,9 @@ export class DirectedGraphExperimentService {
       });
     });
     this.links = relationshipsArray.reduce((acc, val) => acc.concat(val), []);
-    console.log(this.links);
+
     this.initDefinitions(svg);
+
 
     const simulation = this.forceSimulation(_d3, {
       width: +svg.attr('width'),
@@ -304,6 +306,11 @@ export class DirectedGraphExperimentService {
         return d.dy;
       });
 
+      svg.selectAll('.edgelabel').on('dblclick', function () {
+        const dblClick = d3.select(this).data();
+        self.dblClickLinkPayload.next(dblClick);
+      });
+
     edgelabelsEnter
       .append('textPath')
       .attr('xlink:href', function (d, i) {
@@ -330,8 +337,8 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.nodeText').style('fill', 'black');
       _d3.selectAll('.edgelabel').style('fill', '#999');
       _d3.select(this).style('fill', 'blue');
-      const localViewLinkArray = d3.select(this).data();
-      self.viewLinkArray.next(localViewLinkArray);
+      const localSelectedLinkArray = d3.select(this).data();
+      self.selectedLinkArray.next(localSelectedLinkArray);
     });
 
     const node = zoomContainer.selectAll().data(this.nodes, function (d) {
@@ -362,7 +369,7 @@ export class DirectedGraphExperimentService {
 
     svg.selectAll('.node-wrapper').on('dblclick', function () {
       const dblClick = d3.select(this).data();
-      self.dblClickPayload.next(dblClick);
+      self.dblClickNodePayload.next(dblClick);
     });
 
     // node click and ctrl + click
@@ -433,10 +440,14 @@ export class DirectedGraphExperimentService {
       })
       .attr('x', -15)
       .attr('y', -60)
-      .attr('id', function (d) {
+      .attr('class', function (d) {
         const suffix = '_image';
         const id = d.id ? d.id : '';
         return `${id}_${suffix}`;
+      })
+      .attr('id', function (d) {
+        const id = d.id ? d.id : '';
+        return `${id}`;
       })
       .attr('width', 16)
       .attr('class', 'image')
@@ -445,12 +456,12 @@ export class DirectedGraphExperimentService {
 
     const nodeText = nodeEnter
       .append('text')
-      .attr('class', 'nodeText')
+      .attr('id', 'nodeText')
       .style('text-anchor', 'middle')
       .style('cursor', 'pointer')
       .attr('dy', -3)
       .attr('y', -25)
-      .attr('id', function (d) {
+      .attr('class', function (d) {
         const suffix = '_text';
         const id = d.id ? d.id : '';
         return `${id}_${suffix}`;
