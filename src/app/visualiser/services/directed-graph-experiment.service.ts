@@ -76,37 +76,27 @@ export class DirectedGraphExperimentService {
     });
 
     node.attr('transform', function (d) {
-      return 'translate(' + d.x + ', ' + (d.y + 50) + ')';
+      return `translate(${d.x}, ${d.y + 50})`;
     });
 
-    // .attr('cx', function (d) {
+    // node.attr('cx', function (d) {
     //   // boundries
     //   return (d.x = Math.max(40, Math.min(900 - 15, d.x)));
     // })
-    // .attr('cy', function (d) {
+    // node.attr('cy', function (d) {
     //   return (d.y = Math.max(50, Math.min(600 - 40, d.y)));
     // });
 
     edgepaths.attr('d', function (d) {
-      return (
-        'M ' +
-        d.source.x +
-        ' ' +
-        d.source.y +
-        ' L ' +
-        d.target.x +
-        ' ' +
-        d.target.y
-      );
+      return `M ${d.source.x} ${d.source.y} L ${d.target.x} ${d.target.y}`;
     });
 
     edgepaths.attr('transform', function (d) {
       if (d.target.x < d.source.x) {
-        let bbox = this.getBBox();
-
-        let rx = bbox.x + bbox.width / 2;
-        let ry = bbox.y + bbox.height / 2;
-        return 'rotate(180 ' + rx + ' ' + ry + ')';
+        const bbox = this.getBBox();
+        const rx = bbox.x + bbox.width / 2;
+        const ry = bbox.y + bbox.height / 2;
+        return `rotate(180 ${rx} ${ry})`;
       } else {
         return 'rotate(0)';
       }
