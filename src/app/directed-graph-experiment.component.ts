@@ -201,8 +201,8 @@ export class DirectedGraphExperimentComponent implements OnInit {
           ypos: 0,
           x: 0,
           y: 0,
-          fx: null,
-          fy: null,
+          fx: 400,
+          fy: 400,
         },
         {
           id: '2355123356577698',
@@ -214,8 +214,8 @@ export class DirectedGraphExperimentComponent implements OnInit {
           ypos: 0,
           x: 0,
           y: 0,
-          fx: null,
-          fy: null,
+          fx: 200,
+          fy: 400,
         }
       ],
 
