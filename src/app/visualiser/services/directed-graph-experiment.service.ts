@@ -159,12 +159,13 @@ export class DirectedGraphExperimentService {
     );
   }
 
-  compareAndMarkNodesNew(nodes, old_nodes) {
+  compareAndMarkNew(nodes, old_nodes) {
     // Create a map of ids to node objects for the old_nodes array
     const oldMap = old_nodes.reduce((map, node) => {
       map[node.id] = node;
       return map;
     }, {});
+
     // Check each node in the nodes array to see if it's new or not
     nodes.forEach((node) => {
       if (!oldMap[node.id]) {
@@ -172,6 +173,7 @@ export class DirectedGraphExperimentService {
         node.newItem = true;
       }
     });
+
     return nodes;
   }
 
@@ -185,7 +187,7 @@ export class DirectedGraphExperimentService {
       // Get old nodes from store
       const oldNodes = JSON.parse(localStorage.getItem('nodes'));
       // Compare and set property for new nodes
-      this.nodes = this.compareAndMarkNodesNew(nodes, oldNodes);
+      this.nodes = this.compareAndMarkNew(nodes, oldNodes);
       // Remove old nodes from store
       localStorage.removeItem('nodes');
       // Add new nodes to store
@@ -377,15 +379,14 @@ export class DirectedGraphExperimentService {
           })
           .on('end', (d) => this.dragended(_d3, d, simulation))
       )
-      .attr('class', 'node-wrapper')
       .attr('id', function (d) {
         return d.id;
       })
       .attr('class', function (d) {
         if (d.newItem) {
-          return 'newItem';
+          return 'newItem node-wrapper';
         }
-        return null;
+        return 'node-wrapper';
       });
 
     // no collision - already using this in statement
