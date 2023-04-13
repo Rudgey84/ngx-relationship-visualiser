@@ -159,10 +159,43 @@ export class DirectedGraphExperimentService {
     );
   }
 
+  compareAndMarkNew(nodes, old_nodes) {
+    // Create a map of ids to node objects for the old_nodes array
+    const oldMap = old_nodes.reduce((map, node) => {
+      map[node.id] = node;
+      return map;
+    }, {});
+
+    // Check each node in the nodes array to see if it's new or not
+    nodes.forEach((node) => {
+      if (!oldMap[node.id]) {
+        // Node is new, mark it with the newItem property
+        node.newItem = true;
+      }
+    });
+
+    return nodes;
+  }
+
   _update(_d3, svg, data, element) {
     let { links, nodes } = data;
     this.links = links || [];
     this.nodes = nodes || [];
+
+// Check to see if nodes are in store 
+    if ('nodes' in localStorage) {
+      // Get old nodes from store
+      const oldNodes = JSON.parse(localStorage.getItem('nodes'));
+      // Compare and set property for new nodes
+      this.nodes = this.compareAndMarkNew(nodes, oldNodes);
+      // Remove old nodes from store
+      localStorage.removeItem('nodes');
+      // Add new nodes to store
+      localStorage.setItem('nodes', JSON.stringify(data.nodes));
+    } else {
+      // Add first set of nodes to store
+      localStorage.setItem('nodes', JSON.stringify(data.nodes));
+    }
 
     // Getting parents lineStyle and adding it to child objects
     const relationshipsArray = this.links.map(
@@ -349,6 +382,12 @@ export class DirectedGraphExperimentService {
       .attr('class', 'node-wrapper')
       .attr('id', function (d) {
         return d.id;
+      })
+      .attr('class', function (d) {
+        if (d.newItem) {
+          return 'newItem';
+        }
+        return null;
       });
 
     // no collision - already using this in statement
@@ -469,6 +508,64 @@ export class DirectedGraphExperimentService {
       .attr('x', -10)
       .attr('dx', 10)
       .attr('dy', 15);
+
+// transition effects for new pulsating nodes
+      nodeEnter
+      .filter('.newItem')
+      .select('text')
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('fill-opacity', 1)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('fill-opacity', 0.1)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('fill-opacity', 1)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('fill-opacity', 0.1)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('fill-opacity', 1)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'black')
+      .attr('fill-opacity', 1)
+      .on('end', function () {
+        d3.select(this).call(_d3.transition);
+      });
+
+    nodeEnter
+      .filter('.newItem')
+      .select('image')
+      .transition()
+      .duration(1000)
+      .attr('width', 16 * 2)
+      .attr('height', 16 * 2)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('width', 16)
+      .attr('height', 16)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('width', 16 * 2)
+      .attr('height', 16 * 2)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('width', 16)
+      .attr('height', 16)
+      .on('end', function () {
+        d3.select(this).call(d3.transition);
+      });
 
     node.append('title').text(function (d) {
       return d.id;

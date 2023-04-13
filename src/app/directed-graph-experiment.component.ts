@@ -191,6 +191,32 @@ export class DirectedGraphExperimentComponent implements OnInit {
           fx: null,
           fy: null,
         },
+        {
+          id: '23557698',
+          version: 0,
+          typeName: 'Man',
+          label: ['Tom Rudge'],
+          icon: 'Man',
+          xpos: 0,
+          ypos: 0,
+          x: 0,
+          y: 0,
+          fx: null,
+          fy: null,
+        },
+        {
+          id: '2355123356577698',
+          version: 0,
+          typeName: 'Man',
+          label: ['Another Label'],
+          icon: 'Man',
+          xpos: 0,
+          ypos: 0,
+          x: 0,
+          y: 0,
+          fx: null,
+          fy: null,
+        }
       ],
 
       links: [
