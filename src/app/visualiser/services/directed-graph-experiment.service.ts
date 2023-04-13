@@ -563,6 +563,16 @@ export class DirectedGraphExperimentService {
       .attr('fill', 'blue')
       .attr('width', 16)
       .attr('height', 16)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'blue')
+      .attr('width', 16 * 2)
+      .attr('height', 16 * 2)
+      .transition()
+      .duration(1000)
+      .attr('fill', 'black')
+      .attr('width', 16)
+      .attr('height', 16)
       .on('end', function () {
         d3.select(this).call(d3.transition);
       });
