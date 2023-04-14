@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   OnInit,
+  OnDestroy
 } from '@angular/core';
 import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
 import { ContextMenuService } from 'ngx-contextmenu';
@@ -28,7 +29,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
      </div>
   `,
 })
-export class DirectedGraphExperimentComponent implements OnInit {
+export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
@@ -92,6 +93,10 @@ export class DirectedGraphExperimentComponent implements OnInit {
   public updateWidth() {
     this.width = document.getElementById("pageId").offsetWidth;
   }
+
+  public ngOnDestroy() {
+		localStorage.removeItem('nodes');
+	}
 
   public visualiserContextMenus(event): void {
     if (!this.readOnly) {
