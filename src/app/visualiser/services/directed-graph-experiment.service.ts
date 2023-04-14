@@ -182,7 +182,7 @@ export class DirectedGraphExperimentService {
     this.links = links || [];
     this.nodes = nodes || [];
 
-// Check to see if nodes are in store 
+    // Check to see if nodes are in store
     if ('nodes' in localStorage) {
       // Get old nodes from store
       const oldNodes = JSON.parse(localStorage.getItem('nodes'));
@@ -382,12 +382,7 @@ export class DirectedGraphExperimentService {
       .attr('id', function (d) {
         return d.id;
       })
-      .attr('class', function (d) {
-        if (d.newItem) {
-          return 'newItem node-wrapper';
-        }
-        return 'node-wrapper';
-      });
+      .attr('class', 'node-wrapper');
 
     // no collision - already using this in statement
     const self = this;
@@ -508,9 +503,14 @@ export class DirectedGraphExperimentService {
       .attr('dx', 10)
       .attr('dy', 15);
 
-// transition effects for new pulsating nodes
-      nodeEnter
-      .filter('.newItem')
+    // transition effects for new pulsating nodes
+    nodeEnter
+    .filter(function (d) {
+      if (!d.newItem) {
+        return null;
+      }
+      return true;
+    })
       .select('text')
       .transition()
       .duration(1000)
@@ -541,7 +541,12 @@ export class DirectedGraphExperimentService {
       });
 
     nodeEnter
-      .filter('.newItem')
+      .filter(function (d) {
+        if (!d.newItem) {
+          return null;
+        }
+        return true;
+      })
       .select('image')
       .transition()
       .duration(1000)
