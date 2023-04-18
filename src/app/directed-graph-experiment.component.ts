@@ -99,53 +99,103 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 	}
 
   public visualiserContextMenus(event): void {
-    if (!this.readOnly) {
-      // ctrl + click on two nodes for link menu
-      if (this.createLinkArray?.length === 2) {
-        this.contextMenuService.show.next({
-          contextMenu: this.contextMenu.createLinkContextMenu,
-          event: event,
-          item: this.createLinkArray,
-        });
-        event.stopPropagation();
-      } else {
-        // We get the ids from different dom levels depending on a click on node text or the node image
-        if (
-          event.target.localName === 'image' ||
-          event.srcElement.parentNode.id === 'nodeText'
-        ) {
-          this.selectedNodeId =
-            event.srcElement.id || event.srcElement.parentNode.__data__.id;
-          this.contextMenuService.show.next({
-            contextMenu: this.contextMenu.viewNodeContextMenu,
-            event: event,
-            item: this.selectedNodeId,
-          });
-          event.stopPropagation();
-        }
-
-        if (event.target.localName === 'textPath') {
-          this.contextMenuService.show.next({
-            contextMenu: this.contextMenu.viewLinkContextMenu,
-            event: event,
-            item: this.selectedLinkArray,
-          });
-          event.stopPropagation();
-        }
-
-        if (event.target.localName === 'svg') {
-          this.contextMenuService.show.next({
-            contextMenu: this.contextMenu.canvasContextMenu,
-            event: event,
-            item: 'item',
-          });
-
-          event.stopPropagation();
-        }
-      }
+    if (this.readOnly) {
+      return;
+    }
+  
+    if (this.createLinkArray?.length === 2) {
+      this.contextMenuService.show.next({
+        contextMenu: this.contextMenu.createLinkContextMenu,
+        event,
+        item: this.createLinkArray,
+      });
+      event.stopPropagation();
+      event.preventDefault();
+      return;
+    }
+  
+    const target = event.target;
+    const localName = target.localName;
+    const parentNodeId = target.parentNode.id;
+    const data = target.parentNode.__data__;
+    this.selectedNodeId = target.id || (data && data.id);
+  
+    if (localName === 'image' || parentNodeId === 'nodeText') {
+      this.contextMenuService.show.next({
+        contextMenu: this.contextMenu.viewNodeContextMenu,
+        event,
+        item: this.selectedNodeId
+      });
+      event.stopPropagation();
+      event.preventDefault();
+    } else if (localName === 'textPath') {
+      this.contextMenuService.show.next({
+        contextMenu: this.contextMenu.viewLinkContextMenu,
+        event,
+        item: this.selectedLinkArray,
+      });
+      event.stopPropagation();
+      event.preventDefault();
+    } else if (localName === 'svg') {
+      this.contextMenuService.show.next({
+        contextMenu: this.contextMenu.canvasContextMenu,
+        event,
+        item: 'item',
+      });
+      event.stopPropagation();
       event.preventDefault();
     }
   }
+  
+
+  // public visualiserContextMenus(event): void {
+  //   if (!this.readOnly) {
+  //     // ctrl + click on two nodes for link menu
+  //     if (this.createLinkArray?.length === 2) {
+  //       this.contextMenuService.show.next({
+  //         contextMenu: this.contextMenu.createLinkContextMenu,
+  //         event: event,
+  //         item: this.createLinkArray,
+  //       });
+  //       event.stopPropagation();
+  //     } else {
+  //       // We get the ids from different dom levels depending on a click on node text or the node image
+  //       if (
+  //         event.target.localName === 'image' ||
+  //         event.srcElement.parentNode.id === 'nodeText'
+  //       ) {
+  //         this.selectedNodeId =
+  //           event.srcElement.id || event.srcElement.parentNode.__data__.id;
+  //         this.contextMenuService.show.next({
+  //           contextMenu: this.contextMenu.viewNodeContextMenu,
+  //           event: event,
+  //           item: this.selectedNodeId,
+  //         });
+  //         event.stopPropagation();
+  //       }
+
+  //       if (event.target.localName === 'textPath') {
+  //         this.contextMenuService.show.next({
+  //           contextMenu: this.contextMenu.viewLinkContextMenu,
+  //           event: event,
+  //           item: this.selectedLinkArray,
+  //         });
+  //         event.stopPropagation();
+  //       }
+
+  //       if (event.target.localName === 'svg') {
+  //         this.contextMenuService.show.next({
+  //           contextMenu: this.contextMenu.canvasContextMenu,
+  //           event: event,
+  //           item: 'item',
+  //         });
+
+  //         event.stopPropagation();
+  //       }
+  //     }
+  //     event.preventDefault();
+  //   }
+  // }
 
   public viewLinkEvent() {
     this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
