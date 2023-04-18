@@ -25,7 +25,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   (viewLinkContextMenuEvent)="viewLinkEvent()"
 ></app-context-menus>
 
-     <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"><g [zoomableOf]="svgId"></g></svg>
+     <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"><g [zoomableOf]="svgId" [readOnly]="readOnly"></g></svg>
      </div>
   `,
 })

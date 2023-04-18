@@ -52,9 +52,9 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: null,
-        fy: null,
-      },
+        fx: 100,
+        fy: 100,
+      }
     ],
     links: [
       {

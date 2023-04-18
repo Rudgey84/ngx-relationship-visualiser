@@ -21,7 +21,7 @@ export class DirectedGraphExperimentService {
   }
 
   /** A method to bind a zoom behaviour to the svg g element */
-  public applyZoomableBehaviour(svgElement, containerElement) {
+  public applyZoomableBehaviour(svgElement, containerElement, readOnly) {
     let svg, container, zoomed;
 
     svg = d3.select(svgElement);
@@ -40,7 +40,9 @@ export class DirectedGraphExperimentService {
       .zoom()
       .scaleExtent([0.5, 1])
       .on('start', function () {
-        d3.select(this).style('cursor', 'grabbing');
+        d3.select(this)
+          .style('cursor', readOnly ? null : 'grabbing')
+          .on(readOnly ? 'wheel.zoom' : null, null);
       })
       .on('zoom', zoomed)
       .on('end', function () {
@@ -48,10 +50,6 @@ export class DirectedGraphExperimentService {
       });
 
     svg.call(zoom).style('cursor', 'grab');
-  }
-
-  private clearView(svg) {
-    return svg.selectAll('*').remove();
   }
 
   private ticked(link, node, edgepaths) {
@@ -153,9 +151,9 @@ export class DirectedGraphExperimentService {
             .distance(500)
             .strength(1)
         )
-        .force('charge', _d3.forceManyBody().strength(-10))
+        .force('charge', _d3.forceManyBody().strength(0.1))
         .force('center', _d3.forceCenter(width / 2, height / 2))
-        .force('collision', _d3.forceCollide().radius(30))
+        .force('collision', _d3.forceCollide().radius(15))
     );
   }
 
@@ -505,12 +503,12 @@ export class DirectedGraphExperimentService {
 
     // transition effects for new pulsating nodes
     nodeEnter
-    .filter(function (d) {
-      if (!d.newItem) {
-        return null;
-      }
-      return true;
-    })
+      .filter(function (d) {
+        if (!d.newItem) {
+          return null;
+        }
+        return true;
+      })
       .select('text')
       .transition()
       .duration(1000)

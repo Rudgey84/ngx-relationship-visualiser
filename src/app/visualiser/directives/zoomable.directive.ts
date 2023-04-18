@@ -6,6 +6,7 @@ import { DirectedGraphExperimentService } from '../../visualiser/services/direct
 })
 export class ZoomableDirective implements OnInit {
   @Input('zoomableOf') zoomableOf: ElementRef;
+@Input('readOnly') readOnly;
 
   constructor(
     private directedGraphExperimentService: DirectedGraphExperimentService,
@@ -15,7 +16,8 @@ export class ZoomableDirective implements OnInit {
   ngOnInit() {
     this.directedGraphExperimentService.applyZoomableBehaviour(
       this.zoomableOf,
-      this._element.nativeElement
+      this._element.nativeElement,
+      this.readOnly
     );
   }
 }
