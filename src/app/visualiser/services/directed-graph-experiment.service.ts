@@ -7,6 +7,11 @@ import { Subject } from 'rxjs';
 })
 export class DirectedGraphExperimentService {
   constructor() {}
+  gBrush = null;
+  brushMode = false;
+  brushing = false;
+  ctrlKey;
+  extent = null
   links = [];
   nodes = [];
   /** RxJS subject to listen for updates of the selection */
@@ -221,6 +226,78 @@ export class DirectedGraphExperimentService {
     });
 
     const zoomContainer = _d3.select('svg g');
+
+    let gBrushHolder = svg.append('g');
+
+    let brush = d3.brush()
+  .on('start', () => {
+    
+    this.brushing = true;
+    console.log('start');
+    node.each((d) => {
+      d.previouslySelected = this.ctrlKey && d.selected;
+    });
+  })
+  .on('brush', () => {
+    this.extent = d3.event.selection;
+    if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
+    console.log('during');
+    node.classed('selected', (d) => {
+      return (d.selected =
+        d.previouslySelected ^
+        (<any>(
+          (d3.event.selection[0][0] <= d.x &&
+            d.x < d3.event.selection[1][0] &&
+            d3.event.selection[0][1] <= d.y &&
+            d.y < d3.event.selection[1][1])
+        )));
+    });
+    this.extent = d3.event.selection;
+  })
+  .on('end', () => {
+    if (!d3.event.sourceEvent || !this.extent || !this.gBrush) return;
+    console.log('ending2', this.extent);
+    this.gBrush.call(brush.move, null);
+    if (!this.brushMode) {
+      // the shift key has been release before we ended our brushing
+      this.gBrush.remove();
+      this.gBrush = null;
+    }
+    this.brushing = false;
+    console.log('end');
+  });
+
+
+    let keyup = () => {
+      this.ctrlKey = false;
+      this.brushMode = false;
+    
+      if (this.gBrush && !this.brushing) {
+        console.log('NOT BRUSHING');
+        // only remove the brush if we're not actively brushing
+        // otherwise it'll be removed when the brushing ends
+        this.gBrush.remove();
+        this.gBrush = null;
+      }
+    };
+
+    let keydown = () => {
+   //   d3.event.preventDefault();
+      if (d3.event.ctrlKey) {
+        this.ctrlKey = true;
+    
+        if (!this.gBrush) {
+          this.brushMode = true;
+          this.gBrush = gBrushHolder.append('g').attr("class", "brush");
+
+         // this.gBrush = gBrushHolder.append("g").attr("class", "brush");
+          this.gBrush.call(brush);
+        }
+      }
+    };
+
+
+  d3.select('body').on('keydown', keydown).on('keyup', keyup);
 
     const filteredLine = this.links.filter(
       ({ source, target }, index, self) => {
