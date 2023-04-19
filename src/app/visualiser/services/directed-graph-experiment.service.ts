@@ -235,15 +235,15 @@ export class DirectedGraphExperimentService {
     this.brushing = true;
     console.log('start');
     nodeEnter.each((d) => {
-      d.previouslySelected = this.ctrlKey && d.tom;
+      d.previouslySelected = this.ctrlKey && d.selected;
     });
   })
   .on('brush', () => {
     this.extent = d3.event.selection;
     if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
     console.log('during');
-    nodeEnter.classed('tom', (d) => {
-      return (d.tom =
+    nodeEnter.classed('selected', (d) => {
+      return (d.selected =
         d.previouslySelected ^
         (<any>(
           (d3.event.selection[0][0] <= d.x &&
