@@ -234,16 +234,16 @@ export class DirectedGraphExperimentService {
     
     this.brushing = true;
     console.log('start');
-    node.each((d) => {
-      d.previouslySelected = this.ctrlKey && d.selected;
+    nodeEnter.each((d) => {
+      d.previouslySelected = this.ctrlKey && d.tom;
     });
   })
   .on('brush', () => {
     this.extent = d3.event.selection;
     if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
     console.log('during');
-    node.classed('selected', (d) => {
-      return (d.selected =
+    nodeEnter.classed('tom', (d) => {
+      return (d.tom =
         d.previouslySelected ^
         (<any>(
           (d3.event.selection[0][0] <= d.x &&
@@ -283,14 +283,13 @@ export class DirectedGraphExperimentService {
 
     let keydown = () => {
    //   d3.event.preventDefault();
-      if (d3.event.ctrlKey) {
+   // holding S key
+   if (d3.event.keyCode === 83) {
         this.ctrlKey = true;
     
         if (!this.gBrush) {
           this.brushMode = true;
           this.gBrush = gBrushHolder.append('g').attr("class", "brush");
-
-         // this.gBrush = gBrushHolder.append("g").attr("class", "brush");
           this.gBrush.call(brush);
         }
       }
