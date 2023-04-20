@@ -11,7 +11,7 @@ export class DirectedGraphExperimentService {
   brushMode = false;
   brushing = false;
   ctrlKey;
-  extent = null
+  extent = null;
   links = [];
   nodes = [];
   /** RxJS subject to listen for updates of the selection */
@@ -23,38 +23,6 @@ export class DirectedGraphExperimentService {
   public update(data, element) {
     const svg = d3.select(element);
     return this._update(d3, svg, data, element);
-  }
-
-  /** A method to bind a zoom behaviour to the svg g element */
-  public applyZoomableBehaviour(svgElement, containerElement, readOnly) {
-    let svg, container, zoomed;
-
-    svg = d3.select(svgElement);
-
-    container = d3.select(containerElement);
-debugger
-    zoomed = () => {
-      const transform = d3.event.transform;
-      container.attr(
-        'transform',
-        `translate(${transform.x}, ${transform.y}) scale(${transform.k})`
-      );
-    };
-
-    const zoom = d3
-      .zoom()
-      .scaleExtent([0.5, 1])
-      .on('start', function () {
-        d3.select(this)
-          .style('cursor', readOnly ? null : 'grabbing')
-          .on(readOnly ? 'wheel.zoom' : null, null);
-      })
-      .on('zoom', zoomed)
-      .on('end', function () {
-        d3.select(this).style('cursor', 'grab');
-      });
-
-    svg.call(zoom).style('cursor', 'grab');
   }
 
   private ticked(link, node, edgepaths) {
@@ -185,6 +153,7 @@ debugger
     this.links = links || [];
     this.nodes = nodes || [];
     let currentZoom;
+    let readOnly = false;
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -221,6 +190,7 @@ debugger
 
     const zoomContainer = d3.select('svg').append('g');
 
+    // Zoom Start
     let zoomed = () => {
       const transform = d3.event.transform;
       zoomContainer.attr(
@@ -234,15 +204,18 @@ debugger
       .zoom()
       .scaleExtent([0.5, 1])
       .on('start', function () {
-        d3.select(this);
+        d3.select(this)
+          .style('cursor', readOnly ? null : 'grabbing')
+          .on(readOnly ? 'wheel.zoom' : null, null);
       })
       .on('zoom', zoomed)
       .on('end', function () {
         d3.select(this).style('cursor', 'grab');
       });
-
     svg.call(zoom).style('cursor', 'grab');
+    // Zoom End
 
+    // For arrows
     this.initDefinitions(svg);
 
     const simulation = this.forceSimulation(_d3, {
@@ -250,56 +223,55 @@ debugger
       height: +svg.attr('height'),
     });
 
-
+    // Brush Start
     let gBrushHolder = svg.append('g');
 
-    let brush = d3.brush()
-  .on('start', () => {
-    
-    this.brushing = true;
-    console.log('start');
-    nodeEnter.each((d) => {
-      d.previouslySelected = this.ctrlKey && d.selected;
-    });
-  })
-  .on('brush', () => {
-    this.extent = d3.event.selection;
-    if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
-    console.log('during');
-    nodeEnter.classed('selected', (d) => {
-      console.log(currentZoom)
-      return (d.selected =
-        d.previouslySelected ^
-        (<any>(
-          (d3.event.selection[0][0] <=
-            d.x * currentZoom.k + currentZoom.x &&
-            d.x * currentZoom.k + currentZoom.x <
-              d3.event.selection[1][0] &&
-            d3.event.selection[0][1] <=
-              d.y * currentZoom.k + currentZoom.y &&
-            d.y * currentZoom.k + currentZoom.y < d3.event.selection[1][1])
-        )));
-    });
-    this.extent = d3.event.selection;
-  })
-  .on('end', () => {
-    if (!d3.event.sourceEvent || !this.extent || !this.gBrush) return;
-    console.log('ending2', this.extent);
-    this.gBrush.call(brush.move, null);
-    if (!this.brushMode) {
-      // the shift key has been release before we ended our brushing
-      this.gBrush.remove();
-      this.gBrush = null;
-    }
-    this.brushing = false;
-    console.log('end');
-  });
-
+    let brush = d3
+      .brush()
+      .on('start', () => {
+        this.brushing = true;
+        console.log('start');
+        nodeEnter.each((d) => {
+          d.previouslySelected = this.ctrlKey && d.selected;
+        });
+      })
+      .on('brush', () => {
+        this.extent = d3.event.selection;
+        if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
+        console.log('during');
+        nodeEnter.classed('selected', (d) => {
+          console.log(currentZoom);
+          return (d.selected =
+            d.previouslySelected ^
+            (<any>(
+              (d3.event.selection[0][0] <=
+                d.x * currentZoom.k + currentZoom.x &&
+                d.x * currentZoom.k + currentZoom.x <
+                  d3.event.selection[1][0] &&
+                d3.event.selection[0][1] <=
+                  d.y * currentZoom.k + currentZoom.y &&
+                d.y * currentZoom.k + currentZoom.y < d3.event.selection[1][1])
+            )));
+        });
+        this.extent = d3.event.selection;
+      })
+      .on('end', () => {
+        if (!d3.event.sourceEvent || !this.extent || !this.gBrush) return;
+        console.log('ending2', this.extent);
+        this.gBrush.call(brush.move, null);
+        if (!this.brushMode) {
+          // the shift key has been release before we ended our brushing
+          this.gBrush.remove();
+          this.gBrush = null;
+        }
+        this.brushing = false;
+        console.log('end');
+      });
 
     let keyup = () => {
       this.ctrlKey = false;
       this.brushMode = false;
-    
+
       if (this.gBrush && !this.brushing) {
         console.log('NOT BRUSHING');
         // only remove the brush if we're not actively brushing
@@ -310,21 +282,20 @@ debugger
     };
 
     let keydown = () => {
-   //   d3.event.preventDefault();
-   // holding S key
-   if (d3.event.keyCode === 83) {
+      // holding S key
+      if (d3.event.keyCode === 83) {
         this.ctrlKey = true;
-    
+
         if (!this.gBrush) {
           this.brushMode = true;
-          this.gBrush = gBrushHolder.append('g').attr("class", "brush");
+          this.gBrush = gBrushHolder.append('g').attr('class', 'brush');
           this.gBrush.call(brush);
         }
       }
     };
 
-
-  d3.select('body').on('keydown', keydown).on('keyup', keyup);
+    d3.select('body').on('keydown', keydown).on('keyup', keyup);
+    // Brush End
 
     const filteredLine = this.links.filter(
       ({ source, target }, index, self) => {
