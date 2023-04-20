@@ -32,7 +32,7 @@ export class DirectedGraphExperimentService {
     svg = d3.select(svgElement);
 
     container = d3.select(containerElement);
-
+debugger
     zoomed = () => {
       const transform = d3.event.transform;
       container.attr(
@@ -184,6 +184,7 @@ export class DirectedGraphExperimentService {
     let { links, nodes } = data;
     this.links = links || [];
     this.nodes = nodes || [];
+    let currentZoom;
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -218,6 +219,30 @@ export class DirectedGraphExperimentService {
     });
     this.links = relationshipsArray.reduce((acc, val) => acc.concat(val), []);
 
+    const zoomContainer = d3.select('svg').append('g');
+
+    let zoomed = () => {
+      const transform = d3.event.transform;
+      zoomContainer.attr(
+        'transform',
+        `translate(${transform.x}, ${transform.y}) scale(${transform.k})`
+      );
+      currentZoom = transform;
+    };
+
+    const zoom = d3
+      .zoom()
+      .scaleExtent([0.5, 1])
+      .on('start', function () {
+        d3.select(this);
+      })
+      .on('zoom', zoomed)
+      .on('end', function () {
+        d3.select(this).style('cursor', 'grab');
+      });
+
+    svg.call(zoom).style('cursor', 'grab');
+
     this.initDefinitions(svg);
 
     const simulation = this.forceSimulation(_d3, {
@@ -225,7 +250,6 @@ export class DirectedGraphExperimentService {
       height: +svg.attr('height'),
     });
 
-    const zoomContainer = _d3.select('svg g');
 
     let gBrushHolder = svg.append('g');
 
@@ -243,13 +267,17 @@ export class DirectedGraphExperimentService {
     if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
     console.log('during');
     nodeEnter.classed('selected', (d) => {
+      console.log(currentZoom)
       return (d.selected =
         d.previouslySelected ^
         (<any>(
-          (d3.event.selection[0][0] <= d.x &&
-            d.x < d3.event.selection[1][0] &&
-            d3.event.selection[0][1] <= d.y &&
-            d.y < d3.event.selection[1][1])
+          (d3.event.selection[0][0] <=
+            d.x * currentZoom.k + currentZoom.x &&
+            d.x * currentZoom.k + currentZoom.x <
+              d3.event.selection[1][0] &&
+            d3.event.selection[0][1] <=
+              d.y * currentZoom.k + currentZoom.y &&
+            d.y * currentZoom.k + currentZoom.y < d3.event.selection[1][1])
         )));
     });
     this.extent = d3.event.selection;
