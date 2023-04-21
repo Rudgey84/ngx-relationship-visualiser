@@ -14,14 +14,16 @@ export class DirectedGraphExperimentService {
   extent = null;
   links = [];
   nodes = [];
+  readOnly = false
   /** RxJS subject to listen for updates of the selection */
   createLinkArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
 
-  public update(data, element) {
+  public update(data, element, readOnly) {
     const svg = d3.select(element);
+    this.readOnly = readOnly
     return this._update(d3, svg, data, element);
   }
 
@@ -72,14 +74,6 @@ export class DirectedGraphExperimentService {
         return 'rotate(0)';
       }
     });
-  }
-
-  private dragended(_d3, d, simulation) {
-    if (!_d3.event.active) {
-      simulation.alphaTarget(0.3).restart();
-    }
-    d.fx = d.x;
-    d.fy = d.y;
   }
 
   private initDefinitions(svg) {
@@ -148,12 +142,12 @@ export class DirectedGraphExperimentService {
     return nodes;
   }
 
-  _update(_d3, svg, data, element) {
+  _update(_d3, svg, data) {
     let { links, nodes } = data;
     this.links = links || [];
     this.nodes = nodes || [];
     let currentZoom;
-    let readOnly = false;
+    console.log(this.readOnly);
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -188,7 +182,9 @@ export class DirectedGraphExperimentService {
     });
     this.links = relationshipsArray.reduce((acc, val) => acc.concat(val), []);
 
-    const zoomContainer = d3.select('svg').append('g');
+    d3.select('svg').append('g');
+
+    const zoomContainer = _d3.select('svg g');
 
     // Zoom Start
     let zoomed = () => {
@@ -205,14 +201,14 @@ export class DirectedGraphExperimentService {
       .scaleExtent([0.5, 1])
       .on('start', function () {
         d3.select(this)
-          .style('cursor', readOnly ? null : 'grabbing')
-          .on(readOnly ? 'wheel.zoom' : null, null);
+          .style('cursor', this.readOnly ? null : 'grabbing')
+          //.on(this.readOnly ? null : 'wheel.zoom', null);
       })
       .on('zoom', zoomed)
       .on('end', function () {
         d3.select(this).style('cursor', 'grab');
       });
-    svg.call(zoom).style('cursor', 'grab');
+    svg.call(zoom).style('cursor', 'grab').on(!this.readOnly ? null : 'wheel.zoom', null);
     // Zoom End
 
     // For arrows
@@ -230,7 +226,7 @@ export class DirectedGraphExperimentService {
       .brush()
       .on('start', () => {
         this.brushing = true;
-        console.log('start');
+
         nodeEnter.each((d) => {
           d.previouslySelected = this.ctrlKey && d.selected;
         });
@@ -238,26 +234,31 @@ export class DirectedGraphExperimentService {
       .on('brush', () => {
         this.extent = d3.event.selection;
         if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
-        console.log('during');
-        nodeEnter.classed('selected', (d) => {
-          console.log(currentZoom);
-          return (d.selected =
-            d.previouslySelected ^
-            (<any>(
-              (d3.event.selection[0][0] <=
-                d.x * currentZoom.k + currentZoom.x &&
-                d.x * currentZoom.k + currentZoom.x <
-                  d3.event.selection[1][0] &&
-                d3.event.selection[0][1] <=
-                  d.y * currentZoom.k + currentZoom.y &&
-                d.y * currentZoom.k + currentZoom.y < d3.event.selection[1][1])
-            )));
-        });
+
+        nodeEnter
+          .classed('selected', (d) => {
+            return (d.selected =
+              d.previouslySelected ^
+              (<any>(
+                (d3.event.selection[0][0] <=
+                  d.x * currentZoom.k + currentZoom.x &&
+                  d.x * currentZoom.k + currentZoom.x <
+                    d3.event.selection[1][0] &&
+                  d3.event.selection[0][1] <=
+                    d.y * currentZoom.k + currentZoom.y &&
+                  d.y * currentZoom.k + currentZoom.y <
+                    d3.event.selection[1][1])
+              )));
+          })
+          .select('.nodeText')
+          .classed('selected', (d) => d.selected)
+          .style('fill', (d) => (d.selected ? 'red' : null));
+
         this.extent = d3.event.selection;
       })
       .on('end', () => {
         if (!d3.event.sourceEvent || !this.extent || !this.gBrush) return;
-        console.log('ending2', this.extent);
+
         this.gBrush.call(brush.move, null);
         if (!this.brushMode) {
           // the shift key has been release before we ended our brushing
@@ -265,15 +266,12 @@ export class DirectedGraphExperimentService {
           this.gBrush = null;
         }
         this.brushing = false;
-        console.log('end');
       });
 
     let keyup = () => {
       this.ctrlKey = false;
       this.brushMode = false;
-
       if (this.gBrush && !this.brushing) {
-        console.log('NOT BRUSHING');
         // only remove the brush if we're not actively brushing
         // otherwise it'll be removed when the brushing ends
         this.gBrush.remove();
@@ -445,12 +443,51 @@ export class DirectedGraphExperimentService {
       .call(
         _d3
           .drag()
-          .on('start', (d) => this.dragended(_d3, d, simulation))
-          .on('drag', function dragged(d) {
-            d.fx = _d3.event.x;
-            d.fy = _d3.event.y;
+          .on('start', function dragstarted(d) {
+            if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
+
+            if (!d.selected && !this.ctrlKey) {
+              // if this node isn't selected, then we have to unselect every other node
+              nodeEnter.classed('selected', function (p) {
+                return (p.selected = p.previouslySelected = false);
+              });
+            }
+
+            _d3.select(this).classed('selected', function (p) {
+              d.previouslySelected = d.selected;
+              return (d.selected = true);
+            });
+
+            nodeEnter
+              .filter(function (d) {
+                return d.selected;
+              })
+              .each(function (d) {
+                //d.fixed |= 2;
+
+                d.fx = d.x;
+                d.fy = d.y;
+              });
           })
-          .on('end', (d) => this.dragended(_d3, d, simulation))
+          .on('drag', function dragged(d) {
+            //d.fx = d3v4.event.x;
+            //d.fy = d3v4.event.y;
+            nodeEnter
+              .filter(function (d) {
+                return d.selected;
+              })
+              .each(function (d) {
+                d.fx += _d3.event.dx;
+                d.fy += _d3.event.dy;
+              });
+          })
+          .on('end', function dragended(d) {
+            if (!_d3.event.active) {
+              simulation.alphaTarget(0.3).restart();
+            }
+            d.fx = d.x;
+            d.fy = d.y;
+          })
       )
       .attr('id', function (d) {
         return d.id;
@@ -520,6 +557,11 @@ export class DirectedGraphExperimentService {
 
     //click on canvas to remove selected nodes
     _d3.select('svg').on('click', () => {
+      nodeEnter.each(function (d) {
+        d.selected = false;
+        d.previouslySelected = false;
+      });
+      node.classed('selected', false);
       _d3.selectAll('.selected').selectAll('.nodeText').style('fill', 'black');
       _d3.selectAll('.selected').classed('selected', false);
       _d3.selectAll('.nodeText').style('fill', 'black');
@@ -659,7 +701,6 @@ export class DirectedGraphExperimentService {
     });
 
     simulation.nodes(this.nodes).on('tick', () => {
-      // console.log(this.nodes)
       this.ticked(linkEnter, nodeEnter, edgepathsEnter);
     });
 

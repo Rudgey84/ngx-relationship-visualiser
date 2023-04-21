@@ -51,7 +51,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.directedGraphExperimentService.update(
         data,
-        this.graphElement.nativeElement
+        this.graphElement.nativeElement,
+        this.readOnly
       );
     }, 500);
   }
@@ -63,7 +64,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     this.directedGraphExperimentService.createLinkArray.subscribe(
       (createLinkArray) => {
         this.createLinkArray = createLinkArray;
-        console.log(this.createLinkArray);
       }
     );
 
