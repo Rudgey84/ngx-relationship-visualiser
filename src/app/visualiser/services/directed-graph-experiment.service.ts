@@ -7,14 +7,14 @@ import { Subject } from 'rxjs';
 })
 export class DirectedGraphExperimentService {
   constructor() {}
-  gBrush = null;
-  brushMode = false;
-  brushing = false;
-  ctrlKey;
-  extent = null;
-  links = [];
-  nodes = [];
-  readOnly = false
+  public links = [];
+  public nodes = [];
+  public gBrush = null;
+  public brushMode = false;
+  public brushing = false;
+  public sKey;
+  public extent = null;
+  public readOnly = false
   /** RxJS subject to listen for updates of the selection */
   createLinkArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
@@ -24,7 +24,7 @@ export class DirectedGraphExperimentService {
   public update(data, element, readOnly) {
     const svg = d3.select(element);
     this.readOnly = readOnly
-    return this._update(d3, svg, data, element);
+    return this._update(d3, svg, data);
   }
 
   private ticked(link, node, edgepaths) {
@@ -37,7 +37,6 @@ export class DirectedGraphExperimentService {
       let pathLength = Math.sqrt(diffX * diffX + diffY * diffY);
 
       // x and y distances from center to outside edge of target node
-
       let offsetX = (diffX * 20) / pathLength;
       let offsetY = (diffY * 20) / pathLength;
 
@@ -106,7 +105,6 @@ export class DirectedGraphExperimentService {
     return (
       _d3
         .forceSimulation()
-        // .alphaDecay(0.001)
         .velocityDecay(0.1)
         .force(
           'link',
@@ -147,7 +145,6 @@ export class DirectedGraphExperimentService {
     this.links = links || [];
     this.nodes = nodes || [];
     let currentZoom;
-    console.log(this.readOnly);
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -202,7 +199,6 @@ export class DirectedGraphExperimentService {
       .on('start', function () {
         d3.select(this)
           .style('cursor', this.readOnly ? null : 'grabbing')
-          //.on(this.readOnly ? null : 'wheel.zoom', null);
       })
       .on('zoom', zoomed)
       .on('end', function () {
@@ -228,7 +224,7 @@ export class DirectedGraphExperimentService {
         this.brushing = true;
 
         nodeEnter.each((d) => {
-          d.previouslySelected = this.ctrlKey && d.selected;
+          d.previouslySelected = this.sKey && d.selected;
         });
       })
       .on('brush', () => {
@@ -261,7 +257,7 @@ export class DirectedGraphExperimentService {
 
         this.gBrush.call(brush.move, null);
         if (!this.brushMode) {
-          // the shift key has been release before we ended our brushing
+          // the s key has been release before we ended our brushing
           this.gBrush.remove();
           this.gBrush = null;
         }
@@ -269,7 +265,7 @@ export class DirectedGraphExperimentService {
       });
 
     let keyup = () => {
-      this.ctrlKey = false;
+      this.sKey = false;
       this.brushMode = false;
       if (this.gBrush && !this.brushing) {
         // only remove the brush if we're not actively brushing
@@ -282,7 +278,7 @@ export class DirectedGraphExperimentService {
     let keydown = () => {
       // holding S key
       if (d3.event.keyCode === 83) {
-        this.ctrlKey = true;
+        this.sKey = true;
 
         if (!this.gBrush) {
           this.brushMode = true;
@@ -316,7 +312,6 @@ export class DirectedGraphExperimentService {
 
     const linkEnter = link
       .join('line')
-      //  .style('stroke', '#e7e7e7')
       .style('stroke', function (d) {
         if (d.parentLineStyle === 'Confirmed') {
           return '#777';
@@ -446,7 +441,7 @@ export class DirectedGraphExperimentService {
           .on('start', function dragstarted(d) {
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
 
-            if (!d.selected && !this.ctrlKey) {
+            if (!d.selected && !this.sKey) {
               // if this node isn't selected, then we have to unselect every other node
               nodeEnter.classed('selected', function (p) {
                 return (p.selected = p.previouslySelected = false);
