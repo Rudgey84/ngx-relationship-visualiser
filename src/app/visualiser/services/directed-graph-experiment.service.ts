@@ -51,7 +51,7 @@ export class DirectedGraphExperimentService {
       return `translate(${d.x}, ${d.y + 50})`;
     });
 
-    // node.attr('cx', function (d) {
+    //  node.attr('cx', function (d) {
     //   // boundries
     //   return (d.x = Math.max(40, Math.min(900 - 15, d.x)));
     // })
@@ -140,11 +140,32 @@ export class DirectedGraphExperimentService {
     return nodes;
   }
 
+  private randomiseNodes(nodeData, width, height) {
+    const middleX = width / 2;
+    const middleY = height / 2;
+    const radius = Math.min(middleX, middleY) * 0.8;
+  
+    // Get the nodes without existing fx and fy values
+    const nodesWithoutPositions = nodeData.filter(node => node.fx === null && node.fy === null);
+    const nodeCount = nodesWithoutPositions.length;
+  
+    for (let i = 0; i < nodeCount; i++) {
+      const node = nodesWithoutPositions[i];
+      const angle = (2 * Math.PI * i) / nodeCount;
+      node.fx = middleX + radius * Math.cos(angle);
+      node.fy = middleY + radius * Math.sin(angle);
+    }
+    return nodeData;
+  }
+
   _update(_d3, svg, data) {
     let { links, nodes } = data;
     this.links = links || [];
     this.nodes = nodes || [];
     let currentZoom;
+    let parentWidth = _d3.select('svg').node().parentNode.clientWidth;
+    let parentHeight = _d3.select('svg').node().parentNode.clientHeight;
+    this.nodes = this.randomiseNodes(this.nodes, parentWidth, parentHeight);
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -212,8 +233,9 @@ export class DirectedGraphExperimentService {
 
     const simulation = this.forceSimulation(_d3, {
       width: +svg.attr('width'),
-      height: +svg.attr('height'),
+      height: +svg.attr('height')
     });
+
 
     // Brush Start
     let gBrushHolder = svg.append('g');
