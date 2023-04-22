@@ -99,7 +99,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 	}
 
   public visualiserContextMenus(event): void {
-s
+    if (this.readOnly) {
+      return;
+  }
 
     let contextMenu;
     let item;
