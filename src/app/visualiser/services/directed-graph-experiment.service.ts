@@ -247,6 +247,14 @@ export class DirectedGraphExperimentService {
         d3.select(this).style('cursor', 'grab');
       });
     svg.call(zoom).style('cursor', 'grab').on(!this.readOnly ? null : 'wheel.zoom', null);
+
+// Zoom button controls
+    d3.select("#zoom_in").on("click", function() {
+      zoom.scaleBy(svg.transition().duration(750), 1.2);
+    });
+    d3.select("#zoom_out").on("click", function() {
+      zoom.scaleBy(svg.transition().duration(750), 0.8);
+    });
     // Zoom End
 
     // For arrows

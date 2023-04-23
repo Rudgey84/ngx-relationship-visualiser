@@ -16,8 +16,11 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   selector: 'dge-directed-graph-experiment',
   template: `
   <div class="page" id="pageId" (window:resize)="onResize($event)">
-  <button (click)="newData()">New data</button>
-
+  <div class="float-right m-2">
+  <button class="btn btn-secondary ml-3" (click)="newData()">New data</button>
+  <button class="btn btn-secondary ml-3" id="zoom_in">+</button>
+  <button class="btn btn-secondary ml-1" id="zoom_out">-</button>
+  </div>
   <app-context-menus
   (viewNodeContextMenuEvent)="viewNodeEvent()"
   (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
