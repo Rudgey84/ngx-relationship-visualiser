@@ -282,6 +282,10 @@ export class DirectedGraphExperimentService {
         this.extent = d3.event.selection;
         if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
 
+            // Check if currentZoom is defined before accessing its properties
+    const currentZoom = d3.zoomTransform(d3.select('svg').node());
+    if (!currentZoom) return;
+
         nodeEnter
           .classed('selected', (d) => {
             return (d.selected =
