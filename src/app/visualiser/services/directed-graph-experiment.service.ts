@@ -122,7 +122,7 @@ export class DirectedGraphExperimentService {
     );
   }
 
-  compareAndMarkNew(nodes, old_nodes) {
+  private compareAndMarkNew(nodes, old_nodes) {
     // Create a map of ids to node objects for the old_nodes array
     const oldMap = old_nodes.reduce((map, node) => {
       map[node.id] = node;
@@ -140,7 +140,27 @@ export class DirectedGraphExperimentService {
     return nodes;
   }
 
-  private randomiseNodes(nodeData, width, height) {
+  private randomiseNodePositions(nodeData, width, height) {
+    const minDistance = 100;
+    nodeData.forEach(node => {
+    if (node.fx === null && node.fy === null) {
+      do {
+        node.fx = Math.floor(Math.random() * width);
+        node.fy = Math.floor(Math.random() * height);
+      } while (nodeData.some(otherNode => {
+        if (otherNode.fx === null || otherNode.fy === null || otherNode === node) {
+          return false;
+        }
+        const dx = otherNode.fx - node.fx;
+        const dy = otherNode.fy - node.fy;
+        return Math.sqrt(dx*dx + dy*dy) < minDistance;
+      }));
+    }
+  });
+  return nodeData;
+}
+
+      private circleNodePositions(nodeData, width, height) {
     const middleX = width / 2;
     const middleY = height / 2;
     const radius = Math.min(middleX, middleY) * 0.8;
@@ -158,6 +178,7 @@ export class DirectedGraphExperimentService {
     return nodeData;
   }
 
+
   _update(_d3, svg, data) {
     let { links, nodes } = data;
     this.links = links || [];
@@ -165,7 +186,7 @@ export class DirectedGraphExperimentService {
     let currentZoom;
     let parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     let parentHeight = _d3.select('svg').node().parentNode.clientHeight;
-    this.nodes = this.randomiseNodes(this.nodes, parentWidth, parentHeight);
+    this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {

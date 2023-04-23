@@ -26,8 +26,8 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: null,
-        fy: null,
+        fx: 100,
+        fy: 400,
       },
       {
         id: '2494EA62',
@@ -39,8 +39,8 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: null,
-        fy: null,
+        fx: 300,
+        fy: 300,
       },
       {
         id: '123',
