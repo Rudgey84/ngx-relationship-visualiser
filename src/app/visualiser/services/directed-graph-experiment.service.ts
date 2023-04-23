@@ -14,7 +14,7 @@ export class DirectedGraphExperimentService {
   public brushing = false;
   public sKey;
   public extent = null;
-  public readOnly = false
+  public readOnly = false;
   /** RxJS subject to listen for updates of the selection */
   createLinkArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
@@ -23,7 +23,7 @@ export class DirectedGraphExperimentService {
 
   public update(data, element, readOnly) {
     const svg = d3.select(element);
-    this.readOnly = readOnly
+    this.readOnly = readOnly;
     return this._update(d3, svg, data);
   }
 
@@ -102,24 +102,22 @@ export class DirectedGraphExperimentService {
   }
 
   private forceSimulation(_d3, { width, height }) {
-    return (
-      _d3
-        .forceSimulation()
-        .velocityDecay(0.1)
-        .force(
-          'link',
-          _d3
-            .forceLink()
-            .id(function (d) {
-              return d.id;
-            })
-            .distance(500)
-            .strength(1)
-        )
-        .force('charge', _d3.forceManyBody().strength(0.1))
-        .force('center', _d3.forceCenter(width / 2, height / 2))
-        .force('collision', _d3.forceCollide().radius(15))
-    );
+    return _d3
+      .forceSimulation()
+      .velocityDecay(0.1)
+      .force(
+        'link',
+        _d3
+          .forceLink()
+          .id(function (d) {
+            return d.id;
+          })
+          .distance(500)
+          .strength(1)
+      )
+      .force('charge', _d3.forceManyBody().strength(0.1))
+      .force('center', _d3.forceCenter(width / 2, height / 2))
+      .force('collision', _d3.forceCollide().radius(15));
   }
 
   private compareAndMarkNew(nodes, old_nodes) {
@@ -142,33 +140,41 @@ export class DirectedGraphExperimentService {
 
   private randomiseNodePositions(nodeData, width, height) {
     const minDistance = 100;
-    nodeData.forEach(node => {
-    if (node.fx === null && node.fy === null) {
-      do {
-        node.fx = Math.floor(Math.random() * width);
-        node.fy = Math.floor(Math.random() * height);
-      } while (nodeData.some(otherNode => {
-        if (otherNode.fx === null || otherNode.fy === null || otherNode === node) {
-          return false;
-        }
-        const dx = otherNode.fx - node.fx;
-        const dy = otherNode.fy - node.fy;
-        return Math.sqrt(dx*dx + dy*dy) < minDistance;
-      }));
-    }
-  });
-  return nodeData;
-}
+    nodeData.forEach((node) => {
+      if (node.fx === null && node.fy === null) {
+        do {
+          node.fx = Math.floor(Math.random() * width);
+          node.fy = Math.floor(Math.random() * height);
+        } while (
+          nodeData.some((otherNode) => {
+            if (
+              otherNode.fx === null ||
+              otherNode.fy === null ||
+              otherNode === node
+            ) {
+              return false;
+            }
+            const dx = otherNode.fx - node.fx;
+            const dy = otherNode.fy - node.fy;
+            return Math.sqrt(dx * dx + dy * dy) < minDistance;
+          })
+        );
+      }
+    });
+    return nodeData;
+  }
 
-      private circleNodePositions(nodeData, width, height) {
+  private circleNodePositions(nodeData, width, height) {
     const middleX = width / 2;
     const middleY = height / 2;
     const radius = Math.min(middleX, middleY) * 0.8;
-  
+
     // Get the nodes without existing fx and fy values
-    const nodesWithoutPositions = nodeData.filter(node => node.fx === null && node.fy === null);
+    const nodesWithoutPositions = nodeData.filter(
+      (node) => node.fx === null && node.fy === null
+    );
     const nodeCount = nodesWithoutPositions.length;
-  
+
     for (let i = 0; i < nodeCount; i++) {
       const node = nodesWithoutPositions[i];
       const angle = (2 * Math.PI * i) / nodeCount;
@@ -178,7 +184,6 @@ export class DirectedGraphExperimentService {
     return nodeData;
   }
 
-
   _update(_d3, svg, data) {
     let { links, nodes } = data;
     this.links = links || [];
@@ -186,7 +191,11 @@ export class DirectedGraphExperimentService {
     let currentZoom;
     let parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     let parentHeight = _d3.select('svg').node().parentNode.clientHeight;
-    this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
+    this.nodes = this.randomiseNodePositions(
+      this.nodes,
+      parentWidth,
+      parentHeight
+    );
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -239,20 +248,22 @@ export class DirectedGraphExperimentService {
       .zoom()
       .scaleExtent([0.5, 1])
       .on('start', function () {
-        d3.select(this)
-          .style('cursor', this.readOnly ? null : 'grabbing')
+        d3.select(this).style('cursor', this.readOnly ? null : 'grabbing');
       })
       .on('zoom', zoomed)
       .on('end', function () {
         d3.select(this).style('cursor', 'grab');
       });
-    svg.call(zoom).style('cursor', 'grab').on(!this.readOnly ? null : 'wheel.zoom', null);
+    svg
+      .call(zoom)
+      .style('cursor', 'grab')
+      .on(!this.readOnly ? null : 'wheel.zoom', null);
 
-// Zoom button controls
-    d3.select("#zoom_in").on("click", function() {
+    // Zoom button controls
+    d3.select('#zoom_in').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 1.2);
     });
-    d3.select("#zoom_out").on("click", function() {
+    d3.select('#zoom_out').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 0.8);
     });
     // Zoom End
@@ -262,9 +273,8 @@ export class DirectedGraphExperimentService {
 
     const simulation = this.forceSimulation(_d3, {
       width: +svg.attr('width'),
-      height: +svg.attr('height')
+      height: +svg.attr('height'),
     });
-
 
     // Brush Start
     let gBrushHolder = svg.append('g');
@@ -282,9 +292,9 @@ export class DirectedGraphExperimentService {
         this.extent = d3.event.selection;
         if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
 
-            // Check if currentZoom is defined before accessing its properties
-    const currentZoom = d3.zoomTransform(d3.select('svg').node());
-    if (!currentZoom) return;
+        // Check if currentZoom is defined before accessing its properties
+        const currentZoom = d3.zoomTransform(d3.select('svg').node());
+        if (!currentZoom) return;
 
         nodeEnter
           .classed('selected', (d) => {
