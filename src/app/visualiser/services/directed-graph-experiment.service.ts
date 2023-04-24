@@ -12,7 +12,7 @@ export class DirectedGraphExperimentService {
   public gBrush = null;
   public brushMode = false;
   public brushing = false;
-  public sKey;
+  public shiftKey;
   public extent = null;
   public readOnly = false;
   /** RxJS subject to listen for updates of the selection */
@@ -286,7 +286,7 @@ export class DirectedGraphExperimentService {
         this.brushing = true;
 
         nodeEnter.each((d) => {
-          d.previouslySelected = this.sKey && d.selected;
+          d.previouslySelected = this.shiftKey && d.selected;
         });
       })
       .on('brush', () => {
@@ -328,7 +328,7 @@ export class DirectedGraphExperimentService {
       });
 
     let keyup = () => {
-      this.sKey = false;
+      this.shiftKey = false;
       this.brushMode = false;
       if (this.gBrush && !this.brushing) {
         // only remove the brush if we're not actively brushing
@@ -344,7 +344,7 @@ export class DirectedGraphExperimentService {
       brush.keyModifiers(false);
       // holding S key
       if (d3.event.keyCode === 16) {
-        this.sKey = true;
+        this.shiftKey = true;
 
         if (!this.gBrush) {
           this.brushMode = true;
@@ -507,7 +507,7 @@ export class DirectedGraphExperimentService {
           .on('start', function dragstarted(d) {
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
 
-            if (!d.selected && !this.sKey) {
+            if (!d.selected && !this.shiftKey) {
               // if this node isn't selected, then we have to unselect every other node
               nodeEnter.classed('selected', function (p) {
                 return (p.selected = p.previouslySelected = false);
