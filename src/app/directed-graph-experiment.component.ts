@@ -18,8 +18,8 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="float-right m-2">
   <button class="btn btn-secondary ml-3" (click)="newData()">New data</button>
-  <button class="btn btn-secondary ml-3" id="zoom_in">+</button>
-  <button class="btn btn-secondary ml-1" id="zoom_out">-</button>
+  <button *ngIf="!readOnly" class="btn btn-secondary ml-3" id="zoom_in">+</button>
+  <button *ngIf="!readOnly"  class="btn btn-secondary ml-1" id="zoom_out">-</button>
   </div>
   <app-context-menus
   (viewNodeContextMenuEvent)="viewNodeEvent()"
@@ -41,7 +41,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public selectedNodeId;
   public selectedLinkArray;
   public width;
-  @Input() readOnly: boolean;
+  @Input() readOnly: boolean = false;
 
   constructor(
     private directedGraphExperimentService: DirectedGraphExperimentService,
