@@ -188,7 +188,7 @@ export class DirectedGraphExperimentService {
     let { links, nodes } = data;
     this.links = links || [];
     this.nodes = nodes || [];
-    let currentZoom;
+    let currentZoom = d3.zoomTransform(d3.select('svg').node());
     let parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     let parentHeight = _d3.select('svg').node().parentNode.clientHeight;
     this.nodes = this.randomiseNodePositions(
@@ -291,9 +291,6 @@ export class DirectedGraphExperimentService {
       .on('brush', () => {
         this.extent = d3.event.selection;
         if (!d3.event.sourceEvent || !this.extent || !this.brushMode) return;
-
-        // Check if currentZoom is defined before accessing its properties
-        const currentZoom = d3.zoomTransform(d3.select('svg').node());
         if (!currentZoom) return;
 
         nodeEnter
