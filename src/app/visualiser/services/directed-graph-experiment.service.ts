@@ -235,6 +235,7 @@ export class DirectedGraphExperimentService {
     const zoomContainer = _d3.select('svg g');
 
     // Zoom Start
+
     let zoomed = () => {
       const transform = d3.event.transform;
       zoomContainer.attr(
@@ -258,7 +259,7 @@ export class DirectedGraphExperimentService {
       .call(zoom)
       .style('cursor', 'grab')
       .on(!this.readOnly ? null : 'wheel.zoom', null);
-
+    zoom.filter(() => !d3.event.shiftKey);
     // Zoom button controls
     d3.select('#zoom_in').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 1.2);
@@ -331,15 +332,18 @@ export class DirectedGraphExperimentService {
       this.brushMode = false;
       if (this.gBrush && !this.brushing) {
         // only remove the brush if we're not actively brushing
-        // otherwise it'll be removed when the brushing ends
+        // otherwise it'll be removed when the brushing endss
         this.gBrush.remove();
         this.gBrush = null;
       }
     };
 
     let keydown = () => {
+      // Allows us to turn off default listeners for keyModifiers(shift)
+      brush.filter(() => d3.event.shiftKey);
+      brush.keyModifiers(false);
       // holding S key
-      if (d3.event.keyCode === 83) {
+      if (d3.event.keyCode === 16) {
         this.sKey = true;
 
         if (!this.gBrush) {
