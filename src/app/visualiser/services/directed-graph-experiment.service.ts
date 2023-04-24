@@ -332,7 +332,7 @@ export class DirectedGraphExperimentService {
       this.brushMode = false;
       if (this.gBrush && !this.brushing) {
         // only remove the brush if we're not actively brushing
-        // otherwise it'll be removed when the brushing endss
+        // otherwise it'll be removed when the brushing ends
         this.gBrush.remove();
         this.gBrush = null;
       }
