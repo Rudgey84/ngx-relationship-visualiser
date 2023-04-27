@@ -51,13 +51,13 @@ export class DirectedGraphExperimentService {
       return `translate(${d.x}, ${d.y + 50})`;
     });
 
-     node.attr('cx', function (d) {
-      // boundries
-      return (d.x = Math.max(40, Math.min(900 - 15, d.x)));
-    })
-    node.attr('cy', function (d) {
-      return (d.y = Math.max(50, Math.min(600 - 40, d.y)));
-    });
+    //  node.attr('cx', function (d) {
+    //   // boundries
+    //   return (d.x = Math.max(40, Math.min(900 - 15, d.x)));
+    // })
+    // node.attr('cy', function (d) {
+    //   return (d.y = Math.max(50, Math.min(600 - 40, d.y)));
+    // });
 
     edgepaths.attr('d', function (d) {
       return `M ${d.source.x} ${d.source.y} L ${d.target.x} ${d.target.y}`;
@@ -321,7 +321,8 @@ export class DirectedGraphExperimentService {
           })
           .select('.nodeText')
           .classed('selected', (d) => d.selected)
-          .style('fill', (d) => (d.selected ? 'red' : null));
+          .style('fill', (d) => d.selected && 'red')
+          .style('font-weight', (d) => d.selected && 700)
 
         this.extent = d3.event.selection;
       })
@@ -488,6 +489,7 @@ export class DirectedGraphExperimentService {
     svg.selectAll('.edgelabel').on('click', function (d) {
       // arrow function will produce this = undefined
       _d3.selectAll('.nodeText').style('fill', 'black');
+      _d3.selectAll('.nodeText').style('font-weight', 400);
       _d3.selectAll('.edgelabel').style('fill', '#999');
       _d3.select(this).style('fill', 'blue');
       self.createLinkArray.next([]);
@@ -497,6 +499,7 @@ export class DirectedGraphExperimentService {
     svg.selectAll('.edgelabel').on('contextmenu', function (d) {
       self.createLinkArray.next([]);
       _d3.selectAll('.nodeText').style('fill', 'black');
+      _d3.selectAll('.nodeText').style('font-weight', 400);
       _d3.selectAll('.edgelabel').style('fill', '#999');
       _d3.select(this).style('fill', 'blue');
       const localSelectedLinkArray = d3.select(this).data();
@@ -586,6 +589,7 @@ export class DirectedGraphExperimentService {
         );
         // remove the single click styling on other nodes and labels
         _d3.selectAll('.edgelabel').style('fill', '#999');
+        _d3.selectAll('.nodeText').style('font-weight', 400);
         _d3.selectAll('.nodeText').style('fill', 'black');
         // counts number of selected classes to not exceed 2
         const selectedSize = svg.selectAll('.selected').size();
@@ -610,6 +614,7 @@ export class DirectedGraphExperimentService {
       // Remove styles from all other nodes and labels on single left click
       _d3.selectAll('.edgelabel').style('fill', '#999');
       _d3.selectAll('.nodeText').style('fill', 'black');
+      _d3.selectAll('.nodeText').style('font-weight', 400);
       // Add style on single left click
       _d3.select(this).select('.nodeText').style('fill', 'blue');
       self.createLinkArray.next([]);
@@ -622,6 +627,7 @@ export class DirectedGraphExperimentService {
       // Remove styles from all other nodes and labels on single left click
       _d3.selectAll('.edgelabel').style('fill', '#999');
       _d3.selectAll('.nodeText').style('fill', 'black');
+      _d3.selectAll('.nodeText').style('font-weight', 400);
       // Add style on single right click
       _d3.select(this).select('.nodeText').style('fill', 'blue');
     });
@@ -636,6 +642,7 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.selected').selectAll('.nodeText').style('fill', 'black');
       _d3.selectAll('.selected').classed('selected', false);
       _d3.selectAll('.nodeText').style('fill', 'black');
+      _d3.selectAll('.nodeText').style('font-weight', 400);
       self.createLinkArray.next([]);
     });
 
