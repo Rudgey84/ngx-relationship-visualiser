@@ -51,13 +51,13 @@ export class DirectedGraphExperimentService {
       return `translate(${d.x}, ${d.y + 50})`;
     });
 
-    //  node.attr('cx', function (d) {
-    //   // boundries
-    //   return (d.x = Math.max(40, Math.min(900 - 15, d.x)));
-    // })
-    // node.attr('cy', function (d) {
-    //   return (d.y = Math.max(50, Math.min(600 - 40, d.y)));
-    // });
+     node.attr('cx', function (d) {
+      // boundries
+      return (d.x = Math.max(40, Math.min(900 - 15, d.x)));
+    })
+    node.attr('cy', function (d) {
+      return (d.y = Math.max(50, Math.min(600 - 40, d.y)));
+    });
 
     edgepaths.attr('d', function (d) {
       return `M ${d.source.x} ${d.source.y} L ${d.target.x} ${d.target.y}`;
