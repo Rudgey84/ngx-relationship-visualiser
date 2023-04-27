@@ -138,6 +138,15 @@ export class DirectedGraphExperimentService {
     return nodes;
   }
 
+  private removeNewItem(nodes) {
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].hasOwnProperty('newItem')) {
+        delete nodes[i].newItem;
+      }
+    }
+    return nodes;
+  }
+
   private randomiseNodePositions(nodeData, width, height) {
     const minDistance = 100;
     nodeData.forEach((node) => {
@@ -203,6 +212,7 @@ export class DirectedGraphExperimentService {
       const oldNodes = JSON.parse(localStorage.getItem('nodes'));
       // Compare and set property for new nodes
       this.nodes = this.compareAndMarkNew(nodes, oldNodes);
+      localStorage.setItem('nodes', JSON.stringify([]));
       // Remove old nodes from store
       localStorage.removeItem('nodes');
       // Add new nodes to store
@@ -756,6 +766,9 @@ export class DirectedGraphExperimentService {
       .on('end', function () {
         d3.select(this).call(d3.transition);
       });
+
+    // Remove the newClass so they don't animate next time
+    this.nodes = this.removeNewItem(this.nodes);
 
     node.append('title').text(function (d) {
       return d.id;

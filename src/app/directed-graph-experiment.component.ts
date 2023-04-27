@@ -62,6 +62,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 
 
   public ngOnInit() {
+    localStorage.setItem('nodes', JSON.stringify([]));
+		localStorage.removeItem('nodes');
     this.updateWidth();
     // Subscribe to the link selections in d3
     this.directedGraphExperimentService.createLinkArray.subscribe(
@@ -97,7 +99,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     this.width = document.getElementById("pageId").offsetWidth;
   }
 
-  public ngOnDestroy() {
+	public ngOnDestroy() {
+		localStorage.setItem('nodes', JSON.stringify([]));
 		localStorage.removeItem('nodes');
 	}
 
