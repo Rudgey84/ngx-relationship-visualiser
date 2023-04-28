@@ -37,8 +37,8 @@ export class DirectedGraphExperimentService {
       let pathLength = Math.sqrt(diffX * diffX + diffY * diffY);
 
       // x and y distances from center to outside edge of target node
-      let offsetX = (diffX * 20) / pathLength;
-      let offsetY = (diffY * 20) / pathLength;
+      let offsetX = (diffX * 40) / pathLength;
+      let offsetY = (diffY * 40) / pathLength;
 
       d3.select(n[i])
         .attr('x1', d.source.x + offsetX)
@@ -660,9 +660,10 @@ export class DirectedGraphExperimentService {
     nodeEnter
       .append('image')
       .attr('xlink:href', function (d) {
-        const prefixUrl = 'https://github.com/';
-        const icon = d.icon ? 'favicon' : d.icon;
-        const suffix = 'ico';
+        const prefixUrl = 'https://randomuser.me/api/portraits/thumb/men/';
+        const randomNumber = Math.floor(Math.random() * 99) + 1;
+        const icon = d.icon ? randomNumber : d.icon;
+        const suffix = 'jpg';
         return `${prefixUrl}${icon}.${suffix}`;
       })
       .attr('x', -15)
@@ -676,10 +677,10 @@ export class DirectedGraphExperimentService {
         const id = d.id ? d.id : '';
         return `${id}`;
       })
-      .attr('width', 16)
+      .attr('width', 30)
       .attr('class', 'image')
       .style('cursor', 'pointer')
-      .attr('height', 16);
+      .attr('height', 30);
 
     const nodeText = nodeEnter
       .append('text')
