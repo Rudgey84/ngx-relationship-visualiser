@@ -68,6 +68,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     // Subscribe to the link selections in d3
     this.directedGraphExperimentService.createLinkArray.subscribe(
       (createLinkArray) => {
+        console.log(createLinkArray)
         this.createLinkArray = createLinkArray;
       }
     );

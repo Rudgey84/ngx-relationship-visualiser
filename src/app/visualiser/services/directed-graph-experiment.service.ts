@@ -623,7 +623,7 @@ export class DirectedGraphExperimentService {
         .selectAll('.nodeText')
         .style('fill', '#212529');
       // remove class when another node is clicked and ctrl is not held
-      _d3.selectAll('.selected').classed('selected', false);
+    //  _d3.selectAll('.selected').classed('selected', false);
       // Remove styles from all other nodes and labels on single left click
       _d3.selectAll('.edgelabel').style('fill', '#212529');
       _d3.selectAll('.nodeText').style('fill', '#212529');
