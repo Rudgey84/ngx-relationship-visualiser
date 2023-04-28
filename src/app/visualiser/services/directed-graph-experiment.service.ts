@@ -323,8 +323,8 @@ export class DirectedGraphExperimentService {
           .classed('selected', (d) => d.selected)
           // .style('fill', (d) => (d.selected ? 'red' : null))
           // .style('font-weight', (d) => (d.selected ? 700 : null));
-          .style('fill', (d) => d.selected ? 'blue' : '#999')
-          .style('font-weight', (d) => d.selected ? 700 : 400);
+          .style('fill', (d) => (d.selected ? 'blue' : '#999'))
+          .style('font-weight', (d) => (d.selected ? 700 : 400));
 
         this.extent = d3.event.selection;
       })
@@ -340,13 +340,12 @@ export class DirectedGraphExperimentService {
         this.brushing = false;
 
         nodeEnter
-        .select('.nodeText')
-        .filter(function() {
-          return !d3.select(this.parentNode).classed('selected');
-        })
-        .style('fill', '#212529')
-        .style('font-weight', 400);
-
+          .select('.nodeText')
+          .filter(function () {
+            return !d3.select(this.parentNode).classed('selected');
+          })
+          .style('fill', '#212529')
+          .style('font-weight', 400);
       });
 
     let keyup = () => {
@@ -619,7 +618,10 @@ export class DirectedGraphExperimentService {
         return null;
       }
       // remove style from selected node before the class is removed
-      _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529');
+      _d3
+        .selectAll('.selected')
+        .selectAll('.nodeText')
+        .style('fill', '#212529');
       // remove class when another node is clicked and ctrl is not held
       _d3.selectAll('.selected').classed('selected', false);
       // Remove styles from all other nodes and labels on single left click
@@ -650,7 +652,10 @@ export class DirectedGraphExperimentService {
         d.previouslySelected = false;
       });
       node.classed('selected', false);
-      _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529');
+      _d3
+        .selectAll('.selected')
+        .selectAll('.nodeText')
+        .style('fill', '#212529');
       _d3.selectAll('.selected').classed('selected', false);
       _d3.selectAll('.nodeText').style('fill', '#212529');
       _d3.selectAll('.nodeText').style('font-weight', 400);
@@ -660,11 +665,11 @@ export class DirectedGraphExperimentService {
     nodeEnter
       .append('image')
       .attr('xlink:href', function (d) {
-        const prefixUrl = 'https://randomuser.me/api/portraits/thumb/men/';
-        const randomNumber = Math.floor(Math.random() * 99) + 1;
-        const icon = d.icon ? randomNumber : d.icon;
+        const prefixUrl = 'https://randomuser.me/api/portraits/thumb/';
+        const typeName = d.typeName + '/';
+        const icon = d.icon;
         const suffix = 'jpg';
-        return `${prefixUrl}${icon}.${suffix}`;
+        return `${prefixUrl}${typeName}${icon}.${suffix}`;
       })
       .attr('x', -15)
       .attr('y', -60)
@@ -755,33 +760,33 @@ export class DirectedGraphExperimentService {
       .select('image')
       .transition()
       .duration(1000)
-      .attr('width', 16 * 2)
-      .attr('height', 16 * 2)
+      .attr('width', 15 * 2)
+      .attr('height', 15 * 2)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
-      .attr('width', 16)
-      .attr('height', 16)
+      .attr('width', 15)
+      .attr('height', 15)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
-      .attr('width', 16 * 2)
-      .attr('height', 16 * 2)
+      .attr('width', 15 * 2)
+      .attr('height', 15 * 2)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
-      .attr('width', 16)
-      .attr('height', 16)
+      .attr('width', 15)
+      .attr('height', 15)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
-      .attr('width', 16 * 2)
-      .attr('height', 16 * 2)
+      .attr('width', 15 * 2)
+      .attr('height', 15 * 2)
       .transition()
       .duration(1000)
       .attr('fill', '#212529')
-      .attr('width', 16)
-      .attr('height', 16)
+      .attr('width', 30)
+      .attr('height', 30)
       .on('end', function () {
         d3.select(this).call(d3.transition);
       });
