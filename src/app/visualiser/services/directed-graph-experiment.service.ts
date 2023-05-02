@@ -474,7 +474,7 @@ export class DirectedGraphExperimentService {
         const target = d.target ? d.target : '';
         return `${source}_${target}${suffix}`;
       })
-      .attr('font-size', 10)
+      .attr('font-size', 14)
       .attr('dy', function (d, i) {
         return d.dy;
       });
@@ -708,7 +708,7 @@ export class DirectedGraphExperimentService {
       .append('tspan')
       .attr('class', 'nodeTextTspan')
       .text((d) => d)
-      .style('font-size', '12px')
+      .style('font-size', '14px')
       .attr('x', -10)
       .attr('dx', 10)
       .attr('dy', 15);
