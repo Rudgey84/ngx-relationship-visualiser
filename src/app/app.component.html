@@ -3,6 +3,7 @@
   [readOnly]="false"
   (viewLinkContextMenuEvent)="viewLinkEvent(viewLinkModal, $event)"
   (viewNodeContextMenuEvent)="viewNodeEvent(viewNodeModal, $event)"
+	(createLinkContextMenuEvent)="createLinkEvent(createLinkModal, $event)"
 ></dge-directed-graph-experiment>
 
 
@@ -33,3 +34,18 @@
 		</div>
 	</ng-template>
 	<!-- ./MODAL-->
+
+	  	<!--VIEW NODW MODAL-->
+			<ng-template #createLinkModal>
+				<div class="modal-header">
+					<h4 class="modal-title pull-left">Create Link</h4>
+					<button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
+						<span aria-hidden="true" class="visually-hidden">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					{{createLinkIds[0].id}} 
+					{{createLinkIds[1].id}}
+				</div>
+			</ng-template>
+			<!-- ./MODAL-->

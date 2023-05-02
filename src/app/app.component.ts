@@ -13,6 +13,7 @@ export class AppComponent {
   public modalRef?: BsModalRef;
   public viewLinkArray;
   public viewNodeId;
+  public createLinkIds;
 
   public mockedData = {
     nodes: [
@@ -148,6 +149,15 @@ export class AppComponent {
       },
     ],
   };
+
+  public createLinkEvent(
+    template: TemplateRef<any>,
+    createLinkIds,
+    config = this.defaultModalConfig
+  ) {
+    this.createLinkIds = createLinkIds;
+    this.openModal('modalRef', template, config);
+  }
 
   public viewLinkEvent(
     template: TemplateRef<any>,

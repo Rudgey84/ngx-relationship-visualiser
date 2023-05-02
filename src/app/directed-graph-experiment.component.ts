@@ -24,7 +24,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <app-context-menus
   (viewNodeContextMenuEvent)="viewNodeEvent()"
   (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
-  (createLinkContextMenuEvent)="siCreateLinkEvent()"
+  (createLinkContextMenuEvent)="createLinkEvent()"
   (viewLinkContextMenuEvent)="viewLinkEvent()"
 ></app-context-menus>
 
@@ -37,6 +37,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
+  @Output() createLinkContextMenuEvent = new EventEmitter<any>();
   public createLinkArray;
   public selectedNodeId;
   public selectedLinkArray;
@@ -150,6 +151,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
   public viewNodeEvent() {
     this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
+  }
+  public createLinkEvent() {
+    this.createLinkContextMenuEvent.emit(this.createLinkArray);
   }
 
   newData() {
