@@ -44,8 +44,12 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					{{createLinkIds[0].id}} 
-					{{createLinkIds[1].id}}
+
+					<div *ngFor="let link of createLinkIds">
+						<div *ngFor="let label of link.label">
+							{{ label }}
+						</div>
+					</div>
 				</div>
 			</ng-template>
 			<!-- ./MODAL-->
