@@ -20,7 +20,6 @@ export class DirectedGraphExperimentService {
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
-  zoomPercent = new Subject();
 
   public update(data, element, readOnly) {
     const svg = d3.select(element);
