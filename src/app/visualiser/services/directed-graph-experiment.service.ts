@@ -247,14 +247,21 @@ export class DirectedGraphExperimentService {
     // Zoom Start
 
     const updateZoomLevel = () => {
-      const zoomLevelPercentage = ((currentZoom.k - 0.5) / 0.5) * 100;
-      const zoomLevelElement = d3.select('#zoom_level');
-      zoomLevelElement.text(`Zoom Level: ${zoomLevelPercentage.toFixed(0)}%`);
-      zoomLevelElement.style('opacity', 1);
-      setTimeout(() => {
-        zoomLevelElement.transition().duration(1000).style('opacity', 0);
-      }, 1000);
-    };
+      const currentScale = currentZoom.k;
+      const maxScale = zoom.scaleExtent()[1];
+      const zoomPercentage = ((currentScale - 0.5) / (maxScale - 0.5)) * 100;
+      const zoomLevelDisplay = document.getElementById("zoom_level");
+      const zoomLevelText = `Zoom Level: ${zoomPercentage.toFixed(0)}%`;
+    
+      // Check if the zoom level has changed before updating the display / allows for panning without showing the zoom percentage
+      if (zoomLevelDisplay.innerHTML !== zoomLevelText) {
+        zoomLevelDisplay.innerHTML = zoomLevelText;
+        zoomLevelDisplay.style.opacity = '1';
+        setTimeout(() => {
+          zoomLevelDisplay.style.opacity = '0';
+        }, 2000);
+      }
+    }
 
     let zoomed = () => {
       const transform = d3.event.transform;
