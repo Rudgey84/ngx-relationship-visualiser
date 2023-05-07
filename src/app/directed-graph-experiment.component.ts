@@ -15,12 +15,28 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 @Component({
   selector: 'dge-directed-graph-experiment',
   template: `
+
+  <style>
+    #zoom_level {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+  </style>
+
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="float-right m-2">
   <button class="btn btn-secondary ml-3" (click)="newData()">New data</button>
   <button *ngIf="!readOnly" class="btn btn-secondary ml-3" id="zoom_in">+</button>
   <button *ngIf="!readOnly"  class="btn btn-secondary ml-1" id="zoom_out">-</button>
-  <span id="zoom_level"></span>
+
+  <span  id="zoom_level" ></span>
   </div>
   <app-context-menus
   (viewNodeContextMenuEvent)="viewNodeEvent()"

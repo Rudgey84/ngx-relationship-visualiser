@@ -248,7 +248,12 @@ export class DirectedGraphExperimentService {
 
     const updateZoomLevel = () => {
       const zoomLevelPercentage = ((currentZoom.k - 0.5) / 0.5) * 100;
-      d3.select('#zoom_level').text(`Zoom Level: ${zoomLevelPercentage.toFixed(0)}%`);
+      const zoomLevelElement = d3.select('#zoom_level');
+      zoomLevelElement.text(`Zoom Level: ${zoomLevelPercentage.toFixed(0)}%`);
+      zoomLevelElement.style('opacity', 1);
+      setTimeout(() => {
+        zoomLevelElement.transition().duration(1000).style('opacity', 0);
+      }, 1000);
     };
 
     let zoomed = () => {
