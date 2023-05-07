@@ -20,6 +20,7 @@ export class DirectedGraphExperimentService {
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
+  zoomPercent = new Subject();
 
   public update(data, element, readOnly) {
     const svg = d3.select(element);
@@ -246,6 +247,11 @@ export class DirectedGraphExperimentService {
 
     // Zoom Start
 
+    const updateZoomLevel = () => {
+      const zoomLevelPercentage = ((currentZoom.k - 0.5) / 0.5) * 100;
+      d3.select('#zoom_level').text(`Zoom Level: ${zoomLevelPercentage.toFixed(0)}%`);
+    };
+
     let zoomed = () => {
       const transform = d3.event.transform;
       zoomContainer.attr(
@@ -253,6 +259,7 @@ export class DirectedGraphExperimentService {
         `translate(${transform.x}, ${transform.y}) scale(${transform.k})`
       );
       currentZoom = transform;
+      updateZoomLevel();
     };
 
     const zoom = d3
@@ -272,10 +279,13 @@ export class DirectedGraphExperimentService {
     zoom.filter(() => !d3.event.shiftKey);
     // Zoom button controls
     d3.select('#zoom_in').on('click', function () {
-      zoom.scaleBy(svg.transition().duration(750), 1.2);
+     zoom.scaleBy(svg.transition().duration(750), 1.2);
+     updateZoomLevel();
+      
     });
     d3.select('#zoom_out').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 0.8);
+      updateZoomLevel();
     });
     // Zoom End
 
