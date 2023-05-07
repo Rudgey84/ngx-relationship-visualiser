@@ -20,7 +20,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
     #zoom_level {
       position: fixed;
       top: 10px;
-      right: 10px;
+      left: 10px;
       background-color: rgba(0, 0, 0, 0.8);
       color: #fff;
       padding: 5px;
@@ -36,7 +36,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <button *ngIf="!readOnly" class="btn btn-secondary ml-3" id="zoom_in">+</button>
   <button *ngIf="!readOnly"  class="btn btn-secondary ml-1" id="zoom_out">-</button>
 
-  <span  id="zoom_level" ></span>
+  <span id="zoom_level" ></span>
   </div>
   <app-context-menus
   (viewNodeContextMenuEvent)="viewNodeEvent()"

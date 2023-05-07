@@ -251,8 +251,9 @@ export class DirectedGraphExperimentService {
       const maxScale = zoom.scaleExtent()[1];
       const zoomPercentage = ((currentScale - 0.5) / (maxScale - 0.5)) * 100;
       const zoomLevelDisplay = document.getElementById("zoom_level");
-      const zoomLevelText = `Zoom Level: ${zoomPercentage.toFixed(0)}%`;
-    
+      const zoomLevelText = `Zoom: ${zoomPercentage.toFixed(0)}%`;
+      const zoomInBtn = document.getElementById("zoom_in");
+      const zoomOutBtn = document.getElementById("zoom_out");
       // Check if the zoom level has changed before updating the display / allows for panning without showing the zoom percentage
       if (zoomLevelDisplay.innerHTML !== zoomLevelText) {
         zoomLevelDisplay.innerHTML = zoomLevelText;
@@ -260,6 +261,18 @@ export class DirectedGraphExperimentService {
         setTimeout(() => {
           zoomLevelDisplay.style.opacity = '0';
         }, 2000);
+      }
+      // Disable the zoomInBtn if the zoom level is at 100%
+      if (zoomPercentage === 100) {
+        zoomInBtn.setAttribute('disabled', 'true');
+      } else {
+        zoomInBtn.removeAttribute('disabled');
+      }
+      // Disable the zoomOutBtn if the zoom level is at 0%
+      if (zoomPercentage === 0) {
+        zoomOutBtn.setAttribute('disabled', 'true');
+      } else {
+        zoomOutBtn.removeAttribute('disabled');
       }
     }
 
