@@ -316,7 +316,7 @@ export class DirectedGraphExperimentService {
 
     //const svg = d3.select('svg');
 
-// Check if zoom level is at 0% or 100% before allowing mousewheel zoom
+// Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabalises the canvas when the limit is reached
 svg.on('wheel', () => {
   const currentScale = currentZoom.k;
   const maxScale = zoom.scaleExtent()[1];
