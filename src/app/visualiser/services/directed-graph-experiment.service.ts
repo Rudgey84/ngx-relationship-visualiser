@@ -250,10 +250,10 @@ export class DirectedGraphExperimentService {
       const currentScale = currentZoom.k;
       const maxScale = zoom.scaleExtent()[1];
       const zoomPercentage = ((currentScale - 0.5) / (maxScale - 0.5)) * 100;
-      const zoomLevelDisplay = document.getElementById("zoom_level");
+      const zoomLevelDisplay = document.getElementById('zoom_level');
       const zoomLevelText = `Zoom: ${zoomPercentage.toFixed(0)}%`;
-      const zoomInBtn = document.getElementById("zoom_in");
-      const zoomOutBtn = document.getElementById("zoom_out");
+      const zoomInBtn = document.getElementById('zoom_in');
+      const zoomOutBtn = document.getElementById('zoom_out');
       // Check if the zoom level has changed before updating the display / allows for panning without showing the zoom percentage
       if (zoomLevelDisplay.innerHTML !== zoomLevelText) {
         zoomLevelDisplay.innerHTML = zoomLevelText;
@@ -274,7 +274,7 @@ export class DirectedGraphExperimentService {
       } else {
         zoomOutBtn.removeAttribute('disabled');
       }
-    }
+    };
 
     let zoomed = () => {
       const transform = d3.event.transform;
@@ -303,28 +303,25 @@ export class DirectedGraphExperimentService {
     zoom.filter(() => !d3.event.shiftKey);
     // Zoom button controls
     d3.select('#zoom_in').on('click', function () {
-     zoom.scaleBy(svg.transition().duration(750), 1.2);
-     updateZoomLevel();
-      
+      zoom.scaleBy(svg.transition().duration(750), 1.2);
+      updateZoomLevel();
     });
     d3.select('#zoom_out').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 0.8);
       updateZoomLevel();
     });
+
+    // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabalises the canvas when the limit is reached
+    svg.on('wheel', () => {
+      const currentScale = currentZoom.k;
+      const maxScale = zoom.scaleExtent()[1];
+      const minScale = zoom.scaleExtent()[0];
+      if (currentScale === maxScale || currentScale === minScale) {
+        d3.event.preventDefault();
+      }
+    });
+
     // Zoom End
-
-
-    //const svg = d3.select('svg');
-
-// Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabalises the canvas when the limit is reached
-svg.on('wheel', () => {
-  const currentScale = currentZoom.k;
-  const maxScale = zoom.scaleExtent()[1];
-  const minScale = zoom.scaleExtent()[0];
-  if (currentScale === maxScale || currentScale === minScale) {
-    d3.event.preventDefault();
-  }
-});
 
     // For arrows
     this.initDefinitions(svg);
@@ -670,7 +667,7 @@ svg.on('wheel', () => {
         .selectAll('.nodeText')
         .style('fill', '#212529');
       // remove class when another node is clicked and ctrl is not held
-    //  _d3.selectAll('.selected').classed('selected', false);
+      //  _d3.selectAll('.selected').classed('selected', false);
       // Remove styles from all other nodes and labels on single left click
       _d3.selectAll('.edgelabel').style('fill', '#212529');
       _d3.selectAll('.nodeText').style('fill', '#212529');
