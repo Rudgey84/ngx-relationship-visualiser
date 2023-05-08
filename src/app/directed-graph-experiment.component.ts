@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter,
   OnInit,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
 import { ContextMenuService } from 'ngx-contextmenu';
@@ -18,9 +18,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 
   <style>
     #zoom_level {
-
-      top: 10px;
-      left: 10px;
+      position: relative;
       background-color: rgba(0, 0, 0, 0.8);
       color: #fff;
       padding: 5px;
@@ -79,10 +77,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-
   public ngOnInit() {
     localStorage.setItem('nodes', JSON.stringify([]));
-		localStorage.removeItem('nodes');
+    localStorage.removeItem('nodes');
     this.updateWidth();
     // Subscribe to the link selections in d3
     this.directedGraphExperimentService.createLinkArray.subscribe(
@@ -98,10 +95,12 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.directedGraphExperimentService.dblClickLinkPayload.subscribe(dblClickLinkPayload => {
-			this.selectedLinkArray = dblClickLinkPayload;
-      this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
-		});
+    this.directedGraphExperimentService.dblClickLinkPayload.subscribe(
+      (dblClickLinkPayload) => {
+        this.selectedLinkArray = dblClickLinkPayload;
+        this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
+      }
+    );
 
     this.directedGraphExperimentService.selectedLinkArray.subscribe(
       (selectedLinkArray) => {
@@ -115,54 +114,53 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public updateWidth() {
-    this.width = document.getElementById("pageId").offsetWidth;
+    this.width = document.getElementById('pageId').offsetWidth;
   }
 
-	public ngOnDestroy() {
-		localStorage.setItem('nodes', JSON.stringify([]));
-		localStorage.removeItem('nodes');
-	}
+  public ngOnDestroy() {
+    localStorage.setItem('nodes', JSON.stringify([]));
+    localStorage.removeItem('nodes');
+  }
 
   public visualiserContextMenus(event): void {
     if (this.readOnly) {
       return;
-  }
+    }
 
     let contextMenu;
     let item;
 
     if (this.createLinkArray?.length === 2) {
-        contextMenu = this.contextMenu.createLinkContextMenu;
-        item = this.createLinkArray;
+      contextMenu = this.contextMenu.createLinkContextMenu;
+      item = this.createLinkArray;
     } else {
-        const targetEl = event.target;
-        const localName = targetEl.localName;
-        const parentNodeId = targetEl.parentNode.id;
-        const data = targetEl.parentNode.__data__;
-        this.selectedNodeId = targetEl.id || (data && data.id);
+      const targetEl = event.target;
+      const localName = targetEl.localName;
+      const parentNodeId = targetEl.parentNode.id;
+      const data = targetEl.parentNode.__data__;
+      this.selectedNodeId = targetEl.id || (data && data.id);
 
-        if (localName === 'image' || parentNodeId === 'nodeText') {
-            contextMenu = this.contextMenu.viewNodeContextMenu;
-            item = this.selectedNodeId;
-        } else if (localName === 'textPath') {
-            contextMenu = this.contextMenu.viewLinkContextMenu;
-            item = this.selectedLinkArray;
-        } else if (localName === 'svg') {
-            contextMenu = this.contextMenu.canvasContextMenu;
-            item = 'item';
-        }
+      if (localName === 'image' || parentNodeId === 'nodeText') {
+        contextMenu = this.contextMenu.viewNodeContextMenu;
+        item = this.selectedNodeId;
+      } else if (localName === 'textPath') {
+        contextMenu = this.contextMenu.viewLinkContextMenu;
+        item = this.selectedLinkArray;
+      } else if (localName === 'svg') {
+        contextMenu = this.contextMenu.canvasContextMenu;
+        item = 'item';
+      }
     }
 
     this.contextMenuService.show.next({
-        contextMenu,
-        event,
-        item
+      contextMenu,
+      event,
+      item,
     });
 
     event.stopPropagation();
     event.preventDefault();
-}
-
+  }
 
   public viewLinkEvent() {
     this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
@@ -241,7 +239,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
           y: 0,
           fx: null,
           fy: null,
-        }
+        },
       ],
       links: [
         {
@@ -274,7 +272,11 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
         {
           source: '456',
           target: '789',
-          label: ['Play in the same football team', 'Daughters in the same class at school', 'Went on a family holiday together last year'],
+          label: [
+            'Play in the same football team',
+            'Daughters in the same class at school',
+            'Went on a family holiday together last year',
+          ],
           lineStyle: 'Confirmed',
           sourceArrow: true,
           targetArrow: true,
