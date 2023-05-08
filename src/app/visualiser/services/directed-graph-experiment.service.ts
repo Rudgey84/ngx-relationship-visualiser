@@ -313,6 +313,19 @@ export class DirectedGraphExperimentService {
     });
     // Zoom End
 
+
+    //const svg = d3.select('svg');
+
+// Check if zoom level is at 0% or 100% before allowing mousewheel zoom
+svg.on('wheel', () => {
+  const currentScale = currentZoom.k;
+  const maxScale = zoom.scaleExtent()[1];
+  const minScale = zoom.scaleExtent()[0];
+  if (currentScale === maxScale || currentScale === minScale) {
+    d3.event.preventDefault();
+  }
+});
+
     // For arrows
     this.initDefinitions(svg);
 
