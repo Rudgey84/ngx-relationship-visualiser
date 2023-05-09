@@ -198,8 +198,8 @@ export class DirectedGraphExperimentService {
     this.links = links || [];
     this.nodes = nodes || [];
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
-    let parentWidth = _d3.select('svg').node().parentNode.clientWidth;
-    let parentHeight = _d3.select('svg').node().parentNode.clientHeight;
+    const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
+    const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
     this.nodes = this.randomiseNodePositions(
       this.nodes,
       parentWidth,
@@ -276,7 +276,7 @@ export class DirectedGraphExperimentService {
       }
     };
 
-    let zoomed = () => {
+    const zoomed = () => {
       const transform = d3.event.transform;
       zoomContainer.attr(
         'transform',
