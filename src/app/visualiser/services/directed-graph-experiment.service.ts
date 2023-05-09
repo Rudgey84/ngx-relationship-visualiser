@@ -139,11 +139,11 @@ export class DirectedGraphExperimentService {
   }
 
   private removeNewItem(nodes) {
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].hasOwnProperty('newItem')) {
-        delete nodes[i].newItem;
-      }
-    }
+  	for (const node of nodes) {
+  		if (node.hasOwnProperty('newItem')) {
+  			delete node.newItem;
+  		}
+  	}
     return nodes;
   }
 
