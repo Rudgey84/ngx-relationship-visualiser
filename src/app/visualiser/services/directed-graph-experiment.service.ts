@@ -390,6 +390,16 @@ export class DirectedGraphExperimentService {
           })
           .style('fill', '#212529')
           .style('font-weight', 400);
+
+        // counts number of selected classes to not exceed 2
+        const selectedSize = nodeEnter.selectAll('.selected').size();
+        if (selectedSize <= 2) {
+          // get data from node
+          const localCreateLinkArray = nodeEnter.selectAll('.selected').data();
+          const filterId = localCreateLinkArray.filter((x) => x);
+          self.createLinkArray.next(filterId);
+          return filterId;
+        }
       });
 
     let keyup = () => {
