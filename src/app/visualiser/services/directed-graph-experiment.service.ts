@@ -586,9 +586,14 @@ export class DirectedGraphExperimentService {
 
             if (!d.selected && !this.shiftKey) {
               // if this node isn't selected, then we have to unselect every other node
+              console.log("yep")
               nodeEnter.classed('selected', function (p) {
                 return (p.selected = p.previouslySelected = false);
               });
+              // remove the selected styling on other nodes and labels when we drag a non-selected node
+             _d3.selectAll('.edgelabel').style('fill', '#212529');
+             _d3.selectAll('.nodeText').style('font-weight', 400);
+             _d3.selectAll('.nodeText').style('fill', '#212529');
             }
 
             _d3.select(this).classed('selected', function (p) {
