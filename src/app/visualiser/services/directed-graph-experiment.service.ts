@@ -377,7 +377,7 @@ export class DirectedGraphExperimentService {
 
         this.gBrush.call(brush.move, null);
         if (!this.brushMode) {
-          // the s key has been release before we ended our brushing
+          // the shift key has been release before we ended our brushing
           this.gBrush.remove();
           this.gBrush = null;
         }
@@ -606,17 +606,14 @@ export class DirectedGraphExperimentService {
                 return d.selected;
               })
               .each(function (d) {
-                //d.fixed |= 2;
-
                 d.fx = d.x;
                 d.fy = d.y;
               });
           })
           .on('drag', function dragged(d) {
-            //d.fx = d3v4.event.x;
-            //d.fy = d3v4.event.y;
             nodeEnter
               .filter(function (d) {
+                console.log(d.selected)
                 return d.selected;
               })
               .each(function (d) {
