@@ -139,11 +139,11 @@ export class DirectedGraphExperimentService {
   }
 
   private removeNewItem(nodes) {
-  	for (const node of nodes) {
-  		if (node.hasOwnProperty('newItem')) {
-  			delete node.newItem;
-  		}
-  	}
+    for (const node of nodes) {
+      if (node.hasOwnProperty('newItem')) {
+        delete node.newItem;
+      }
+    }
     return nodes;
   }
 
@@ -588,12 +588,13 @@ export class DirectedGraphExperimentService {
                 return (p.selected = p.previouslySelected = false);
               });
               // remove the selected styling on other nodes and labels when we drag a non-selected node
-             _d3.selectAll('.edgelabel').style('fill', '#212529');
-             _d3.selectAll('.nodeText').style('font-weight', 400);
-             _d3.selectAll('.nodeText').style('fill', '#212529');
+              _d3.selectAll('.edgelabel').style('fill', '#212529');
+              _d3.selectAll('.nodeText').style('font-weight', 400);
+              _d3.selectAll('.nodeText').style('fill', '#212529');
             }
 
             _d3.select(this).classed('selected', function (p) {
+              console.log(d.previouslySelected, d.selected);
               d.previouslySelected = d.selected;
               return (d.selected = true);
             });
@@ -610,7 +611,7 @@ export class DirectedGraphExperimentService {
           .on('drag', function dragged(d) {
             nodeEnter
               .filter(function (d) {
-                console.log(d.selected)
+                //      console.log(d)
                 return d.selected;
               })
               .each(function (d) {
@@ -640,9 +641,13 @@ export class DirectedGraphExperimentService {
     });
 
     // node click and ctrl + click
-    svg.selectAll('.node-wrapper').on('click', function () {
+    svg.selectAll('.node-wrapper').on('click', function (d) {
       // so we don't activate the canvas .click event
       _d3.event.stopPropagation();
+
+      // setting the select attribute to the object on single select so we can drag them
+      d.selected = 1;
+
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
         // toggle the class on and off when ctrl click is active
