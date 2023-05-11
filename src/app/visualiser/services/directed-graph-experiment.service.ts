@@ -842,7 +842,7 @@ export class DirectedGraphExperimentService {
       .attr('width', 30)
       .attr('height', 30)
       .on('end', function () {
-        d3.select(this).call(d3.transition);
+        return d3.select(this).call(d3.transition);
       });
 
     // Remove the newClass so they don't animate next time
