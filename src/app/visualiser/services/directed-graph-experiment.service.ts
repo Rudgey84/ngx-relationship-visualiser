@@ -584,7 +584,6 @@ export class DirectedGraphExperimentService {
 
             if (!d.selected && !this.shiftKey) {
               // if this node isn't selected, then we have to unselect every other node
-              console.log("yep")
               nodeEnter.classed('selected', function (p) {
                 return (p.selected = p.previouslySelected = false);
               });
