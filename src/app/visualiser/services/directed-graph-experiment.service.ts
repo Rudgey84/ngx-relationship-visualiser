@@ -365,8 +365,6 @@ export class DirectedGraphExperimentService {
           })
           .select('.nodeText')
           .classed('selected', (d) => d.selected)
-          // .style('fill', (d) => (d.selected ? 'red' : null))
-          // .style('font-weight', (d) => (d.selected ? 700 : null));
           .style('fill', (d) => (d.selected ? 'blue' : '#999'))
           .style('font-weight', (d) => (d.selected ? 700 : 400));
 
