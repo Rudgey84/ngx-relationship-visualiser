@@ -120,7 +120,7 @@ export class DirectedGraphExperimentService {
       .force('collision', _d3.forceCollide().radius(15));
   }
 
-  private compareAndMarkNew(nodes, old_nodes) {
+  private compareAndMarkNodesNew(nodes, old_nodes) {
     // Create a map of ids to node objects for the old_nodes array
     const oldMap = old_nodes.reduce((map, node) => {
       map[node.id] = node;
@@ -202,14 +202,14 @@ export class DirectedGraphExperimentService {
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
     // If nodes don't have a fx/fy coordinate we generate a random one
-		this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
+    this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
       // Get old nodes from store
       const oldNodes = JSON.parse(localStorage.getItem('nodes'));
       // Compare and set property for new nodes
-      this.nodes = this.compareAndMarkNew(nodes, oldNodes);
+      this.nodes = this.compareAndMarkNodesNew(nodes, oldNodes);
       // Empties old nodes from store
       localStorage.setItem('nodes', JSON.stringify([]));
       // Remove old nodes from store
@@ -432,8 +432,7 @@ export class DirectedGraphExperimentService {
         // Filter out any objects that have matching source and target property values
         // To display only one line (parentLineStyle) - removes html bloat and a darkened line
         return index === linksArray.findIndex(obj => obj.source === source && obj.target === target);
-      }
-    );
+      });
 
     const link = zoomContainer.selectAll().data(filteredLine, function (d) {
       return d.id;
@@ -637,10 +636,7 @@ export class DirectedGraphExperimentService {
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
         // toggle the class on and off when ctrl click is active
-        d3.select(this).classed(
-          'selected',
-          !d3.select(this).classed('selected')
-        );
+        d3.select(this).classed('selected', !d3.select(this).classed('selected'));
         // remove the single click styling on other nodes and labels
         _d3.selectAll('.edgelabel').style('fill', '#212529');
         _d3.selectAll('.nodeText').style('font-weight', 400);
@@ -649,10 +645,7 @@ export class DirectedGraphExperimentService {
         const selectedSize = svg.selectAll('.selected').size();
 
         if (selectedSize <= 2) {
-          svg
-            .selectAll('.selected')
-            .selectAll('.nodeText')
-            .style('fill', 'blue');
+          svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue');
           // get data from node
           const localCreateLinkArray = _d3.selectAll('.selected').data();
           const filterId = localCreateLinkArray.filter((x) => x);
@@ -662,10 +655,7 @@ export class DirectedGraphExperimentService {
         return null;
       }
       // remove style from selected node before the class is removed
-      _d3
-        .selectAll('.selected')
-        .selectAll('.nodeText')
-        .style('fill', '#212529');
+      _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529');
       // remove class when another node is clicked and ctrl is not held
       //  _d3.selectAll('.selected').classed('selected', false);
       // Remove styles from all other nodes and labels on single left click
@@ -696,10 +686,7 @@ export class DirectedGraphExperimentService {
         d.previouslySelected = false;
       });
       node.classed('selected', false);
-      _d3
-        .selectAll('.selected')
-        .selectAll('.nodeText')
-        .style('fill', '#212529');
+      _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529');
       _d3.selectAll('.selected').classed('selected', false);
       _d3.selectAll('.nodeText').style('fill', '#212529');
       _d3.selectAll('.nodeText').style('font-weight', 400);
