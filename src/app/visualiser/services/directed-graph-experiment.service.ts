@@ -193,13 +193,15 @@ export class DirectedGraphExperimentService {
     return nodeData;
   }
 
-  _update(_d3, svg, data) {
+  public _update(_d3, svg, data) {
     let { links, nodes } = data;
     this.links = links || [];
     this.nodes = nodes || [];
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
+    // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
+    // If nodes don't have a fx/fy coordinate we generate a random one
     this.nodes = this.randomiseNodePositions(
       this.nodes,
       parentWidth,
@@ -212,6 +214,7 @@ export class DirectedGraphExperimentService {
       const oldNodes = JSON.parse(localStorage.getItem('nodes'));
       // Compare and set property for new nodes
       this.nodes = this.compareAndMarkNew(nodes, oldNodes);
+      // Empties old nodes from store
       localStorage.setItem('nodes', JSON.stringify([]));
       // Remove old nodes from store
       localStorage.removeItem('nodes');
@@ -233,18 +236,20 @@ export class DirectedGraphExperimentService {
         }))
     );
     // Adding dy value based on link number and position in parent
-    relationshipsArray.map((item, dy) => {
-      item.map((tt, i) => {
-        tt['dy'] = 20 + i * 15;
+    relationshipsArray.map(linkRelationship => {
+      linkRelationship.map((linkObject, i) => {
+          // dy increments of 15px
+          linkObject['dy'] = 20 + i * 15;
       });
     });
+
+    // IE11 does not like .flat
     this.links = relationshipsArray.reduce((acc, val) => acc.concat(val), []);
 
     d3.select('svg').append('g');
 
-    const zoomContainer = _d3.select('svg g');
-
     // Zoom Start
+    const zoomContainer = _d3.select('svg g');
 
     const updateZoomLevel = () => {
       const currentScale = currentZoom.k;
@@ -311,7 +316,7 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
     });
 
-    // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabalises the canvas when the limit is reached
+    // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
       const currentScale = currentZoom.k;
       const maxScale = zoom.scaleExtent()[1];
@@ -328,7 +333,7 @@ export class DirectedGraphExperimentService {
 
     const simulation = this.forceSimulation(_d3, {
       width: +svg.attr('width'),
-      height: +svg.attr('height'),
+      height: +svg.attr('height')
     });
 
     // Brush Start
@@ -490,16 +495,14 @@ export class DirectedGraphExperimentService {
       return d.label;
     });
 
-    const edgepaths = zoomContainer
-      .selectAll('.edgepath')
-      .data(this.links, function (d) {
-        return d.id;
-      });
+    const edgepaths = zoomContainer.selectAll().data(this.links, function (d) {
+      return d.id;
+    });
 
     zoomContainer.selectAll('path').data(edgepaths).exit().remove();
     const edgepathsEnter = edgepaths
       .join('svg:path')
-      //.attr('class', 'edgepath')
+      .attr('class', 'edgepath')
       .attr('fill-opacity', 0)
       .attr('stroke-opacity', 0)
       .attr('id', function (d, i) {
@@ -516,18 +519,15 @@ export class DirectedGraphExperimentService {
       .enter()
       .append('text')
       .attr('class', 'edgelabel')
-      .style('text-anchor', 'middle')
-      .attr('id', function (d, i) {
-        return 'edgelabel' + i;
-      })
       .attr('id', function (d) {
         const suffix = '_text';
         const source = d.source ? d.source : '';
         const target = d.target ? d.target : '';
         return `${source}_${target}${suffix}`;
       })
+      .style('text-anchor', 'middle')
       .attr('font-size', 14)
-      .attr('dy', function (d, i) {
+      .attr('dy', function (d) {
         return d.dy;
       });
 
@@ -544,7 +544,7 @@ export class DirectedGraphExperimentService {
       .style('cursor', 'pointer')
       .attr('dominant-baseline', 'bottom')
       .attr('startOffset', '50%')
-      .text(function (d, i) {
+      .text(function (d) {
         return d.label;
       });
     // on normal label link click - hightlight labels
@@ -594,7 +594,6 @@ export class DirectedGraphExperimentService {
             }
 
             _d3.select(this).classed('selected', function (p) {
-              console.log(d.previouslySelected, d.selected);
               d.previouslySelected = d.selected;
               return (d.selected = true);
             });
@@ -627,10 +626,10 @@ export class DirectedGraphExperimentService {
             d.fy = d.y;
           })
       )
+      .attr('class', 'node-wrapper')
       .attr('id', function (d) {
         return d.id;
       })
-      .attr('class', 'node-wrapper');
 
     // no collision - already using this in statement
     const self = this;
@@ -754,14 +753,14 @@ export class DirectedGraphExperimentService {
       .attr('dy', -3)
       .attr('y', -25)
       .attr('testhook', function (d) {
-        const suffix = '_text';
+        const suffix = 'text';
         const id = d.id ? d.id : '';
         return `${id}_${suffix}`;
       });
 
     nodeText
-      .selectAll('tspan')
-      .data((d, i) => d.label)
+      .selectAll('tspan.text')
+      .data((d) => d.label)
       .enter()
       .append('tspan')
       .attr('class', 'nodeTextTspan')
@@ -805,7 +804,7 @@ export class DirectedGraphExperimentService {
       .attr('fill', '#212529')
       .attr('fill-opacity', 1)
       .on('end', function () {
-        d3.select(this).call(_d3.transition);
+        return d3.select(this).call(_d3.transition);
       });
 
     nodeEnter
@@ -852,8 +851,8 @@ export class DirectedGraphExperimentService {
     // Remove the newClass so they don't animate next time
     this.nodes = this.removeNewItem(this.nodes);
 
-    node.append('title').text(function (d) {
-      return d.id;
+    nodeEnter.append('title').text(function (d) {
+      return d.label;
     });
 
     simulation.nodes(this.nodes).on('tick', () => {
