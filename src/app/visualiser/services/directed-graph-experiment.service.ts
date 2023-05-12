@@ -195,18 +195,14 @@ export class DirectedGraphExperimentService {
 
   public _update(_d3, svg, data) {
     let { links, nodes } = data;
-    this.links = links || [];
     this.nodes = nodes || [];
+    this.links = links || [];
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
     // If nodes don't have a fx/fy coordinate we generate a random one
-    this.nodes = this.randomiseNodePositions(
-      this.nodes,
-      parentWidth,
-      parentHeight
-    );
+		this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -228,13 +224,14 @@ export class DirectedGraphExperimentService {
     // Getting parents lineStyle and adding it to child objects
     const relationshipsArray = this.links.map(
       ({ lineStyle, targetArrow, sourceArrow, relationships }) =>
-        relationships.map((r) => ({
+        relationships.map(r => ({
           parentLineStyle: lineStyle,
           parentSourceArrow: sourceArrow,
           parentTargetArrow: targetArrow,
-          ...r,
+          ...r
         }))
     );
+
     // Adding dy value based on link number and position in parent
     relationshipsArray.map(linkRelationship => {
       linkRelationship.map((linkObject, i) => {
@@ -283,10 +280,7 @@ export class DirectedGraphExperimentService {
 
     const zoomed = () => {
       const transform = d3.event.transform;
-      zoomContainer.attr(
-        'transform',
-        `translate(${transform.x}, ${transform.y}) scale(${transform.k})`
-      );
+      zoomContainer.attr('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
       currentZoom = transform;
       updateZoomLevel();
     };
@@ -301,8 +295,7 @@ export class DirectedGraphExperimentService {
       .on('end', function () {
         d3.select(this).style('cursor', 'grab');
       });
-    svg
-      .call(zoom)
+    svg.call(zoom)
       .style('cursor', 'grab')
       .on(!this.readOnly ? null : 'wheel.zoom', null);
     zoom.filter(() => !d3.event.shiftKey);
@@ -435,16 +428,10 @@ export class DirectedGraphExperimentService {
     d3.select('body').on('keydown', keydown).on('keyup', keyup);
     // Brush End
 
-    const filteredLine = this.links.filter(
-      ({ source, target }, index, self) => {
+    const filteredLine = this.links.filter(({ source, target }, index, linksArray) => {
         // Filter out any objects that have matching source and target property values
         // To display only one line (parentLineStyle) - removes html bloat and a darkened line
-        return (
-          index ===
-          self.findIndex(
-            (obj) => obj.source === source && obj.target === target
-          )
-        );
+        return index === linksArray.findIndex(obj => obj.source === source && obj.target === target);
       }
     );
 
@@ -500,6 +487,7 @@ export class DirectedGraphExperimentService {
     });
 
     zoomContainer.selectAll('path').data(edgepaths).exit().remove();
+
     const edgepathsEnter = edgepaths
       .join('svg:path')
       .attr('class', 'edgepath')
@@ -610,7 +598,6 @@ export class DirectedGraphExperimentService {
           .on('drag', function dragged(d) {
             nodeEnter
               .filter(function (d) {
-                //      console.log(d)
                 return d.selected;
               })
               .each(function (d) {
@@ -629,7 +616,7 @@ export class DirectedGraphExperimentService {
       .attr('class', 'node-wrapper')
       .attr('id', function (d) {
         return d.id;
-      })
+      });
 
     // no collision - already using this in statement
     const self = this;
