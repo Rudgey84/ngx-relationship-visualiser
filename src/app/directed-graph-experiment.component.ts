@@ -85,7 +85,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     this.directedGraphExperimentService.createLinkArray.subscribe(
       (createLinkArray) => {
         this.createLinkArray = createLinkArray;
-        console.log(createLinkArray)
       }
     );
 
@@ -132,7 +131,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     let item;
 
     if (this.createLinkArray?.length === 2) {
-      console.log(2)
       contextMenu = this.contextMenu.createLinkContextMenu;
       item = this.createLinkArray;
     } else {
