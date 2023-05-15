@@ -395,6 +395,8 @@ export class DirectedGraphExperimentService {
           const filterId = localCreateLinkArray.filter((x) => x);
           self.createLinkArray.next(filterId);
           return filterId;
+        } else {
+          self.createLinkArray.next([]);
         }
       });
 
