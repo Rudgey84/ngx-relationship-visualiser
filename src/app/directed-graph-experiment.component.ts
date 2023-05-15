@@ -54,7 +54,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
-  public createLinkArray;
+  public selectedNodesArray;
   public selectedNodeId;
   public selectedLinkArray;
   public width;
@@ -82,9 +82,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     localStorage.removeItem('nodes');
     this.updateWidth();
     // Subscribe to the link selections in d3
-    this.directedGraphExperimentService.createLinkArray.subscribe(
-      (createLinkArray) => {
-        this.createLinkArray = createLinkArray;
+    this.directedGraphExperimentService.selectedNodesArray.subscribe(
+      (selectedNodesArray) => {
+        this.selectedNodesArray = selectedNodesArray;
       }
     );
 
@@ -130,9 +130,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     let contextMenu;
     let item;
 
-    if (this.createLinkArray?.length === 2) {
+    if (this.selectedNodesArray?.length === 2) {
       contextMenu = this.contextMenu.createLinkContextMenu;
-      item = this.createLinkArray;
+      item = this.selectedNodesArray;
     } else {
       const targetEl = event.target;
       const localName = targetEl.localName;
@@ -169,7 +169,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
   }
   public createLinkEvent() {
-    this.createLinkContextMenuEvent.emit(this.createLinkArray);
+    this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
   }
 
   newData() {

@@ -16,7 +16,7 @@ export class DirectedGraphExperimentService {
   public extent = null;
   public readOnly = false;
   /** RxJS subject to listen for updates of the selection */
-  createLinkArray = new Subject<any[]>();
+  selectedNodesArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
@@ -194,7 +194,7 @@ export class DirectedGraphExperimentService {
   }
 
   public _update(_d3, svg, data) {
-    const { links, nodes } = data;
+    const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
@@ -319,7 +319,6 @@ export class DirectedGraphExperimentService {
     });
 
     // Zoom End
-
     // For arrows
     this.initDefinitions(svg);
 
@@ -346,20 +345,16 @@ export class DirectedGraphExperimentService {
         if (!currentZoom) return;
 
         nodeEnter
-          .classed('selected', d => {
-            return (d.selected =
-              d.previouslySelected ^
-              (<any>(
-                (d3.event.selection[0][0] <=
-                  d.x * currentZoom.k + currentZoom.x &&
-                  d.x * currentZoom.k + currentZoom.x <
-                    d3.event.selection[1][0] &&
-                  d3.event.selection[0][1] <=
-                    d.y * currentZoom.k + currentZoom.y &&
-                  d.y * currentZoom.k + currentZoom.y <
-                    d3.event.selection[1][1])
-              )));
-          })
+        .classed('selected', d => {
+          return (d.selected =
+            d.previouslySelected ^
+            (<any>(
+              (d3.event.selection[0][0] <= d.x * currentZoom.k + currentZoom.x &&
+                d.x * currentZoom.k + currentZoom.x < d3.event.selection[1][0] &&
+                d3.event.selection[0][1] <= d.y * currentZoom.k + currentZoom.y &&
+                d.y * currentZoom.k + currentZoom.y < d3.event.selection[1][1])
+            )));
+        })
           .select('.nodeText')
           .classed('selected', d => d.selected)
           .style('fill', d => (d.selected ? 'blue' : '#999'))
@@ -390,12 +385,12 @@ export class DirectedGraphExperimentService {
         const selectedSize = nodeEnter.selectAll('.selected').size();
         if (selectedSize <= 2) {
           // get data from node
-          const localCreateLinkArray = nodeEnter.selectAll('.selected').data();
-          const filterId = localCreateLinkArray.filter(x => x);
-          self.createLinkArray.next(filterId);
+          const localselectedNodesArray = nodeEnter.selectAll('.selected').data();
+          const filterId = localselectedNodesArray.filter(x => x);
+          self.selectedNodesArray.next(filterId);
           return filterId;
         } else {
-          self.createLinkArray.next([]);
+          self.selectedNodesArray.next([]);
         }
       });
 
@@ -500,6 +495,7 @@ export class DirectedGraphExperimentService {
     const edgelabels = zoomContainer.selectAll().data(this.links, function (d) {
       return d.id;
     });
+
     zoomContainer.selectAll('text').data(edgelabels).exit().remove();
 
     const edgelabelsEnter = edgelabels
@@ -541,12 +537,12 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
       _d3.select(this).style('fill', 'blue').style('font-weight', 700);
-      self.createLinkArray.next([]);
+      self.selectedNodesArray.next([]);
     });
 
     // on right label link click - hightlight labels and package data for context menu
     svg.selectAll('.edgelabel').on('contextmenu', function (d) {
-      self.createLinkArray.next([]);
+      self.selectedNodesArray.next([]);
       _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
       _d3.select(this).style('fill', 'blue').style('font-weight', 700);
@@ -644,9 +640,9 @@ export class DirectedGraphExperimentService {
         if (selectedSize <= 2) {
           svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue').style('font-weight', 700);
           // get data from node
-          const localCreateLinkArray = _d3.selectAll('.selected').data();
-          const filterId = localCreateLinkArray.filter(x => x);
-          self.createLinkArray.next(filterId);
+          const localselectedNodesArray = _d3.selectAll('.selected').data();
+          const filterId = localselectedNodesArray.filter(x => x);
+          self.selectedNodesArray.next(filterId);
           return filterId;
         }
         return null;
@@ -660,7 +656,7 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       // Add style on single left click
       _d3.select(this).select('.nodeText').style('fill', 'blue').style('font-weight', 700);
-      self.createLinkArray.next([]);
+      self.selectedNodesArray.next([]);
 
       return null;
     });
@@ -685,7 +681,7 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       _d3.selectAll('.selected').classed('selected', false);
       _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
-      self.createLinkArray.next([]);
+      self.selectedNodesArray.next([]);
     });
 
     nodeEnter
