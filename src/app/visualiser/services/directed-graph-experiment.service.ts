@@ -647,6 +647,7 @@ export class DirectedGraphExperimentService {
         }
         return null;
       }
+
       // remove style from selected node before the class is removed
       _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529');
       // remove class when another node is clicked and ctrl is not held
@@ -668,7 +669,6 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       // Add style on single right click
       _d3.select(this).select('.nodeText').style('fill', 'blue').style('font-weight', 700);
-      
     });
 
     //click on canvas to remove selected nodes
@@ -696,7 +696,7 @@ export class DirectedGraphExperimentService {
       .attr('x', -15)
       .attr('y', -60)
       .attr('class', function (d) {
-        const suffix = '_image';
+        const suffix = 'image';
         const id = d.id ? d.id : '';
         return `${id}_${suffix}`;
       })
@@ -704,10 +704,10 @@ export class DirectedGraphExperimentService {
         const id = d.id ? d.id : '';
         return `${id}`;
       })
-      .attr('width', 30)
+      .attr('width', 32)
+      .attr('height', 32)
       .attr('class', 'image')
-      .style('cursor', 'pointer')
-      .attr('height', 30);
+      .style('cursor', 'pointer');
 
     const nodeText = nodeEnter
       .append('text')
@@ -788,28 +788,28 @@ export class DirectedGraphExperimentService {
       .select('image')
       .transition()
       .duration(1000)
-      .attr('width', 15 * 2)
-      .attr('height', 15 * 2)
+      .attr('width', 45)
+      .attr('height', 45)
       .transition()
       .duration(1000)
-      .attr('width', 15)
-      .attr('height', 15)
+      .attr('width', 32)
+      .attr('height', 32)
       .transition()
       .duration(1000)
-      .attr('width', 15 * 2)
-      .attr('height', 15 * 2)
+      .attr('width', 45)
+      .attr('height', 45)
       .transition()
       .duration(1000)
-      .attr('width', 15)
-      .attr('height', 15)
+      .attr('width', 32)
+      .attr('height', 32)
       .transition()
       .duration(1000)
-      .attr('width', 15 * 2)
-      .attr('height', 15 * 2)
+      .attr('width', 45)
+      .attr('height', 45)
       .transition()
       .duration(1000)
-      .attr('width', 30)
-      .attr('height', 30)
+      .attr('width', 32)
+      .attr('height', 32)
       .on('end', function () {
         return d3.select(this).call(d3.transition);
       });
