@@ -538,21 +538,20 @@ export class DirectedGraphExperimentService {
       });
     // on normal label link click - hightlight labels
     svg.selectAll('.edgelabel').on('click', function (d) {
+      _d3.event.stopPropagation();
       // arrow function will produce this = undefined
-      _d3.selectAll('.nodeText').style('fill', '#212529');
-      _d3.selectAll('.nodeText').style('font-weight', 400);
-      _d3.selectAll('.edgelabel').style('fill', '#212529');
-      _d3.select(this).style('fill', 'blue');
+      _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
+      _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
+      _d3.select(this).style('fill', 'blue').style('font-weight', 700);
       self.createLinkArray.next([]);
     });
 
     // on right label link click - hightlight labels and package data for context menu
     svg.selectAll('.edgelabel').on('contextmenu', function (d) {
       self.createLinkArray.next([]);
-      _d3.selectAll('.nodeText').style('fill', '#212529');
-      _d3.selectAll('.nodeText').style('font-weight', 400);
-      _d3.selectAll('.edgelabel').style('fill', '#212529');
-      _d3.select(this).style('fill', 'blue');
+      _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
+      _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
+      _d3.select(this).style('fill', 'blue').style('font-weight', 700);
       const localSelectedLinkArray = d3.select(this).data();
       self.selectedLinkArray.next(localSelectedLinkArray);
     });
@@ -577,9 +576,8 @@ export class DirectedGraphExperimentService {
                 return (p.selected = p.previouslySelected = false);
               });
               // remove the selected styling on other nodes and labels when we drag a non-selected node
-              _d3.selectAll('.edgelabel').style('fill', '#212529');
-              _d3.selectAll('.nodeText').style('font-weight', 400);
-              _d3.selectAll('.nodeText').style('fill', '#212529');
+              _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
+              _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
             }
 
             _d3.select(this).classed('selected', function (p) {
@@ -640,14 +638,13 @@ export class DirectedGraphExperimentService {
         // toggle the class on and off when ctrl click is active
         d3.select(this).classed('selected', !d3.select(this).classed('selected'));
         // remove the single click styling on other nodes and labels
-        _d3.selectAll('.edgelabel').style('fill', '#212529');
-        _d3.selectAll('.nodeText').style('font-weight', 400);
-        _d3.selectAll('.nodeText').style('fill', '#212529');
+        _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
+        _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
         // counts number of selected classes to not exceed 2
         const selectedSize = svg.selectAll('.selected').size();
 
         if (selectedSize <= 2) {
-          svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue');
+          svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue').style('font-weight', 700);
           // get data from node
           const localCreateLinkArray = _d3.selectAll('.selected').data();
           const filterId = localCreateLinkArray.filter((x) => x);
@@ -662,10 +659,9 @@ export class DirectedGraphExperimentService {
       //  _d3.selectAll('.selected').classed('selected', false);
       // Remove styles from all other nodes and labels on single left click
       _d3.selectAll('.edgelabel').style('fill', '#212529');
-      _d3.selectAll('.nodeText').style('fill', '#212529');
-      _d3.selectAll('.nodeText').style('font-weight', 400);
+      _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       // Add style on single left click
-      _d3.select(this).select('.nodeText').style('fill', 'blue');
+      _d3.select(this).select('.nodeText').style('fill', 'blue').style('font-weight', 700);
       self.createLinkArray.next([]);
 
       return null;
@@ -674,11 +670,11 @@ export class DirectedGraphExperimentService {
     //right click on a node highlights for context menu
     svg.selectAll('.node-wrapper').on('contextmenu', function (d) {
       // Remove styles from all other nodes and labels on single left click
-      _d3.selectAll('.edgelabel').style('fill', '#212529');
-      _d3.selectAll('.nodeText').style('fill', '#212529');
-      _d3.selectAll('.nodeText').style('font-weight', 400);
+      _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
+      _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       // Add style on single right click
-      _d3.select(this).select('.nodeText').style('fill', 'blue');
+      _d3.select(this).select('.nodeText').style('fill', 'blue').style('font-weight', 700);
+      
     });
 
     //click on canvas to remove selected nodes
@@ -688,10 +684,9 @@ export class DirectedGraphExperimentService {
         d.previouslySelected = false;
       });
       node.classed('selected', false);
-      _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529');
+      _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       _d3.selectAll('.selected').classed('selected', false);
-      _d3.selectAll('.nodeText').style('fill', '#212529');
-      _d3.selectAll('.nodeText').style('font-weight', 400);
+      _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
       self.createLinkArray.next([]);
     });
 
@@ -758,26 +753,32 @@ export class DirectedGraphExperimentService {
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
+      .attr('font-weight', 700)
       .attr('fill-opacity', 1)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
+      .attr('font-weight', 700)
       .attr('fill-opacity', 0.1)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
+      .attr('font-weight', 700)
       .attr('fill-opacity', 1)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
+      .attr('font-weight', 700)
       .attr('fill-opacity', 0.1)
       .transition()
       .duration(1000)
       .attr('fill', 'blue')
+      .attr('font-weight', 700)
       .attr('fill-opacity', 1)
       .transition()
       .duration(1000)
       .attr('fill', '#212529')
+      .attr('font-weight', 400)
       .attr('fill-opacity', 1)
       .on('end', function () {
         return d3.select(this).call(_d3.transition);
@@ -797,27 +798,22 @@ export class DirectedGraphExperimentService {
       .attr('height', 15 * 2)
       .transition()
       .duration(1000)
-      .attr('fill', 'blue')
       .attr('width', 15)
       .attr('height', 15)
       .transition()
       .duration(1000)
-      .attr('fill', 'blue')
       .attr('width', 15 * 2)
       .attr('height', 15 * 2)
       .transition()
       .duration(1000)
-      .attr('fill', 'blue')
       .attr('width', 15)
       .attr('height', 15)
       .transition()
       .duration(1000)
-      .attr('fill', 'blue')
       .attr('width', 15 * 2)
       .attr('height', 15 * 2)
       .transition()
       .duration(1000)
-      .attr('fill', '#212529')
       .attr('width', 30)
       .attr('height', 30)
       .on('end', function () {
