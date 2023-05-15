@@ -194,7 +194,7 @@ export class DirectedGraphExperimentService {
   }
 
   public _update(_d3, svg, data) {
-    let { links, nodes } = data;
+    const { links, nodes } = data;
     this.nodes = nodes || [];
     this.links = links || [];
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
@@ -222,8 +222,7 @@ export class DirectedGraphExperimentService {
     }
 
     // Getting parents lineStyle and adding it to child objects
-    const relationshipsArray = this.links.map(
-      ({ lineStyle, targetArrow, sourceArrow, relationships }) =>
+    const relationshipsArray = this.links.map(({ lineStyle, targetArrow, sourceArrow, relationships }) =>
         relationships.map(r => ({
           parentLineStyle: lineStyle,
           parentSourceArrow: sourceArrow,
@@ -337,7 +336,7 @@ export class DirectedGraphExperimentService {
       .on('start', () => {
         this.brushing = true;
 
-        nodeEnter.each((d) => {
+        nodeEnter.each(d => {
           d.previouslySelected = this.shiftKey && d.selected;
         });
       })
@@ -347,7 +346,7 @@ export class DirectedGraphExperimentService {
         if (!currentZoom) return;
 
         nodeEnter
-          .classed('selected', (d) => {
+          .classed('selected', d => {
             return (d.selected =
               d.previouslySelected ^
               (<any>(
@@ -362,9 +361,9 @@ export class DirectedGraphExperimentService {
               )));
           })
           .select('.nodeText')
-          .classed('selected', (d) => d.selected)
-          .style('fill', (d) => (d.selected ? 'blue' : '#999'))
-          .style('font-weight', (d) => (d.selected ? 700 : 400));
+          .classed('selected', d => d.selected)
+          .style('fill', d => (d.selected ? 'blue' : '#999'))
+          .style('font-weight', d => (d.selected ? 700 : 400));
 
         this.extent = d3.event.selection;
       })
@@ -392,7 +391,7 @@ export class DirectedGraphExperimentService {
         if (selectedSize <= 2) {
           // get data from node
           const localCreateLinkArray = nodeEnter.selectAll('.selected').data();
-          const filterId = localCreateLinkArray.filter((x) => x);
+          const filterId = localCreateLinkArray.filter(x => x);
           self.createLinkArray.next(filterId);
           return filterId;
         } else {
@@ -504,7 +503,6 @@ export class DirectedGraphExperimentService {
     zoomContainer.selectAll('text').data(edgelabels).exit().remove();
 
     const edgelabelsEnter = edgelabels
-      .data(this.links)
       .enter()
       .append('text')
       .attr('class', 'edgelabel')
@@ -647,7 +645,7 @@ export class DirectedGraphExperimentService {
           svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue').style('font-weight', 700);
           // get data from node
           const localCreateLinkArray = _d3.selectAll('.selected').data();
-          const filterId = localCreateLinkArray.filter((x) => x);
+          const filterId = localCreateLinkArray.filter(x => x);
           self.createLinkArray.next(filterId);
           return filterId;
         }
@@ -731,11 +729,11 @@ export class DirectedGraphExperimentService {
 
     nodeText
       .selectAll('tspan.text')
-      .data((d) => d.label)
+      .data(d => d.label)
       .enter()
       .append('tspan')
       .attr('class', 'nodeTextTspan')
-      .text((d) => d)
+      .text(d => d)
       .style('font-size', '14px')
       .attr('x', -10)
       .attr('dx', 10)
