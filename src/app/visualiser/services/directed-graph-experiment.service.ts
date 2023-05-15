@@ -665,9 +665,9 @@ export class DirectedGraphExperimentService {
 		// Right click on a node highlights for context menu
 		svg.selectAll('.node-wrapper').on('contextmenu', function (d) {
 			// counts number of selected classes to not exceed 2
-			const selectedSize = svg.selectAll('.selected').size();
+			const selectedSize = svg.selectAll('.selected').selectAll('.nodeText').size();
 			if (selectedSize !== 2) {
-			// We don't want to remove style if they are obtaining the context menu for just two nodes (create link option)
+				// We don't want to remove style if they are obtaining the context menu for just two nodes (create link option)
 				_d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
 				_d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
 				// Add style on single right click
