@@ -662,14 +662,18 @@ export class DirectedGraphExperimentService {
       return null;
     });
 
-    //right click on a node highlights for context menu
-    svg.selectAll('.node-wrapper').on('contextmenu', function (d) {
-      // Remove styles from all other nodes and labels on single left click
-      _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
-      _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
-      // Add style on single right click
-      _d3.select(this).select('.nodeText').style('fill', 'blue').style('font-weight', 700);
-    });
+		// Right click on a node highlights for context menu
+		svg.selectAll('.node-wrapper').on('contextmenu', function (d) {
+			// counts number of selected classes to not exceed 2
+			const selectedSize = svg.selectAll('.selected').size();
+			if (selectedSize !== 2) {
+			// We don't want to remove style if they are obtaining the context menu for just two nodes (create link option)
+				_d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
+				_d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
+				// Add style on single right click
+				_d3.select(this).select('.nodeText').style('fill', 'blue').style('font-weight', 700);
+			}
+		});
 
     //click on canvas to remove selected nodes
     _d3.select('svg').on('click', () => {
