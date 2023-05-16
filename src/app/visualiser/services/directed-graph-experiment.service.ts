@@ -527,8 +527,12 @@ export class DirectedGraphExperimentService {
       .style('cursor', 'pointer')
       .attr('dominant-baseline', 'bottom')
       .attr('startOffset', '50%')
-      .text(function (d) {
-        return d.label;
+      .html(function (d) {
+        if (d.attachedToUnauthorisedIRs) {
+          return d.label + ' <tspan style="fill: blue">(U)</tspan>';
+        } else {
+          return d.label;
+        }
       });
     // on normal label link click - hightlight labels
     svg.selectAll('.edgelabel').on('click', function (d) {

@@ -35,6 +35,7 @@ export class AppComponent {
         y: 0,
         fx: 100,
         fy: 400,
+        attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
       },
       {
         id: '456',
@@ -48,6 +49,7 @@ export class AppComponent {
         y: 0,
         fx: 410,
         fy: 284,
+        attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
       },
       {
         id: '789',
@@ -61,6 +63,7 @@ export class AppComponent {
         y: 0,
         fx: 55,
         fy: 60,
+        attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
       }
     ],
     links: [
@@ -80,6 +83,7 @@ export class AppComponent {
             sourceArrow: false,
             target: '456',
             targetArrow: true,
+            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
           },
           {
             label: 'Both in same scrum team',
@@ -88,6 +92,7 @@ export class AppComponent {
             sourceArrow: true,
             target: '456',
             targetArrow: false,
+            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
           },
         ],
       },
@@ -107,6 +112,7 @@ export class AppComponent {
             sourceArrow: false,
             target: '789',
             targetArrow: true,
+            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
           {
             label: 'Daughters in the same class at school',
@@ -123,6 +129,7 @@ export class AppComponent {
             sourceArrow: true,
             target: '789',
             targetArrow: false,
+            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
         ],
       },
@@ -142,6 +149,7 @@ export class AppComponent {
             sourceArrow: false,
             target: '123',
             targetArrow: true,
+            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
           {
             label: 'Drinking friends',
@@ -150,6 +158,7 @@ export class AppComponent {
             sourceArrow: true,
             target: '123',
             targetArrow: false,
+            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
         ],
       },
