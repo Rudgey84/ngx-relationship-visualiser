@@ -172,7 +172,7 @@ export class DirectedGraphExperimentService {
     });
     return nodeData;
   }
-  
+
   private circleNodePositions(nodeData, width, height) {
     const middleX = width / 2;
     const middleY = height / 2;
@@ -748,7 +748,8 @@ export class DirectedGraphExperimentService {
         return d.attachedToUnauthorisedIRs === true;
       })
       .append('image')
-      .attr('x', -60)
+      .attr('width', 100)
+      .attr('x', -50)
       .attr('y', function(d) {
         const textElement = d3.select(this.parentNode).select('text');
         const bbox = textElement.node().getBBox();
