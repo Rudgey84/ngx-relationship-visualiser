@@ -529,7 +529,7 @@ export class DirectedGraphExperimentService {
       .attr('startOffset', '50%')
       .html(function (d) {
         if (d.attachedToUnauthorisedIRs) {
-          return d.label + ' <tspan style="fill: blue">(U)</tspan>';
+          return d.label + ' <tspan style="fill: #856404; font-weight: 700">(U)</tspan>';
         } else {
           return d.label;
         }
@@ -690,6 +690,17 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.selected').classed('selected', false);
       _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
       self.selectedNodesArray.next([]);
+    });
+
+    nodeEnter
+    .filter(function(d) {
+      return d.attachedToUnauthorisedIRs === true;
+    })
+    .append('image')
+    .attr('x', -60)
+    .attr('y', -90)
+    .attr('xlink:href', function(d) {
+      return `https://raw.githubusercontent.com/Rudgey84/d3-visualiser/1f83debd80578edcd29eaf2559bba2988a0f437a/src/unauthPill.png`;
     });
 
     nodeEnter
