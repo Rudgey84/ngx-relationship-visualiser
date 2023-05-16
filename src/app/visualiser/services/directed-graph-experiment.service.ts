@@ -172,7 +172,7 @@ export class DirectedGraphExperimentService {
     });
     return nodeData;
   }
-
+  
   private circleNodePositions(nodeData, width, height) {
     const middleX = width / 2;
     const middleY = height / 2;
@@ -693,17 +693,6 @@ export class DirectedGraphExperimentService {
     });
 
     nodeEnter
-    .filter(function(d) {
-      return d.attachedToUnauthorisedIRs === true;
-    })
-    .append('image')
-    .attr('x', -60)
-    .attr('y', -90)
-    .attr('xlink:href', function(d) {
-      return `https://raw.githubusercontent.com/Rudgey84/d3-visualiser/1f83debd80578edcd29eaf2559bba2988a0f437a/src/unauthPill.png`;
-    });
-
-    nodeEnter
       .append('image')
       .attr('xlink:href', function (d) {
         const prefixUrl = 'https://randomuser.me/api/portraits/thumb/';
@@ -753,6 +742,24 @@ export class DirectedGraphExperimentService {
       .attr('x', -10)
       .attr('dx', 10)
       .attr('dy', 15);
+
+      nodeEnter
+      .filter(function(d) {
+        return d.attachedToUnauthorisedIRs === true;
+      })
+      .append('image')
+      .attr('x', -60)
+      .attr('y', function(d) {
+        const textElement = d3.select(this.parentNode).select('text');
+        const bbox = textElement.node().getBBox();
+        const textHeight = bbox.height;
+        const tspanDy = -25;
+        console.log(textHeight)
+        return textHeight + tspanDy;
+      })
+      .attr('xlink:href', function(d) {
+        return `https://raw.githubusercontent.com/Rudgey84/d3-visualiser/1f83debd80578edcd29eaf2559bba2988a0f437a/src/unauthPill.png`;
+      });
 
     // transition effects for new pulsating nodes
     nodeEnter
