@@ -540,6 +540,7 @@ export class DirectedGraphExperimentService {
 			.style('fill', '#856404')
 			.style('font-weight', '700')
 			.text(' (U)');
+
     // on normal label link click - hightlight labels
     svg.selectAll('.edgelabel').on('click', function (d) {
       _d3.event.stopPropagation();
@@ -755,7 +756,10 @@ export class DirectedGraphExperimentService {
 
       nodeEnter
       .filter(function(d) {
-        return d.attachedToUnauthorisedIRs === true;
+				if (!d.attachedToUnauthorisedIRs) {
+					return null;
+				}
+				return true;
       })
       .append('image')
       .attr('id', function (d) {
