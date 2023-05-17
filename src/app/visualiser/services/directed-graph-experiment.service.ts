@@ -529,7 +529,7 @@ export class DirectedGraphExperimentService {
       .attr('startOffset', '50%')
       .html(function (d) {
         if (d.attachedToUnauthorisedIRs) {
-          return d.label + ' <tspan style="fill: #856404; font-weight: 700">(U)</tspan>';
+          return `${d.label} <tspan id="${d.source}_${d.target}_unauthlabel" style="fill: #856404; font-weight: 700">(U)</tspan>`;
         } else {
           return d.label;
         }
@@ -748,15 +748,19 @@ export class DirectedGraphExperimentService {
         return d.attachedToUnauthorisedIRs === true;
       })
       .append('image')
+      .attr('id', function (d) {
+				const suffix = 'unauthImage';
+				const id = d.id ? d.id : '';
+				return `${id}_${suffix}`;
+			})
       .attr('width', 100)
       .attr('x', -50)
       .attr('y', function(d) {
         const textElement = d3.select(this.parentNode).select('text');
         const bbox = textElement.node().getBBox();
         const textHeight = bbox.height;
-        const tspanDy = -25;
-        console.log(textHeight)
-        return textHeight + tspanDy;
+        const dyOffset = -25;
+        return textHeight + dyOffset;
       })
       .attr('xlink:href', function(d) {
         return `https://raw.githubusercontent.com/Rudgey84/d3-visualiser/1f83debd80578edcd29eaf2559bba2988a0f437a/src/unauthPill.png`;
