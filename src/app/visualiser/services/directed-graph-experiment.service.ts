@@ -638,11 +638,11 @@ export class DirectedGraphExperimentService {
         // remove the single click styling on other nodes and labels
         _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
         _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
+        svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue').style('font-weight', 700);
         // counts number of selected classes to not exceed 2
         const selectedSize = svg.selectAll('.selected').size();
 
         if (selectedSize <= 2) {
-          svg.selectAll('.selected').selectAll('.nodeText').style('fill', 'blue').style('font-weight', 700);
           // get data from node
           const localselectedNodesArray = _d3.selectAll('.selected').data();
           const filterId = localselectedNodesArray.filter(x => x);
