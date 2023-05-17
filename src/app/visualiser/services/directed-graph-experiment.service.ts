@@ -527,13 +527,19 @@ export class DirectedGraphExperimentService {
       .style('cursor', 'pointer')
       .attr('dominant-baseline', 'bottom')
       .attr('startOffset', '50%')
-      .html(function (d) {
-        if (d.attachedToUnauthorisedIRs) {
-          return `${d.label} <tspan id="${d.source}_${d.target}_unauthlabel" style="fill: #856404; font-weight: 700">(U)</tspan>`;
-        } else {
-          return d.label;
-        }
-      });
+			.text(function (d) {
+				return d.label;
+			});
+
+		edgelabelsEnter
+			.selectAll('textPath')
+			.filter(function (d) {
+				return d.attachedToUnauthorisedIRs;
+			})
+			.append('tspan')
+			.style('fill', '#856404')
+			.style('font-weight', '700')
+			.text(' (U)');
     // on normal label link click - hightlight labels
     svg.selectAll('.edgelabel').on('click', function (d) {
       _d3.event.stopPropagation();
