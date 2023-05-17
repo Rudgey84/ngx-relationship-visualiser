@@ -768,6 +768,7 @@ export class DirectedGraphExperimentService {
 				return `${id}_${suffix}`;
 			})
       .attr('width', 100)
+      .attr('height', 17)
       .attr('x', -50)
       .attr('y', function(d) {
         const textElement = d3.select(this.parentNode).select('text');
