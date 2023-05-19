@@ -2,7 +2,7 @@
 
 [View on StackBlitz ⚡️](https://stackblitz.com/edit/github-dzry6q-wtjc86)
 
-A D3 directed-force-graph, implemented in Typescript, generates a visualisation graph with customisable link lengths and multiple labels between nodes. The graph can handle new data that will update lines, nodes, links, and path labels. Whenever new nodes are added, they will be animated with a pulse effect. Additionally, the graph includes features such as brushing (multiple select and drag), zoom, and panning capabilities.
+A D3 directed-force-graph, implemented in Typescript, generates a visualisation graph with customisable link lengths and multiple labels between nodes. The graph can handle new data that will update lines, nodes, links, and path labels. Whenever new nodes are added, they will be animated with a pulse effect. Additionally, the graph includes features such as brushing (multiple select and drag), zoom, and panning capabilities. Additional features include the ability to make multiple selections in sync with the brushing functionality by using Ctrl + click. Context menus can be customized and appear when right-clicking on nodes and links, providing access to parent data and opening their own modals. 
 
 To summarise:
 
