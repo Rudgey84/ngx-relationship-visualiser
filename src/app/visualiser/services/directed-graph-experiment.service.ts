@@ -197,7 +197,7 @@ export class DirectedGraphExperimentService {
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
-   // let currentZoom = d3.zoomTransform(d3.select('svg').node());
+
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
@@ -255,6 +255,7 @@ export class DirectedGraphExperimentService {
       const zoomLevelText = `Zoom: ${zoomPercentage.toFixed(0)}%`;
       const zoomInBtn = document.getElementById('zoom_in');
       const zoomOutBtn = document.getElementById('zoom_out');
+      const zoomResetBtn = document.getElementById('zoom_reset');
       // Check if the zoom level has changed before updating the display / allows for panning without showing the zoom percentage
       if (zoomLevelDisplay.innerHTML !== zoomLevelText) {
         zoomLevelDisplay.innerHTML = zoomLevelText;
@@ -275,6 +276,12 @@ export class DirectedGraphExperimentService {
       } else {
         zoomOutBtn.removeAttribute('disabled');
       }
+      // Disable the zoomResetBtn if the zoom level is at 50%
+      if (zoomPercentage === 50) {
+        zoomResetBtn.setAttribute('disabled', 'true');
+      } else {
+        zoomResetBtn.removeAttribute('disabled');
+      }
     };
 
     const zoomed = () => {
@@ -286,7 +293,7 @@ export class DirectedGraphExperimentService {
 
     const zoom = d3
       .zoom()
-      .scaleExtent([0.5, 1])
+      .scaleExtent([0.5, 1.5])
       .on('start', function () {
         d3.select(this).style('cursor', this.zoom ? null : 'grabbing');
       })
@@ -310,7 +317,7 @@ export class DirectedGraphExperimentService {
     });
     d3.select('#zoom_reset').on('click', function () {
     //  0.50 is 0% and every 0.05 increase is 10%
-      zoom.scaleTo(svg.transition().duration(750), 0.75);
+      zoom.scaleTo(svg.transition().duration(750), 1);
       updateZoomLevel();
     });
 
