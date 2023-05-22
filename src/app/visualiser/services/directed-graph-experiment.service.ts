@@ -14,16 +14,16 @@ export class DirectedGraphExperimentService {
   public brushing = false;
   public shiftKey;
   public extent = null;
-  public readOnly = false;
+  public zoom = false;
   /** RxJS subject to listen for updates of the selection */
   selectedNodesArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
 
-  public update(data, element, readOnly) {
+  public update(data, element, zoom) {
     const svg = d3.select(element);
-    this.readOnly = readOnly;
+    this.zoom = zoom;
     return this._update(d3, svg, data);
   }
 
@@ -288,7 +288,7 @@ export class DirectedGraphExperimentService {
       .zoom()
       .scaleExtent([0.5, 1])
       .on('start', function () {
-        d3.select(this).style('cursor', this.readOnly ? null : 'grabbing');
+        d3.select(this).style('cursor', this.zoom ? null : 'grabbing');
       })
       .on('zoom', zoomed)
       .on('end', function () {
@@ -296,7 +296,7 @@ export class DirectedGraphExperimentService {
       });
     svg.call(zoom)
       .style('cursor', 'grab')
-      .on(!this.readOnly ? null : 'wheel.zoom', null);
+      .on(!this.zoom ? null : 'wheel.zoom', null);
     zoom.filter(() => !d3.event.shiftKey);
     // Zoom button controls
     d3.select('#zoom_in').on('click', function () {
