@@ -33,6 +33,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <button class="btn btn-secondary ml-3" (click)="newData()">New data</button>
   <button *ngIf="!zoom" class="btn btn-secondary ml-3" id="zoom_in">+</button>
   <button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="zoom_out">-</button>
+  <button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="zoom_reset">Reset</button>
   </div>
   <div class="float-left mt-2 ml-1">
   <span id="zoom_level" ></span>

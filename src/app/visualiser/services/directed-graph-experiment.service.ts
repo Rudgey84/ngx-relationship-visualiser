@@ -197,7 +197,7 @@ export class DirectedGraphExperimentService {
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
-    let currentZoom = d3.zoomTransform(d3.select('svg').node());
+   // let currentZoom = d3.zoomTransform(d3.select('svg').node());
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
@@ -246,7 +246,7 @@ export class DirectedGraphExperimentService {
 
     // Zoom Start
     const zoomContainer = _d3.select('svg g');
-
+    let currentZoom = d3.zoomTransform(d3.select('svg').node());
     const updateZoomLevel = () => {
       const currentScale = currentZoom.k;
       const maxScale = zoom.scaleExtent()[1];
@@ -298,6 +298,7 @@ export class DirectedGraphExperimentService {
       .style('cursor', 'grab')
       .on(!this.zoom ? null : 'wheel.zoom', null);
     zoom.filter(() => !d3.event.shiftKey);
+    
     // Zoom button controls
     d3.select('#zoom_in').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 1.2);
@@ -305,6 +306,11 @@ export class DirectedGraphExperimentService {
     });
     d3.select('#zoom_out').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 0.8);
+      updateZoomLevel();
+    });
+    d3.select('#zoom_reset').on('click', function () {
+    //  0.50 is 0% and every 0.05 increase is 10%
+      zoom.scaleTo(svg.transition().duration(750), 0.75);
       updateZoomLevel();
     });
 
