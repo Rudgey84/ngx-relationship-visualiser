@@ -16,22 +16,22 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   selector: 'dge-directed-graph-experiment',
   template: `
 
-  <style>
-    #zoom_level {
-      position: relative;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      padding: 5px;
-      border-radius: 5px;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-  </style>
+		<style>
+			#zoom_level {
+				position: relative;
+				background-color: rgba(0, 0, 0, 0.8);
+				color: #fff;
+				padding: 5px;
+				border-radius: 5px;
+				opacity: 0;
+				transition: opacity 1s ease-in-out;
+			}
+		</style>
 
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="float-right m-2">
   <button class="btn btn-secondary mr-3" (click)="newData()">New data</button>
-  <div class="btn-group" role="group" aria-label="Basic example">
+  <div class="btn-group" role="group" aria-label="Zoom Control">
   <button *ngIf="!zoom" class="btn btn-secondary" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
   <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
   <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
