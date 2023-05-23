@@ -197,7 +197,7 @@ export class DirectedGraphExperimentService {
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
-    const selectAll = document.getElementById('select_all');
+   // const selectAll = document.getElementById('select_all');
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
@@ -323,29 +323,29 @@ export class DirectedGraphExperimentService {
       zoom.scaleTo(svg.transition().duration(750), 1);
       updateZoomLevel();
     });
-    d3.select('#select_all').on('click', function () {
-      const totalSize = nodeEnter.size();
-      const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
-      const count = nonSelectedNodes.size();
-      const notSelectedSize = totalSize - count;
-      if (notSelectedSize !== totalSize) {
-        selectAll.textContent = 'Unselect all';
-        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-          p.previouslySelected = p.selected;
-          return (p.selected = true);
-        });
-        d3.selectAll('.nodeText')
-        .style('fill', d => (d.selected ? 'blue' : '#999'))
-        .style('font-weight', d => (d.selected ? 700 : 400));
-      } else {
-        selectAll.textContent = 'Select all';
-        _d3.selectAll('.node-wrapper').classed('selected', false)
-        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-          return (p.selected = p.previouslySelected = false);
-        });
-        _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
-      }
-    });
+    // d3.select('#select_all').on('click', function () {
+    //   const totalSize = nodeEnter.size();
+    //   const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
+    //   const count = nonSelectedNodes.size();
+    //   const notSelectedSize = totalSize - count;
+    //   if (notSelectedSize !== totalSize) {
+    //     selectAll.textContent = 'Unselect all';
+    //     _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+    //       p.previouslySelected = p.selected;
+    //       return (p.selected = true);
+    //     });
+    //     d3.selectAll('.nodeText')
+    //     .style('fill', d => (d.selected ? 'blue' : '#999'))
+    //     .style('font-weight', d => (d.selected ? 700 : 400));
+    //   } else {
+    //     selectAll.textContent = 'Select all';
+    //     _d3.selectAll('.node-wrapper').classed('selected', false)
+    //     _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+    //       return (p.selected = p.previouslySelected = false);
+    //     });
+    //     _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
+    //   }
+    // });
 
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
