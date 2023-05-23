@@ -324,15 +324,34 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
     });
     d3.select('#select_all').on('click', function () {
-      _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-        p.previouslySelected = p.selected;
-        return (p.selected = true);
-      });
+      const selectAll = document.getElementById('select_all');
+      const totalSize = nodeEnter.size();
+      const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
+      const count = nonSelectedNodes.size();
+      console.log(totalSize,count)
+      const notSelectedSize = totalSize - count;
+      console.log(notSelectedSize)
+      if (notSelectedSize <= 0) {
+        console.log("There are nodes without the class .selected");
+        selectAll.textContent = 'Unselect all';
+        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+          p.previouslySelected = p.selected;
+          return (p.selected = true);
+        });
+        d3.selectAll('.nodeText')
+        .style('fill', d => (d.selected ? 'blue' : '#999'))
+        .style('font-weight', d => (d.selected ? 700 : 400));
+      } else {
+        console.log("All nodes have the class .selected");
+        selectAll.textContent = 'Select all';
+        _d3.selectAll('.node-wrapper').classed('selected', false)
+        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+          return (p.selected = p.previouslySelected = false);
+        });
+      }
 
-      d3.selectAll('.nodeText')
-      .style('fill', d => (d.selected ? 'blue' : '#999'))
-      .style('font-weight', d => (d.selected ? 700 : 400));
-      });
+
+    });
 
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
