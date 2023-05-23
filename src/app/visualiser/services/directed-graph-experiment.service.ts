@@ -246,8 +246,7 @@ export class DirectedGraphExperimentService {
 
     // Zoom Start
     const zoomContainer = _d3.select('svg g');
-    // Set reset btn as disabled before zoom activated
-    document.getElementById('zoom_reset').setAttribute('disabled', 'true');
+
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
     const updateZoomLevel = () => {
       const currentScale = currentZoom.k;
@@ -258,6 +257,10 @@ export class DirectedGraphExperimentService {
       const zoomInBtn = document.getElementById('zoom_in');
       const zoomOutBtn = document.getElementById('zoom_out');
       const zoomResetBtn = document.getElementById('zoom_reset');
+      // It might not exist depenidng on the this.zoom boolean
+      if (zoomResetBtn) {
+        zoomResetBtn.setAttribute('disabled', 'true');
+      } 
       
       // Check if the zoom level has changed before updating the display / allows for panning without showing the zoom percentage
       if (zoomLevelDisplay.innerHTML !== zoomLevelText) {
