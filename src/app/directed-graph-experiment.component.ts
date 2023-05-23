@@ -30,11 +30,13 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="float-right m-2">
-  <button class="btn btn-secondary ml-3" (click)="newData()">New data</button>
-  <button *ngIf="!zoom" class="btn btn-secondary ml-3" id="zoom_in">+</button>
-  <button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="zoom_out">-</button>
-  <button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="zoom_reset">Reset</button>
+  <button class="btn btn-secondary mr-3" (click)="newData()">New data</button>
+  <div class="btn-group" role="group" aria-label="Basic example">
+  <button *ngIf="!zoom" class="btn btn-secondary" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
+  <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
+  <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
   <!--<button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
+  </div>
   </div>
   <div class="float-left mt-2 ml-1">
   <span id="zoom_level" ></span>
