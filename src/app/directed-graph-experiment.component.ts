@@ -38,7 +38,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <!--<button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
   </div>
   </div>
-  <div class="float-left mt-2 ml-1">
+  <div *ngIf="!zoom" class="float-left mt-2 ml-1">
   <span id="zoom_level" ></span>
   </div>
   <app-context-menus
