@@ -323,6 +323,16 @@ export class DirectedGraphExperimentService {
       zoom.scaleTo(svg.transition().duration(750), 1);
       updateZoomLevel();
     });
+    d3.select('#select_all').on('click', function () {
+      _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+        p.previouslySelected = p.selected;
+        return (p.selected = true);
+      });
+
+      d3.selectAll('.nodeText')
+      .style('fill', d => (d.selected ? 'blue' : '#999'))
+      .style('font-weight', d => (d.selected ? 700 : 400));
+      });
 
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
@@ -677,8 +687,6 @@ export class DirectedGraphExperimentService {
 
       // remove style from selected node before the class is removed
       _d3.selectAll('.selected').selectAll('.nodeText').style('fill', '#212529');
-      // remove class when another node is clicked and ctrl is not held
-      //  _d3.selectAll('.selected').classed('selected', false);
       // Remove styles from all other nodes and labels on single left click
       _d3.selectAll('.edgelabel').style('fill', '#212529');
       _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
@@ -696,7 +704,6 @@ export class DirectedGraphExperimentService {
       
 			if (selectedSize !== 2) {
 				// We don't want to remove style if they are obtaining the context menu for just two nodes (create link option)
-        svg.selectAll('.selected').classed('selected', false);
         svg.selectAll('.selected').classed('selected', false);
         self.selectedNodesArray.next([]);
 				_d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
