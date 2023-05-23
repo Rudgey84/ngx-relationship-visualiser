@@ -26,10 +26,20 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 				opacity: 0;
 				transition: opacity 1s ease-in-out;
 			}
+      .buttonBar {
+        position: absolute;
+        right: 0px;
+        padding: 10px
+      }
+      .zoomIndicator {
+        position: absolute;
+        left: 0px;
+        padding: 10px
+      }
 		</style>
 
   <div class="page" id="pageId" (window:resize)="onResize($event)">
-  <div class="float-right m-2">
+  <div class="buttonBar">
   <button class="btn btn-secondary mr-3" (click)="newData()">New data</button>
   <div class="btn-group" role="group" aria-label="Zoom Control">
   <button *ngIf="!zoom" class="btn btn-secondary" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
@@ -38,7 +48,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <!--<button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
   </div>
   </div>
-  <div *ngIf="!zoom" class="float-left mt-2 ml-1">
+  <div *ngIf="!zoom" class="zoomIndicator">
   <span id="zoom_level" ></span>
   </div>
   <app-context-menus
