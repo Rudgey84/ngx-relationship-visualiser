@@ -41,7 +41,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="buttonBar">
   <button class="btn btn-secondary mr-3" (click)="newData()">New data</button>
-  <div class="btn-group" role="group" aria-label="Zoom Control">
+  <div *ngIf="!controls" class="btn-group" role="group" aria-label="Zoom Control">
   <button *ngIf="!zoom" class="btn btn-secondary" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
   <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
   <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
@@ -74,6 +74,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public width;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = false;
+  @Input() controls: boolean = false;
   constructor(
     private directedGraphExperimentService: DirectedGraphExperimentService,
     private contextMenuService: ContextMenuService
