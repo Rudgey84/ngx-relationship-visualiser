@@ -309,7 +309,7 @@ export class DirectedGraphExperimentService {
       });
     svg.call(zoom)
       .style('cursor', 'grab')
-      .on(!this.zoom ? null : 'wheel.zoom', null);
+      .on(this.zoom ? null : 'wheel.zoom', null);
     zoom.filter(() => !d3.event.shiftKey);
     
     // Zoom button controls

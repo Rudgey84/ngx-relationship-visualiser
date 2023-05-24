@@ -41,14 +41,14 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="buttonBar">
   <button class="btn btn-secondary mr-3" (click)="newData()">New data</button>
-  <div *ngIf="!controls" class="btn-group" role="group" aria-label="Zoom Control">
-  <button *ngIf="!zoom" class="btn btn-secondary" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
-  <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
-  <button *ngIf="!zoom"  class="btn btn-secondary" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
-  <!--<button *ngIf="!zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
+  <div *ngIf="controls" class="btn-group" role="group" aria-label="Zoom Control">
+  <button *ngIf="zoom" class="btn btn-secondary" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
+  <button *ngIf="zoom"  class="btn btn-secondary" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
+  <button *ngIf="zoom"  class="btn btn-secondary" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
+  <!--<button *ngIf="zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
   </div>
   </div>
-  <div *ngIf="!zoom" class="zoomIndicator">
+  <div *ngIf="zoom" class="zoomIndicator">
   <span id="zoom_level" ></span>
   </div>
   <app-context-menus
@@ -73,8 +73,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public selectedLinkArray;
   public width;
   @Input() readOnly: boolean = false;
-  @Input() zoom: boolean = false;
-  @Input() controls: boolean = false;
+  @Input() zoom: boolean = true;
+  @Input() controls: boolean = true;
   constructor(
     private directedGraphExperimentService: DirectedGraphExperimentService,
     private contextMenuService: ContextMenuService
