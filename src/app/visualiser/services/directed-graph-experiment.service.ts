@@ -251,7 +251,8 @@ export class DirectedGraphExperimentService {
     const updateZoomLevel = () => {
       const currentScale = currentZoom.k;
       const maxScale = zoom.scaleExtent()[1];
-      const zoomPercentage = ((currentScale - 0.5) / (maxScale - 0.5)) * 100;
+      console.log(maxScale)
+      const zoomPercentage = ((currentScale - 0.5) / (maxScale - 0.5)) * 200;
       const zoomLevelDisplay = document.getElementById('zoom_level');
       const zoomLevelText = `Zoom: ${zoomPercentage.toFixed(0)}%`;
       const zoomInBtn = document.getElementById('zoom_in');
