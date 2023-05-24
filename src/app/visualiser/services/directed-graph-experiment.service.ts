@@ -292,6 +292,7 @@ export class DirectedGraphExperimentService {
 
     const zoomed = () => {
       const transform = d3.event.transform;
+
       zoomContainer.attr('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
       currentZoom = transform;
       updateZoomLevel();
@@ -324,6 +325,32 @@ export class DirectedGraphExperimentService {
     d3.select('#zoom_reset').on('click', function () {
     //  0.50 is 0% and every 0.05 increase is 10%
       zoom.scaleTo(svg.transition().duration(750), 1);
+      updateZoomLevel();
+    });
+
+    d3.select('#zoom_all').on('click', function () {
+      const nodeBBox = zoomContainer.node().getBBox();
+    
+      // Calculate scale and translate values to fit all nodes
+      const scaleX = parentWidth / nodeBBox.width;
+      const scaleY = parentHeight / nodeBBox.height;
+      const scale = Math.min(scaleX, scaleY);
+    
+      const translateX = -nodeBBox.x * scale + (parentWidth - nodeBBox.width * scale) / 2;
+      const translateY = -nodeBBox.y * scale + (parentHeight - nodeBBox.height * scale) / 2;
+    
+      // Apply zoom transform to zoomContainer
+      zoomContainer
+        .transition()
+        .duration(750)
+        .call(zoom.transform, d3.zoomIdentity.translate(translateX, translateY).scale(scale));
+    
+      console.log(d3.zoomIdentity.translate(translateX, translateY).scale(scale))
+
+      // Update the currentZoom variable with the new transform
+      currentZoom.k = scale;
+      currentZoom.x = translateX;
+      currentZoom.y = translateY;
       updateZoomLevel();
     });
     // d3.select('#select_all').on('click', function () {
@@ -911,6 +938,7 @@ export class DirectedGraphExperimentService {
     });
 
     simulation.force('link').links(this.links);
+
   }
 
   public resetGraph(initialData, element,zoom) {
