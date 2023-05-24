@@ -257,7 +257,7 @@ export class DirectedGraphExperimentService {
       const zoomInBtn = document.getElementById('zoom_in');
       const zoomOutBtn = document.getElementById('zoom_out');
       const zoomResetBtn = document.getElementById('zoom_reset');
-      // It might not exist depenidng on the this.zoom boolean
+      // It might not exist depending on the this.zoom boolean
       if (zoomResetBtn) {
         zoomResetBtn.setAttribute('disabled', 'true');
       } 
