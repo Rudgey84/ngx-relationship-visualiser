@@ -41,11 +41,13 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="buttonBar">
   <button class="btn btn-secondary mr-3" (click)="newData()">New data</button>
+  <button class="btn btn-secondary mr-3" (click)="resetGraph()">Reset</button>
   <div *ngIf="controls" class="btn-group" role="group" aria-label="Zoom Control">
   <button *ngIf="zoom" class="btn btn-secondary" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
   <button *ngIf="zoom"  class="btn btn-secondary" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
   <button *ngIf="zoom"  class="btn btn-secondary" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
   <!--<button *ngIf="zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
+
   </div>
   </div>
   <div *ngIf="zoom" class="zoomIndicator">
@@ -72,6 +74,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public selectedNodeId;
   public selectedLinkArray;
   public width;
+
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -84,6 +87,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   set data(data: any) {
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
+      // Take a copy of input for reset
+      localStorage.setItem('originalData', JSON.stringify(data));
       this.directedGraphExperimentService.update(
         data,
         this.graphElement.nativeElement,
@@ -185,6 +190,12 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
   public createLinkEvent() {
     this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
+  }
+
+  public resetGraph() {
+    this.directedGraphExperimentService.resetGraph(JSON.parse(localStorage.getItem('originalData')),
+      this.graphElement.nativeElement,
+      this.zoom);
   }
 
   newData() {

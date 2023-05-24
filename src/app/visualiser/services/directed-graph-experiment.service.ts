@@ -912,4 +912,13 @@ export class DirectedGraphExperimentService {
 
     simulation.force('link').links(this.links);
   }
+
+  public resetGraph(initialData, element,zoom) {
+    // Reset the data to its initial state
+    this.nodes = [];
+    this.links = [];
+    // Call the update method again to re-simulate the graph with the new data
+    this.update(initialData, element, zoom);
+    
+  }
 }
