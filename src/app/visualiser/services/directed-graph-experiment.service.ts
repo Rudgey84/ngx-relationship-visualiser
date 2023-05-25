@@ -270,8 +270,8 @@ export class DirectedGraphExperimentService {
           zoomLevelDisplay.style.opacity = '0';
         }, 2000);
       }
-      // Disable the zoomInBtn if the zoom level is at 100%
-      if (zoomPercentage === 100) {
+      // Disable the zoomInBtn if the zoom level is at 200%
+      if (zoomPercentage === 200) {
         zoomInBtn.setAttribute('disabled', 'true');
       } else {
         zoomInBtn.removeAttribute('disabled');
@@ -282,8 +282,8 @@ export class DirectedGraphExperimentService {
       } else {
         zoomOutBtn.removeAttribute('disabled');
       }
-      // Disable the zoomResetBtn if the zoom level is at 50%
-      if (zoomPercentage === 50) {
+      // Disable the zoomResetBtn if the zoom level is at 100%
+      if (zoomPercentage === 100) {
         zoomResetBtn.setAttribute('disabled', 'true');
       } else {
         zoomResetBtn.removeAttribute('disabled');
