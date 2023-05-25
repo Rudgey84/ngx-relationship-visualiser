@@ -330,9 +330,9 @@ export class DirectedGraphExperimentService {
     d3.select('#zoom_all').on('click', function () {
       const nodeBBox = zoomContainer.node().getBBox();
     
-      // Calculate scale and translate values to fit all nodes
-      const scaleX = parentWidth / nodeBBox.width;
-      const scaleY = parentHeight / nodeBBox.height;
+      const padding = 30;
+      const scaleX = (parentWidth - padding * 2) / nodeBBox.width;
+      const scaleY = (parentHeight - padding * 2) / nodeBBox.height;
       const scale = Math.min(scaleX, scaleY);
     
       const translateX = -nodeBBox.x * scale + (parentWidth - nodeBBox.width * scale) / 2;
