@@ -197,7 +197,7 @@ export class DirectedGraphExperimentService {
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
-   // const selectAll = document.getElementById('select_all');
+
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
@@ -251,7 +251,6 @@ export class DirectedGraphExperimentService {
     const updateZoomLevel = () => {
       const currentScale = currentZoom.k;
       const maxScale = zoom.scaleExtent()[1];
-      console.log(maxScale)
       const zoomPercentage = ((currentScale - 0.5) / (maxScale - 0.5)) * 200;
       const zoomLevelDisplay = document.getElementById('zoom_level');
       const zoomLevelText = `Zoom: ${zoomPercentage.toFixed(0)}%`;
@@ -324,7 +323,6 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
     });
     d3.select('#zoom_reset').on('click', function () {
-    //  0.50 is 0% and every 0.05 increase is 10%
       zoom.scaleTo(svg.transition().duration(750), 1);
       updateZoomLevel();
     });
@@ -355,6 +353,7 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
     });
     // d3.select('#select_all').on('click', function () {
+    // const selectAll = document.getElementById('select_all');
     //   const totalSize = nodeEnter.size();
     //   const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
     //   const count = nonSelectedNodes.size();
