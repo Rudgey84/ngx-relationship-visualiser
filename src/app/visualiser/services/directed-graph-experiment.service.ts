@@ -338,18 +338,45 @@ export class DirectedGraphExperimentService {
       const translateX = -nodeBBox.x * scale + (parentWidth - nodeBBox.width * scale) / 2;
       const translateY = -nodeBBox.y * scale + (parentHeight - nodeBBox.height * scale) / 2;
     
+      // Get the bounding box of all nodes
+      const allNodes = zoomContainer.selectAll('.node-wrapper');
+      const allNodesBBox = allNodes.nodes().reduce((acc, node) => {
+        const nodeBBox = node.getBBox();
+        acc.x = Math.min(acc.x, nodeBBox.x);
+        acc.y = Math.min(acc.y, nodeBBox.y);
+        acc.width = Math.max(acc.width, nodeBBox.x + nodeBBox.width);
+        acc.height = Math.max(acc.height, nodeBBox.y + nodeBBox.height);
+        return acc;
+      }, { x: Infinity, y: Infinity, width: -Infinity, height: -Infinity });
+    
+      // Check if all nodes are within the viewable container
+      if (
+        allNodesBBox.x * scale >= 0 &&
+        allNodesBBox.y * scale >= 0 &&
+        allNodesBBox.width * scale <= parentWidth &&
+        allNodesBBox.height * scale <= parentHeight
+      ) {
+        // All nodes are within the viewable container, no need to apply zoom transform
+        return;
+      }
+    
+      // Manually reset the zoom transform
+      zoomContainer
+        .transition()
+        .duration(750)
+        .attr('transform', 'translate(0, 0) scale(1)');
+    
       // Apply zoom transform to zoomContainer
       zoomContainer
         .transition()
         .duration(750)
-        .call(zoom.transform, d3.zoomIdentity.translate(translateX, translateY).scale(scale));
+        .attr('transform', `translate(${translateX}, ${translateY}) scale(${scale})`);
     
-      console.log(d3.zoomIdentity.translate(translateX, translateY).scale(scale))
-
       // Update the currentZoom variable with the new transform
-      currentZoom.k = scale;
       currentZoom.x = translateX;
       currentZoom.y = translateY;
+      currentZoom.k = scale;
+    
       updateZoomLevel();
     });
     // d3.select('#select_all').on('click', function () {
