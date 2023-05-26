@@ -3,6 +3,7 @@
   [readOnly]="false"
 	[zoom]="true"
 	[controls]="true"
+	[showAll]="false"
   (viewLinkContextMenuEvent)="viewLinkEvent(viewLinkModal, $event)"
   (viewNodeContextMenuEvent)="viewNodeEvent(viewNodeModal, $event)"
 	(createLinkContextMenuEvent)="createLinkEvent(createLinkModal, $event)"
@@ -18,7 +19,7 @@
 			</button>
 		</div>
 		<div class="modal-body">
-{{viewLinkArray[0].label}}
+			{{viewLinkArray[0].label}}
 		</div>
 	</ng-template>
 	<!-- ./MODAL-->

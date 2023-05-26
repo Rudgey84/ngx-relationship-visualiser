@@ -15,15 +15,17 @@ export class DirectedGraphExperimentService {
   public shiftKey;
   public extent = null;
   public zoom = false;
+  public showAll = false;
   /** RxJS subject to listen for updates of the selection */
   selectedNodesArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
 
-  public update(data, element, zoom) {
+  public update(data, element, zoom, showAll) {
     const svg = d3.select(element);
     this.zoom = zoom;
+    this.showAll = showAll
     return this._update(d3, svg, data);
   }
 
@@ -326,8 +328,8 @@ export class DirectedGraphExperimentService {
       zoom.scaleTo(svg.transition().duration(750), 1);
       updateZoomLevel();
     });
-
-    d3.select('#zoom_all').on('click', function () {
+    // Show All function and Button
+    const handleShowAll = () => {
       const nodeBBox = zoomContainer.node().getBBox();
       
       // Calculate scale and translate values to fit all nodes
@@ -377,9 +379,13 @@ export class DirectedGraphExperimentService {
       currentZoom.x = translateX;
       currentZoom.y = translateY;
       currentZoom.k = scale;
-    
+      console.log(translateX, translateY, scale)
       updateZoomLevel();
-    });
+	  
+	  }
+    d3.select('#zoom_all').on('click', handleShowAll);
+    
+    
     // d3.select('#select_all').on('click', function () {
     // const selectAll = document.getElementById('select_all');
     //   const totalSize = nodeEnter.size();
@@ -960,21 +966,28 @@ export class DirectedGraphExperimentService {
     nodeEnter.append('title').text(function (d) {
       return d.label;
     });
-
+    
     simulation.nodes(this.nodes).on('tick', () => {
       this.ticked(linkEnter, nodeEnter, edgepathsEnter);
     });
 
+    if (this.showAll){
+      simulation.on('end', () => {
+        handleShowAll();
+      });
+    }
+
     simulation.force('link').links(this.links);
+    
 
   }
 
-  public resetGraph(initialData, element,zoom) {
+  public resetGraph(initialData, element, zoom, showAll) {
     // Reset the data to its initial state
     this.nodes = [];
     this.links = [];
     // Call the update method again to re-simulate the graph with the new data
-    this.update(initialData, element, zoom);
+    this.update(initialData, element, zoom, showAll);
     
   }
 }

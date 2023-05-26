@@ -33,7 +33,7 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: 100,
+        fx: 1000,
         fy: 400,
         attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
       },

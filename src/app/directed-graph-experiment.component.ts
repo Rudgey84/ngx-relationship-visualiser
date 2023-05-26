@@ -79,6 +79,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
+  @Input() showAll: boolean = false;
   constructor(
     private directedGraphExperimentService: DirectedGraphExperimentService,
     private contextMenuService: ContextMenuService
@@ -93,7 +94,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
       this.directedGraphExperimentService.update(
         data,
         this.graphElement.nativeElement,
-        this.zoom
+        this.zoom, 
+        this.showAll
       );
     }, 500);
   }
