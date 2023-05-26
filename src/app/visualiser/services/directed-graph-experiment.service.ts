@@ -119,7 +119,8 @@ export class DirectedGraphExperimentService {
       )
       .force('charge', _d3.forceManyBody().strength(0.1))
       .force('center', _d3.forceCenter(width / 2, height / 2))
-      .force('collision', _d3.forceCollide().radius(15));
+      .force('collision', _d3.forceCollide().radius(15))
+      
   }
 
   private compareAndMarkNodesNew(nodes, old_nodes) {
@@ -967,19 +968,22 @@ export class DirectedGraphExperimentService {
       return d.label;
     });
     
+    const maxTicks = 30;
+    let tickCount = 0;
+    let showAllCalled = false;
+    
     simulation.nodes(this.nodes).on('tick', () => {
-      this.ticked(linkEnter, nodeEnter, edgepathsEnter);
+      if (this.showAll && tickCount >= maxTicks && !showAllCalled) {
+        simulation.stop();
+        handleShowAll();
+        showAllCalled = true;
+      } else {
+        this.ticked(linkEnter, nodeEnter, edgepathsEnter);
+        tickCount++;
+      }
     });
 
-    if (this.showAll){
-      simulation.on('end', () => {
-        handleShowAll();
-      });
-    }
-
     simulation.force('link').links(this.links);
-    
-
   }
 
   public resetGraph(initialData, element, zoom, showAll) {
