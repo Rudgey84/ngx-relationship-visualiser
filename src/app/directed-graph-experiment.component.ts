@@ -40,12 +40,16 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="buttonBar">
-  <button type="button" class="btn btn-secondary mr-3" (click)="newData()">New data</button>
+  <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
   <button type="button" class="btn btn-secondary mr-3" (click)="resetGraph()"><i class="bi bi-skip-backward"></i></button>
   <div *ngIf="controls" class="btn-group" role="group" aria-label="Zoom Control">
   <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
   <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
-  <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
+  <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" fill="currentColor" class="" viewBox="0 0 16 16">
+  <path
+    d="m2.3443 6.8704a5.0371 5.0371 90 008.2685 1.7424 5.0054 5.0054 90 000-7.128 5.0054 5.0054 90 00-7.128 0c-.1742.1742-.3326.3485-.4752.5386v.0634h.7445c.396 0 .7286.3326.7286.7286s-.3326.7128-.7286.7128h-2.3285c-.2059 0-.396-.095-.5227-.2218-.1426-.1426-.2218-.3168-.2218-.5227v-2.3126c0-.396.3168-.7128.7128-.7128s.7128.3168.7128.7128v.5069l.0158.0158a6.3518 6.3518 90 019.8683 8.0626l3.3581 3.3581a.6653.6653 90 01-.9346.9346l-3.3581-3.3581a6.3518 6.3518 90 01-10.0267-2.9621.6653.6653 90 011.3147-.1584z"
+  />
+</svg></button>
   <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
   <!--<button type="button" *ngIf="zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
 
