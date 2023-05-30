@@ -267,30 +267,38 @@ export class DirectedGraphExperimentService {
       } 
       
       // Check if the zoom level has changed before updating the display / allows for panning without showing the zoom percentage
-      if (zoomLevelDisplay.innerHTML !== zoomLevelText) {
+      if (zoomLevelDisplay && zoomLevelDisplay.innerHTML !== zoomLevelText) {
         zoomLevelDisplay.innerHTML = zoomLevelText;
         zoomLevelDisplay.style.opacity = '1';
         setTimeout(() => {
-          zoomLevelDisplay.style.opacity = '0';
+          if (zoomLevelDisplay) {
+            zoomLevelDisplay.style.opacity = '0';
+          }
         }, 2000);
       }
       // Disable the zoomInBtn if the zoom level is at 200%
-      if (zoomPercentage === 200) {
-        zoomInBtn.setAttribute('disabled', 'true');
-      } else {
-        zoomInBtn.removeAttribute('disabled');
+      if (zoomInBtn) {
+        if (zoomPercentage === 200) {
+          zoomInBtn.setAttribute('disabled', 'true');
+        } else {
+          zoomInBtn.removeAttribute('disabled');
+        }
       }
       // Disable the zoomOutBtn if the zoom level is at 0%
-      if (zoomPercentage === 0) {
-        zoomOutBtn.setAttribute('disabled', 'true');
-      } else {
-        zoomOutBtn.removeAttribute('disabled');
+      if (zoomOutBtn) {
+        if (zoomPercentage === 0) {
+          zoomOutBtn.setAttribute('disabled', 'true');
+        } else {
+          zoomOutBtn.removeAttribute('disabled');
+        }
       }
       // Disable the zoomResetBtn if the zoom level is at 100%
-      if (zoomPercentage === 100) {
-        zoomResetBtn.setAttribute('disabled', 'true');
-      } else {
-        zoomResetBtn.removeAttribute('disabled');
+      if (zoomResetBtn) {
+        if (zoomPercentage === 100) {
+          zoomResetBtn.setAttribute('disabled', 'true');
+        } else {
+          zoomResetBtn.removeAttribute('disabled');
+        }
       }
     };
 
