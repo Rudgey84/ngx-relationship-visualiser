@@ -15,17 +15,17 @@ export class DirectedGraphExperimentService {
   public shiftKey;
   public extent = null;
   public zoom = false;
-  public showAll = false;
+  public zoomToFit = false;
   /** RxJS subject to listen for updates of the selection */
   selectedNodesArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
 
-  public update(data, element, zoom, showAll) {
+  public update(data, element, zoom, zoomToFit) {
     const svg = d3.select(element);
     this.zoom = zoom;
-    this.showAll = showAll
+    this.zoomToFit = zoomToFit
     return this._update(d3, svg, data);
   }
 
@@ -331,7 +331,7 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
     });
     // Show All function and Button
-    const handleShowAll = () => {
+    const handleZoomToFit = () => {
       const nodeBBox = zoomContainer.node().getBBox();
       
       // Calculate scale and translate values to fit all nodes
@@ -385,7 +385,7 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
 	  
 	  }
-    d3.select('#zoom_to_fit').on('click', handleShowAll);
+    d3.select('#zoom_to_fit').on('click', handleZoomToFit);
     
     
     // d3.select('#select_all').on('click', function () {
@@ -971,13 +971,13 @@ export class DirectedGraphExperimentService {
     
     const maxTicks = 30;
     let tickCount = 0;
-    let showAllCalled = false;
+    let zoomToFitCalled = false;
     
     simulation.nodes(this.nodes).on('tick', () => {
-      if (this.showAll && tickCount >= maxTicks && !showAllCalled) {
+      if (this.zoomToFit && tickCount >= maxTicks && !zoomToFitCalled) {
         simulation.stop();
-        handleShowAll();
-        showAllCalled = true;
+        handleZoomToFit();
+        zoomToFitCalled = true;
       } else {
         this.ticked(linkEnter, nodeEnter, edgepathsEnter);
         tickCount++;
@@ -987,12 +987,12 @@ export class DirectedGraphExperimentService {
     simulation.force('link').links(this.links);
   }
 
-  public resetGraph(initialData, element, zoom, showAll) {
+  public resetGraph(initialData, element, zoom, zoomToFit) {
     // Reset the data to its initial state
     this.nodes = [];
     this.links = [];
     // Call the update method again to re-simulate the graph with the new data
-    this.update(initialData, element, zoom, showAll);
+    this.update(initialData, element, zoom, zoomToFit);
     
   }
 }
