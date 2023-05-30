@@ -46,7 +46,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
   <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
   <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
-  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="All in view" id="zoom_all"><i class="bi bi-arrows-fullscreen"></i></button>
+  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
   <!--<button type="button" *ngIf="zoom"  class="btn btn-secondary ml-1" id="select_all">Select all</button>-->
 
   </div>

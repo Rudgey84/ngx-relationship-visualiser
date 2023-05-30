@@ -385,7 +385,7 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
 	  
 	  }
-    d3.select('#zoom_all').on('click', handleShowAll);
+    d3.select('#zoom_to_fit').on('click', handleShowAll);
     
     
     // d3.select('#select_all').on('click', function () {
