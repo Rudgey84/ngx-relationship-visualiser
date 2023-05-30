@@ -16,6 +16,7 @@ export class DirectedGraphExperimentService {
   public extent = null;
   public zoom = false;
   public zoomToFit = false;
+  
   /** RxJS subject to listen for updates of the selection */
   selectedNodesArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
