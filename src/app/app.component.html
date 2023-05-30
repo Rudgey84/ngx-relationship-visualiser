@@ -1,8 +1,9 @@
 <dge-directed-graph-experiment
   [data]="mockedData"
   [readOnly]="false"
-	[zoom]="false"
-	[zoomToFit]="true"
+	[zoom]="true"
+	[controls]="true"
+	[zoomToFit]="false"
   (viewLinkContextMenuEvent)="viewLinkEvent(viewLinkModal, $event)"
   (viewNodeContextMenuEvent)="viewNodeEvent(viewNodeModal, $event)"
 	(createLinkContextMenuEvent)="createLinkEvent(createLinkModal, $event)"
