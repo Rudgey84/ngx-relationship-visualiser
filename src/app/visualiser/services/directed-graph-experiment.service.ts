@@ -16,7 +16,7 @@ export class DirectedGraphExperimentService {
   public extent = null;
   public zoom = false;
   public zoomToFit = false;
-  
+
   /** RxJS subject to listen for updates of the selection */
   selectedNodesArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
@@ -331,7 +331,7 @@ export class DirectedGraphExperimentService {
       zoom.scaleTo(svg.transition().duration(750), 1);
       updateZoomLevel();
     });
-    // Show All function and Button
+    // SZoom to fit function and Button
     const handleZoomToFit = () => {
       const nodeBBox = zoomContainer.node().getBBox();
       
