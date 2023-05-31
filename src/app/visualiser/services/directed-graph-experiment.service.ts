@@ -339,7 +339,7 @@ export class DirectedGraphExperimentService {
       zoom.scaleTo(svg.transition().duration(750), 1);
       updateZoomLevel();
     });
-    // SZoom to fit function and Button
+    // Zoom to fit function and Button
     const handleZoomToFit = () => {
       const nodeBBox = zoomContainer.node().getBBox();
       
@@ -396,31 +396,33 @@ export class DirectedGraphExperimentService {
 	  }
     d3.select('#zoom_to_fit').on('click', handleZoomToFit);
     
+    const selectAllNodes = document.getElementById('select_all');
     
-    // d3.select('#select_all').on('click', function () {
-    // const selectAll = document.getElementById('select_all');
-    //   const totalSize = nodeEnter.size();
-    //   const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
-    //   const count = nonSelectedNodes.size();
-    //   const notSelectedSize = totalSize - count;
-    //   if (notSelectedSize !== totalSize) {
-    //     selectAll.textContent = 'Unselect all';
-    //     _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-    //       p.previouslySelected = p.selected;
-    //       return (p.selected = true);
-    //     });
-    //     d3.selectAll('.nodeText')
-    //     .style('fill', d => (d.selected ? 'blue' : '#999'))
-    //     .style('font-weight', d => (d.selected ? 700 : 400));
-    //   } else {
-    //     selectAll.textContent = 'Select all';
-    //     _d3.selectAll('.node-wrapper').classed('selected', false)
-    //     _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-    //       return (p.selected = p.previouslySelected = false);
-    //     });
-    //     _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
-    //   }
-    // });
+    d3.select('#select_all').on('click', function () {
+   // const selectAll = document.getElementById('select_all');
+      const totalSize = nodeEnter.size();
+      const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
+      const count = nonSelectedNodes.size();
+      const notSelectedSize = totalSize - count;
+      if (notSelectedSize !== totalSize) {
+
+        selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+          p.previouslySelected = p.selected;
+          return (p.selected = true);
+        });
+        d3.selectAll('.nodeText')
+        .style('fill', d => (d.selected ? 'blue' : '#999'))
+        .style('font-weight', d => (d.selected ? 700 : 400));
+      } else {
+        selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+        _d3.selectAll('.node-wrapper').classed('selected', false)
+        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+          return (p.selected = p.previouslySelected = false);
+        });
+        _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
+      }
+    });
 
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
@@ -751,7 +753,11 @@ export class DirectedGraphExperimentService {
 
       // setting the select attribute to the object on single select so we can drag them
       d.selected = 1;
-
+      nodeEnter.each(function (d) {
+        d.selected = false;
+        d.previouslySelected = false;
+      });
+      selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
         // toggle the class on and off when ctrl click is active
@@ -812,6 +818,7 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.selected').classed('selected', false);
       _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
       self.selectedNodesArray.next([]);
+      selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
     });
 
     nodeEnter
