@@ -764,7 +764,7 @@ export class DirectedGraphExperimentService {
 				clickedNode.classed('selected', !isSelected);
 				d.selected = !isSelected;
 				d.previouslySelected = !isSelected;
-        
+
         // remove the single click styling on other nodes and labels
         _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
         _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
