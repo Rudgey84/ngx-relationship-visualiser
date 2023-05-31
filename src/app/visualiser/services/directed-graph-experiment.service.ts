@@ -397,32 +397,32 @@ export class DirectedGraphExperimentService {
     d3.select('#zoom_to_fit').on('click', handleZoomToFit);
     
     const selectAllNodes = document.getElementById('select_all');
-    
-    d3.select('#select_all').on('click', function () {
+    const handleSelectAllNodes = () => {
    // const selectAll = document.getElementById('select_all');
-      const totalSize = nodeEnter.size();
-      const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
-      const count = nonSelectedNodes.size();
-      const notSelectedSize = totalSize - count;
-      if (notSelectedSize !== totalSize) {
+   const totalSize = nodeEnter.size();
+   const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
+   const count = nonSelectedNodes.size();
+   const notSelectedSize = totalSize - count;
+   if (notSelectedSize !== totalSize) {
 
-        selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
-        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-          p.previouslySelected = p.selected;
-          return (p.selected = true);
-        });
-        d3.selectAll('.nodeText')
-        .style('fill', d => (d.selected ? 'blue' : '#999'))
-        .style('font-weight', d => (d.selected ? 700 : 400));
-      } else {
-        selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
-        _d3.selectAll('.node-wrapper').classed('selected', false)
-        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-          return (p.selected = p.previouslySelected = false);
-        });
-        _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
+     selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+     _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+       p.previouslySelected = p.selected;
+       return (p.selected = true);
+     });
+     d3.selectAll('.nodeText')
+     .style('fill', d => (d.selected ? 'blue' : '#999'))
+     .style('font-weight', d => (d.selected ? 700 : 400));
+   } else {
+     selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+     _d3.selectAll('.node-wrapper').classed('selected', false)
+     _d3.selectAll('.node-wrapper').classed('selected', function (p) {
+       return (p.selected = p.previouslySelected = false);
+     });
+     _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
       }
-    });
+    }
+    d3.select('#select_all').on('click', handleSelectAllNodes);
 
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
