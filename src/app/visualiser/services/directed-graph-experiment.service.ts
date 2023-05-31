@@ -403,6 +403,7 @@ export class DirectedGraphExperimentService {
    const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
    const count = nonSelectedNodes.size();
    const notSelectedSize = totalSize - count;
+
    if (notSelectedSize !== totalSize) {
 
      selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
@@ -497,6 +498,17 @@ export class DirectedGraphExperimentService {
           .style('fill', '#212529')
           .style('font-weight', 400);
 
+          const totalSize = nodeEnter.size();
+          const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
+          const count = nonSelectedNodes.size();
+          const notSelectedSize = totalSize - count;
+
+          if (notSelectedSize === totalSize){
+            selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+          } else {
+            selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+          }
+
         // counts number of selected classes to not exceed 2
         const selectedSize = nodeEnter.selectAll('.selected').size();
         if (selectedSize <= 2) {
@@ -508,6 +520,7 @@ export class DirectedGraphExperimentService {
         } else {
           self.selectedNodesArray.next([]);
         }
+ 
       });
 
     let keyup = () => {
@@ -525,7 +538,7 @@ export class DirectedGraphExperimentService {
       // Allows us to turn off default listeners for keyModifiers(shift)
       brush.filter(() => d3.event.shiftKey);
       brush.keyModifiers(false);
-      // holding S key
+      // holding shift key
       if (d3.event.keyCode === 16) {
         this.shiftKey = true;
 
@@ -753,11 +766,11 @@ export class DirectedGraphExperimentService {
 
       // setting the select attribute to the object on single select so we can drag them
       d.selected = 1;
-
+      
       selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
-        
+
 				// toggle the class on and off when ctrl click is active
 				const clickedNode = d3.select(this);
 				const isSelected = clickedNode.classed('selected');
@@ -765,6 +778,14 @@ export class DirectedGraphExperimentService {
 				d.selected = !isSelected;
 				d.previouslySelected = !isSelected;
 
+        const totalSize = nodeEnter.size();
+        const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
+        const count = nonSelectedNodes.size();
+        const notSelectedSize = totalSize - count;
+
+        if (notSelectedSize === totalSize){
+          selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+        }
         // remove the single click styling on other nodes and labels
         _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
         _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
