@@ -753,15 +753,18 @@ export class DirectedGraphExperimentService {
 
       // setting the select attribute to the object on single select so we can drag them
       d.selected = 1;
-      nodeEnter.each(function (d) {
-        d.selected = false;
-        d.previouslySelected = false;
-      });
+
       selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
-        // toggle the class on and off when ctrl click is active
-        d3.select(this).classed('selected', !d3.select(this).classed('selected'));
+        
+				// toggle the class on and off when ctrl click is active
+				const clickedNode = d3.select(this);
+				const isSelected = clickedNode.classed('selected');
+				clickedNode.classed('selected', !isSelected);
+				d.selected = !isSelected;
+				d.previouslySelected = !isSelected;
+        
         // remove the single click styling on other nodes and labels
         _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
         _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
