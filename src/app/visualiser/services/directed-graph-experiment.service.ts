@@ -801,6 +801,11 @@ export class DirectedGraphExperimentService {
           return filterId;
         }
         return null;
+      } else {
+        nodeEnter.each(function (d) {
+          d.selected = false;
+          d.previouslySelected = false;
+        });
       }
 
       // remove style from selected node before the class is removed
