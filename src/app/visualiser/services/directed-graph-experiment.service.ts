@@ -323,7 +323,7 @@ export class DirectedGraphExperimentService {
     svg.call(zoom)
       .style('cursor', 'grab')
       .on(this.zoom ? null : 'wheel.zoom', null)
-      .on("dblclick.zoom", null)
+      .on('dblclick.zoom', null);
     zoom.filter(() => !d3.event.shiftKey);
     
     // Zoom button controls
@@ -354,14 +354,17 @@ export class DirectedGraphExperimentService {
     
       // Get the bounding box of all nodes
       const allNodes = zoomContainer.selectAll('.node-wrapper');
-      const allNodesBBox = allNodes.nodes().reduce((acc, node) => {
+      const allNodesBBox = allNodes.nodes().reduce(
+        (acc, node) => {
         const nodeBBox = node.getBBox();
         acc.x = Math.min(acc.x, nodeBBox.x);
         acc.y = Math.min(acc.y, nodeBBox.y);
         acc.width = Math.max(acc.width, nodeBBox.x + nodeBBox.width);
         acc.height = Math.max(acc.height, nodeBBox.y + nodeBBox.height);
         return acc;
-      }, { x: Infinity, y: Infinity, width: -Infinity, height: -Infinity });
+      }, 
+      { x: Infinity, y: Infinity, width: -Infinity, height: -Infinity }
+      );
     
       // Check if all nodes are within the viewable container
       if (
@@ -375,25 +378,18 @@ export class DirectedGraphExperimentService {
       }
     
       // Manually reset the zoom transform
-      zoomContainer
-        .transition()
-        .duration(750)
-        .attr('transform', 'translate(0, 0) scale(1)');
+      zoomContainer.transition().duration(750).attr('transform', 'translate(0, 0) scale(1)');
     
       // Apply zoom transform to zoomContainer
-      zoomContainer
-        .transition()
-        .duration(750)
-        .attr('transform', `translate(${translateX}, ${translateY}) scale(${scale})`);
+      zoomContainer.transition().duration(750).attr('transform', `translate(${translateX}, ${translateY}) scale(${scale})`);
     
       // Update the currentZoom variable with the new transform
       currentZoom.x = translateX;
       currentZoom.y = translateY;
       currentZoom.k = scale;
-      console.log(translateX, translateY, scale)
       updateZoomLevel();
 	  
-	  }
+	  };
     d3.select('#zoom_to_fit').on('click', handleZoomToFit);
     
     const selectAllNodes = document.getElementById('select_all');
