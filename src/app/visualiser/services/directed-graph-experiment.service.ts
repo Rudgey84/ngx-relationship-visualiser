@@ -403,6 +403,7 @@ export class DirectedGraphExperimentService {
    if (notSelectedSize !== totalSize) {
 
      selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+     selectAllNodes.style.opacity = '0.65';
      _d3.selectAll('.node-wrapper').classed('selected', function (p) {
        p.previouslySelected = p.selected;
        return (p.selected = true);
@@ -412,6 +413,7 @@ export class DirectedGraphExperimentService {
      .style('font-weight', d => (d.selected ? 700 : 400));
    } else {
      selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+     selectAllNodes.style.opacity = '1';
      _d3.selectAll('.node-wrapper').classed('selected', false);
      _d3.selectAll('.node-wrapper').classed('selected', function (p) {
        return (p.selected = p.previouslySelected = false);
@@ -501,8 +503,10 @@ export class DirectedGraphExperimentService {
 
           if (notSelectedSize === totalSize){
             selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+            selectAllNodes.style.opacity = '0.65';
           } else {
             selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+            selectAllNodes.style.opacity = '1';
           }
 
         // counts number of selected classes to not exceed 2
@@ -764,6 +768,7 @@ export class DirectedGraphExperimentService {
       d.selected = 1;
       
       selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+      selectAllNodes.style.opacity = '1';
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
 
@@ -781,6 +786,7 @@ export class DirectedGraphExperimentService {
 
         if (notSelectedSize === totalSize){
           selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+          selectAllNodes.style.opacity = '0.65';
         }
         // remove the single click styling on other nodes and labels
         _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
@@ -850,6 +856,7 @@ export class DirectedGraphExperimentService {
       _d3.selectAll('.edgelabel').style('fill', '#212529').style('font-weight', 400);
       self.selectedNodesArray.next([]);
       selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+      selectAllNodes.style.opacity = '1';
     });
 
     nodeEnter
