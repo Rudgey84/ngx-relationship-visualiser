@@ -412,13 +412,13 @@ export class DirectedGraphExperimentService {
      .style('font-weight', d => (d.selected ? 700 : 400));
    } else {
      selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
-     _d3.selectAll('.node-wrapper').classed('selected', false)
+     _d3.selectAll('.node-wrapper').classed('selected', false);
      _d3.selectAll('.node-wrapper').classed('selected', function (p) {
        return (p.selected = p.previouslySelected = false);
      });
      _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
       }
-    }
+    };
     d3.select('#select_all').on('click', handleSelectAllNodes);
 
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
@@ -790,10 +790,12 @@ export class DirectedGraphExperimentService {
         const selectedSize = svg.selectAll('.selected').size();
 
         if (selectedSize <= 2) {
-          // As we allow for single click without a ctrl+click to select two nodes, we have to apply d.selected to it
-          _d3.selectAll('.selected').attr('selected', true).each(function(d) {
-            d.selected = true;
-          });
+					// As we allow for single click without a ctrl+click to select two nodes, we have to apply d.selected to it
+					_d3.selectAll('.selected')
+						.attr('selected', true)
+						.each(function (d) {
+							d.selected = true;
+						});
           // get data from node
           const localselectedNodesArray = _d3.selectAll('.selected').data();
           const filterId = localselectedNodesArray.filter(x => x);
