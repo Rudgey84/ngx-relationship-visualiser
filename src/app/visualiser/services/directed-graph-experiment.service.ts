@@ -847,11 +847,13 @@ export class DirectedGraphExperimentService {
 
         if (selectedSize <= 2) {
 					// As we allow for single click without a ctrl+click to select two nodes, we have to apply d.selected to it
-					_d3.selectAll('.selected')
-						.attr('selected', true)
-						.each(function (d) {
-							d.selected = true;
-						});
+          _d3.selectAll('.selected')
+          .attr('selected', true)
+          .each(function (d) {
+            if (d) {
+              d.selected = true;
+            }
+          });
           // get data from node
           const localselectedNodesArray = _d3.selectAll('.selected').data();
           const filterId = localselectedNodesArray.filter(x => x);
