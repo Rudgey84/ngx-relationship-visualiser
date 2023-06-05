@@ -47,8 +47,8 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
   <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
   <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
-  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-3x3-gap-fill"></i></button>
-  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-calendar3-week"></i></button>
+  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
+  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
   </div>
   </div>
   <div *ngIf="zoom" class="zoomIndicator">
