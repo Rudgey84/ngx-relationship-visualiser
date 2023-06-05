@@ -394,7 +394,7 @@ export class DirectedGraphExperimentService {
     
     const selectAllNodes = document.getElementById('select_all');
     const handleSelectAllNodes = () => {
-   // const selectAll = document.getElementById('select_all');
+
    const totalSize = nodeEnter.size();
    const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
    const count = nonSelectedNodes.size();
@@ -448,6 +448,7 @@ const handleToggleSelection = () => {
     d3.selectAll('.nodeText')
       .style('fill', d => (d.selected ? 'blue' : '#999'))
       .style('font-weight', d => (d.selected ? 700 : 400));
+
   } else if (nonSelectedCount > 0) {
     // Select all nodes if none are selected
 
@@ -458,6 +459,16 @@ const handleToggleSelection = () => {
 
     // Update styles of node elements
     d3.selectAll('.nodeText').style('font-weight', 700).style('fill', 'blue');
+  }
+
+  if (selectedCount === totalSize) {
+    // Update the state of another button if all nodes are selected
+    selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i>';
+    selectAllNodes.style.opacity = '1';
+  } else {
+    // Update the state of another button if not all nodes are selected
+    selectAllNodes.innerHTML = '<i class="bi bi-grid-3x3-gap"></i>';
+    selectAllNodes.style.opacity = '0.65';
   }
 };
 
