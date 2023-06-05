@@ -423,6 +423,46 @@ export class DirectedGraphExperimentService {
     };
     d3.select('#select_all').on('click', handleSelectAllNodes);
 
+    const toggleSelection = document.getElementById('toggle_selection');
+const handleToggleSelection = () => {
+  const totalSize = nodeEnter.size();
+  const selectedNodes = d3.selectAll('.node-wrapper.selected');
+  const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
+  const selectedCount = selectedNodes.size();
+  const nonSelectedCount = nonSelectedNodes.size();
+
+  if (selectedCount > 0) {
+    // Deselect selected nodes and select non-selected nodes
+
+    selectedNodes.classed('selected', function (p) {
+      p.previouslySelected = p.selected;
+      return (p.selected = false);
+    });
+
+    nonSelectedNodes.classed('selected', function (p) {
+      p.previouslySelected = p.selected;
+      return (p.selected = true);
+    });
+
+    // Update styles of node elements
+    d3.selectAll('.nodeText')
+      .style('fill', d => (d.selected ? 'blue' : '#999'))
+      .style('font-weight', d => (d.selected ? 700 : 400));
+  } else if (nonSelectedCount > 0) {
+    // Select all nodes if none are selected
+
+    d3.selectAll('.node-wrapper').classed('selected', function (p) {
+      p.previouslySelected = p.selected;
+      return (p.selected = true);
+    });
+
+    // Update styles of node elements
+    d3.selectAll('.nodeText').style('font-weight', 700).style('fill', 'blue');
+  }
+};
+
+d3.select('#toggle_selection').on('click', handleToggleSelection);
+
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
       const currentScale = currentZoom.k;
