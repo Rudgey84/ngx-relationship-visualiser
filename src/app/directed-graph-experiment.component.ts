@@ -36,6 +36,15 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         left: 0px;
         padding: 10px
       }
+      .noMatchesText {
+        opacity: 0;
+        transition: opacity 0.5s;
+        color: red;
+      }
+      
+      .noMatchesText.show {
+        opacity: 1;
+      }
 		</style>
 
     <div class="page" id="pageId" (window:resize)="onResize($event)">
@@ -59,7 +68,9 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
           <div class="input-group-append">
              <button class="btn btn-outline-secondary" type="button" id="searchButton"><i class="bi bi-search"></i></button>
           </div>
+          
        </div>
+       <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
     </div>
     <div *ngIf="zoom" class="zoomIndicator">
        <span id="zoom_level" ></span>

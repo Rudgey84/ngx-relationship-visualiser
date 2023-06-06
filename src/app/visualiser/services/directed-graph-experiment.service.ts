@@ -487,11 +487,57 @@ export class DirectedGraphExperimentService {
 
 // search
 
+const handleSearch = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Prevent form submission or page reload
+    performSearch();
+  }
+};
+
 
 let matchingNodes = [];
 let currentMatchIndex = -1;
 
-const handleSearch = () => {
+const showCurrentMatch = () => {
+  // Remove any previously added background rectangle
+  d3.selectAll('rect.highlight-background').remove();
+
+  const matchingNode = matchingNodes[currentMatchIndex];
+  // Highlight the matching node
+  const nodeWrapper = d3.selectAll('.node-wrapper')
+    .filter(function() {
+      return d3.select(this).attr('id') === matchingNode.id;
+    });
+
+  // Add a new background rectangle to the entire <g> node
+  const bbox = nodeWrapper.node().getBBox();
+  nodeWrapper.insert('rect', ':first-child')
+    .attr('class', 'highlight-background')
+    .attr('x', bbox.x)
+    .attr('y', bbox.y)
+    .attr('width', bbox.width)
+    .attr('height', bbox.height)
+    .attr('fill', 'yellow')
+    .attr('opacity', '0.3');
+
+  // Zoom to the matching node
+  const zoomTransform = d3.zoomTransform(svg.node());
+  const { x, y, k } = zoomTransform;
+  const { fx, fy } = matchingNode;
+  const newZoomTransform = d3.zoomIdentity.translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2).scale(k);
+  svg.transition().duration(750).call(zoom.transform, newZoomTransform);
+
+  // Disable/Enable navigation buttons
+  const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
+  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
+  prevButton.disabled = currentMatchIndex === 0;
+  nextButton.disabled = currentMatchIndex === matchingNodes.length - 1;
+};
+
+const performSearch = () => {
+  // Remove any previously added background rectangle
+  d3.selectAll('rect.highlight-background').remove();
+
   const searchInput = document.getElementById('searchInput') as HTMLInputElement;
   const searchTerm = searchInput.value.toLowerCase();
 
@@ -517,31 +563,8 @@ const handleSearch = () => {
   }
 };
 
-const showCurrentMatch = () => {
-  const matchingNode = matchingNodes[currentMatchIndex];
-
-  // Highlight the matching node
-  d3.selectAll('.node-wrapper').classed('highlighted', false);
-  const nodeWrapper = d3.select(`#node-${matchingNode.id}`);
-  nodeWrapper.classed('highlighted', true);
-
-  // Zoom to the matching node
-  const zoomTransform = d3.zoomTransform(svg.node());
-  const { x, y, k } = zoomTransform;
-  const { fx, fy } = matchingNode;
-  const newZoomTransform = d3.zoomIdentity.translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2).scale(k);
-  svg.transition().duration(750).call(zoom.transform, newZoomTransform);
-
-  // Disable/Enable navigation buttons
-  const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
-  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
-  prevButton.disabled = currentMatchIndex === 0;
-  nextButton.disabled = currentMatchIndex === matchingNodes.length - 1;
-};
-
 const showNoMatches = () => {
   // Remove highlighting
-  d3.selectAll('.node-wrapper').classed('highlighted', false);
 
   // Reset zoom level
   const newZoomTransform = d3.zoomIdentity.translate(0, 0).scale(1);
@@ -552,6 +575,16 @@ const showNoMatches = () => {
   const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
   prevButton.disabled = true;
   nextButton.disabled = true;
+
+  // Show "no matches found" text with fade-in transition
+  const noMatchesText = document.getElementById('noMatchesText');
+  noMatchesText.classList.add('show');
+
+  // Fade away after a few seconds
+  setTimeout(() => {
+    // Hide "no matches found" text with fade-out transition
+    noMatchesText.classList.remove('show');
+  }, 3000); // Adjust the duration as needed (in milliseconds)
 };
 
 const navigateNext = () => {
@@ -568,7 +601,8 @@ const navigatePrevious = () => {
   }
 };
 
-document.getElementById('searchButton').addEventListener('click', handleSearch);
+document.getElementById('searchButton').addEventListener('click', performSearch);
+document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 document.getElementById('nextButton').addEventListener('click', navigateNext);
 document.getElementById('prevButton').addEventListener('click', navigatePrevious);
 
