@@ -263,9 +263,7 @@ export class DirectedGraphExperimentService {
       const zoomInBtn = document.getElementById('zoom_in');
       const zoomOutBtn = document.getElementById('zoom_out');
       const zoomResetBtn = document.getElementById('zoom_reset');
-      const zoomToFitId = document.getElementById('zoom_to_fit');
-      // Disable the zoom to fit until zoom has been initiated as it messes up the scale
-      zoomToFitId.removeAttribute('disabled');
+
       // It might not exist depending on the this.zoom boolean
       if (zoomResetBtn) {
         zoomResetBtn.setAttribute('disabled', 'true');
@@ -881,7 +879,6 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
         _d3
           .drag()
           .on('start', function dragstarted(d) {
-            updateZoomLevel();
             // Enable the reset btn
             document.getElementById('reset_graph').removeAttribute('disabled');
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
