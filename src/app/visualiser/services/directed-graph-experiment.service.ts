@@ -263,6 +263,9 @@ export class DirectedGraphExperimentService {
       const zoomInBtn = document.getElementById('zoom_in');
       const zoomOutBtn = document.getElementById('zoom_out');
       const zoomResetBtn = document.getElementById('zoom_reset');
+      const zoomToFitId = document.getElementById('zoom_to_fit');
+      // Disable the zoom to fit until zoom has been initiated as it messes up the scale
+      zoomToFitId.removeAttribute('disabled');
       // It might not exist depending on the this.zoom boolean
       if (zoomResetBtn) {
         zoomResetBtn.setAttribute('disabled', 'true');
@@ -341,7 +344,7 @@ export class DirectedGraphExperimentService {
     });
     // Zoom to fit function and Button
     const handleZoomToFit = () => {
-
+  
       const nodeBBox = zoomContainer.node().getBBox();
       
       // Calculate scale and translate values to fit all nodes
@@ -391,7 +394,7 @@ export class DirectedGraphExperimentService {
       updateZoomLevel();
 	  };
     d3.select('#zoom_to_fit').on('click', handleZoomToFit);
-
+    
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
     svg.on('wheel', () => {
       const currentScale = currentZoom.k;
@@ -878,6 +881,7 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
         _d3
           .drag()
           .on('start', function dragstarted(d) {
+            updateZoomLevel();
             // Enable the reset btn
             document.getElementById('reset_graph').removeAttribute('disabled');
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
