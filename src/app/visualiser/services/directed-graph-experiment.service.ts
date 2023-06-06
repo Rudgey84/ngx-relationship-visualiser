@@ -198,11 +198,12 @@ export class DirectedGraphExperimentService {
   }
 
   public _update(_d3, svg, data) {
-    // Disable the reset btn
-    document.getElementById('reset_graph').setAttribute('disabled', 'true');
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
+
+    // Disable the reset btn
+    document.getElementById('reset_graph').setAttribute('disabled', 'true');
 
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
@@ -1093,7 +1094,6 @@ export class DirectedGraphExperimentService {
   }
 
   public resetGraph(initialData, element, zoom, zoomToFit) {
-    
     // Reset the data to its initial state
     this.nodes = [];
     this.links = [];
