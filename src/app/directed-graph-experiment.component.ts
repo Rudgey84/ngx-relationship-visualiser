@@ -90,7 +90,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
       // Take a copy of input for reset
-      localStorage.setItem('originalData', JSON.stringify(data));
+      localStorage.setItem('savedData', JSON.stringify(data));
       this.directedGraphExperimentService.update(
         data,
         this.graphElement.nativeElement,
@@ -196,7 +196,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public resetGraph() {
-    this.directedGraphExperimentService.resetGraph(JSON.parse(localStorage.getItem('originalData')),
+    this.directedGraphExperimentService.resetGraph(JSON.parse(localStorage.getItem('savedData')),
       this.graphElement.nativeElement,
       this.zoom,
       this.zoomToFit);
