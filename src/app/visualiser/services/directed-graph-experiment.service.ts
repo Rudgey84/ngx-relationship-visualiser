@@ -409,7 +409,6 @@ export class DirectedGraphExperimentService {
     const notSelectedSize = totalSize - count;
 
    if (notSelectedSize !== totalSize) {
-
      selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
      selectAllNodes.style.opacity = '0.65';
      _d3.selectAll('.node-wrapper').classed('selected', function (p) {
