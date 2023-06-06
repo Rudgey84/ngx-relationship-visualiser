@@ -402,7 +402,6 @@ export class DirectedGraphExperimentService {
     // Selection buttons
     const selectAllNodes = document.getElementById('select_all');
     const handleSelectAllNodes = () => {
-
     const totalSize = nodeEnter.size();
     const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
     const count = nonSelectedNodes.size();
