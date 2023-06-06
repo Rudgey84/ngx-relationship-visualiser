@@ -250,7 +250,6 @@ export class DirectedGraphExperimentService {
 
     // Zoom Start
     const zoomContainer = _d3.select('svg g');
-
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
     const updateZoomLevel = () => {
       const currentScale = currentZoom.k;
@@ -265,7 +264,6 @@ export class DirectedGraphExperimentService {
       if (zoomResetBtn) {
         zoomResetBtn.setAttribute('disabled', 'true');
       } 
-      
       // Check if the zoom level has changed before updating the display / allows for panning without showing the zoom percentage
       if (zoomLevelDisplay && zoomLevelDisplay.innerHTML !== zoomLevelText) {
         zoomLevelDisplay.innerHTML = zoomLevelText;
@@ -304,7 +302,6 @@ export class DirectedGraphExperimentService {
 
     const zoomed = () => {
       const transform = d3.event.transform;
-
       zoomContainer.attr('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
       currentZoom = transform;
       updateZoomLevel();
@@ -325,7 +322,7 @@ export class DirectedGraphExperimentService {
       .on(this.zoom ? null : 'wheel.zoom', null)
       .on('dblclick.zoom', null);
     zoom.filter(() => !d3.event.shiftKey);
-    
+
     // Zoom button controls
     d3.select('#zoom_in').on('click', function () {
       zoom.scaleBy(svg.transition().duration(750), 1.2);
@@ -388,7 +385,6 @@ export class DirectedGraphExperimentService {
       currentZoom.y = translateY;
       currentZoom.k = scale;
       updateZoomLevel();
-	  
 	  };
     d3.select('#zoom_to_fit').on('click', handleZoomToFit);
 
@@ -403,7 +399,7 @@ export class DirectedGraphExperimentService {
     });
 
     // Zoom End
-    // Selection Buttons
+    // Selection buttons
     const selectAllNodes = document.getElementById('select_all');
     const handleSelectAllNodes = () => {
 
@@ -573,7 +569,6 @@ export class DirectedGraphExperimentService {
         } else {
           self.selectedNodesArray.next([]);
         }
- 
       });
 
     let keyup = () => {
@@ -818,13 +813,12 @@ export class DirectedGraphExperimentService {
       _d3.event.stopPropagation();
 
       // setting the select attribute to the object on single select so we can drag them
-      d.selected = 1;
+      d.selected = true;
       
       selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
       selectAllNodes.style.opacity = '1';
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
-
 				// toggle the class on and off when ctrl click is active
 				const clickedNode = d3.select(this);
 				const isSelected = clickedNode.classed('selected');
