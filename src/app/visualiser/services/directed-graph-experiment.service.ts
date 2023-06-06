@@ -564,8 +564,6 @@ const performSearch = () => {
 };
 
 const showNoMatches = () => {
-  // Remove highlighting
-
   // Reset zoom level
   const newZoomTransform = d3.zoomIdentity.translate(0, 0).scale(1);
   svg.transition().duration(750).call(zoom.transform, newZoomTransform);
@@ -584,7 +582,7 @@ const showNoMatches = () => {
   setTimeout(() => {
     // Hide "no matches found" text with fade-out transition
     noMatchesText.classList.remove('show');
-  }, 3000); // Adjust the duration as needed (in milliseconds)
+  }, 3000); 
 };
 
 const navigateNext = () => {
