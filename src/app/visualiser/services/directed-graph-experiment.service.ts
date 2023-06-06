@@ -428,7 +428,9 @@ export class DirectedGraphExperimentService {
        return (p.selected = p.previouslySelected = false);
      });
      _d3.selectAll('.nodeText').style('font-weight', 400).style('fill', '#212529');
-      }
+    }
+    // reset link style
+    _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
     };
     d3.select('#select_all').on('click', handleSelectAllNodes);
 
@@ -464,7 +466,6 @@ export class DirectedGraphExperimentService {
     
         // Update styles of node elements
         _d3.selectAll('.nodeText').style('font-weight', 700).style('fill', 'blue');
-        _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
       }
     
       // Update the state of another button based on the current selection
@@ -478,6 +479,8 @@ export class DirectedGraphExperimentService {
         selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
         selectAllNodes.style.opacity = '1';
       }
+      // reset link style
+      _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
     };
     
     d3.select('#toggle_selection').on('click', handleToggleSelection);
@@ -722,7 +725,13 @@ export class DirectedGraphExperimentService {
     // on normal label link click - hightlight labels
     svg.selectAll('.edgelabel').on('click', function (d) {
       _d3.event.stopPropagation();
-      // arrow function will produce this = undefined
+      nodeEnter.each(function (d) {
+        d.selected = false;
+        d.previouslySelected = false;
+      });
+      node.classed('selected', false);
+      selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+      selectAllNodes.style.opacity = '1';
       _d3.selectAll('.nodeText').style('fill', '#212529').style('font-weight', 400);
       _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
       _d3.select(this).style('fill', 'blue').style('font-weight', 700);
