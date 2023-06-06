@@ -198,6 +198,8 @@ export class DirectedGraphExperimentService {
   }
 
   public _update(_d3, svg, data) {
+    // Disable the reset btn
+    document.getElementById('reset_graph').setAttribute('disabled', 'true');
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
@@ -748,6 +750,8 @@ export class DirectedGraphExperimentService {
         _d3
           .drag()
           .on('start', function dragstarted(d) {
+            // Enable the reset btn
+            document.getElementById('reset_graph').removeAttribute('disabled');
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
 
             if (!d.selected && !this.shiftKey) {
@@ -1089,11 +1093,11 @@ export class DirectedGraphExperimentService {
   }
 
   public resetGraph(initialData, element, zoom, zoomToFit) {
+    
     // Reset the data to its initial state
     this.nodes = [];
     this.links = [];
     // Call the update method again to re-simulate the graph with the new data
     this.update(initialData, element, zoom, zoomToFit);
-    
   }
 }
