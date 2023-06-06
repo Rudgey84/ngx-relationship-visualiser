@@ -443,18 +443,19 @@ export class DirectedGraphExperimentService {
         });
     
         // Update styles of node elements
-        d3.selectAll('.nodeText')
-          .style('fill', d => (d.selected ? 'blue' : '#999'))
+        _d3.selectAll('.nodeText')
+          .style('fill', d => (d.selected ? 'blue' : '#212529'))
           .style('font-weight', d => (d.selected ? 700 : 400));
       } else if (nonSelectedCount > 0) {
         // Select all nodes if none are selected
-        d3.selectAll('.node-wrapper').classed('selected', function (p) {
+        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
           p.previouslySelected = p.selected;
           return (p.selected = true);
         });
     
         // Update styles of node elements
-        d3.selectAll('.nodeText').style('font-weight', 700).style('fill', 'blue');
+        _d3.selectAll('.nodeText').style('font-weight', 700).style('fill', 'blue');
+        _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
       }
     
       // Update the state of another button based on the current selection
@@ -503,6 +504,8 @@ export class DirectedGraphExperimentService {
         nodeEnter.each(d => {
           d.previouslySelected = this.shiftKey && d.selected;
         });
+
+        _d3.selectAll('.edgelabel').style('font-weight', 400).style('fill', '#212529');
       })
       .on('brush', () => {
         this.extent = d3.event.selection;
