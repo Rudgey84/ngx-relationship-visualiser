@@ -41,7 +41,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   <div class="page" id="pageId" (window:resize)="onResize($event)">
   <div class="buttonBar">
   <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
-  <div *ngIf="controls" class="btn-group" role="group" aria-label="Zoom Control">
+  <div *ngIf="controls" class="btn-group" role="group" aria-label="Controls">
   <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset data" (click)="resetGraph()"><i class="bi bi-skip-backward"></i></button>
   <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
   <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
