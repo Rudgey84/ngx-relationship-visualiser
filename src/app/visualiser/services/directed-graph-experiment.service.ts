@@ -485,6 +485,93 @@ export class DirectedGraphExperimentService {
     
     d3.select('#toggle_selection').on('click', handleToggleSelection);
 
+// search
+
+
+let matchingNodes = [];
+let currentMatchIndex = -1;
+
+const handleSearch = () => {
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+  const searchTerm = searchInput.value.toLowerCase();
+
+  if (searchTerm.length >= 3) {
+    matchingNodes = this.nodes.filter((node) => {
+      const label = node.label.map((item) => item.toLowerCase());
+
+      return (
+        label.some((labelItem) => labelItem.includes(searchTerm)) ||
+        node.label.some((obj) =>
+          Object.values(obj).some((value) => String(value).toLowerCase().includes(searchTerm))
+        )
+      );
+    });
+
+    if (matchingNodes.length > 0) {
+      currentMatchIndex = 0;
+      showCurrentMatch();
+    } else {
+      currentMatchIndex = -1;
+      showNoMatches();
+    }
+  }
+};
+
+const showCurrentMatch = () => {
+  const matchingNode = matchingNodes[currentMatchIndex];
+
+  // Highlight the matching node
+  d3.selectAll('.node-wrapper').classed('highlighted', false);
+  const nodeWrapper = d3.select(`#node-${matchingNode.id}`);
+  nodeWrapper.classed('highlighted', true);
+
+  // Zoom to the matching node
+  const zoomTransform = d3.zoomTransform(svg.node());
+  const { x, y, k } = zoomTransform;
+  const { fx, fy } = matchingNode;
+  const newZoomTransform = d3.zoomIdentity.translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2).scale(k);
+  svg.transition().duration(750).call(zoom.transform, newZoomTransform);
+
+  // Disable/Enable navigation buttons
+  const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
+  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
+  prevButton.disabled = currentMatchIndex === 0;
+  nextButton.disabled = currentMatchIndex === matchingNodes.length - 1;
+};
+
+const showNoMatches = () => {
+  // Remove highlighting
+  d3.selectAll('.node-wrapper').classed('highlighted', false);
+
+  // Reset zoom level
+  const newZoomTransform = d3.zoomIdentity.translate(0, 0).scale(1);
+  svg.transition().duration(750).call(zoom.transform, newZoomTransform);
+
+  // Disable navigation buttons
+  const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
+  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
+  prevButton.disabled = true;
+  nextButton.disabled = true;
+};
+
+const navigateNext = () => {
+  if (currentMatchIndex < matchingNodes.length - 1) {
+    currentMatchIndex++;
+    showCurrentMatch();
+  }
+};
+
+const navigatePrevious = () => {
+  if (currentMatchIndex > 0) {
+    currentMatchIndex--;
+    showCurrentMatch();
+  }
+};
+
+document.getElementById('searchButton').addEventListener('click', handleSearch);
+document.getElementById('nextButton').addEventListener('click', navigateNext);
+document.getElementById('prevButton').addEventListener('click', navigatePrevious);
+
     // For arrows
     this.initDefinitions(svg);
 

@@ -38,22 +38,32 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
       }
 		</style>
 
-  <div class="page" id="pageId" (window:resize)="onResize($event)">
-  <div class="buttonBar">
-  <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
-  <div *ngIf="controls" class="btn-group" role="group" aria-label="Controls">
-  <button type="button" id="reset_graph" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset data" (click)="resetGraph()"><i class="bi bi-skip-backward"></i></button>
-  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
-  <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
-  <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
-  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
-  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
-  <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
-  </div>
-  </div>
-  <div *ngIf="zoom" class="zoomIndicator">
-  <span id="zoom_level" ></span>
-  </div>
+    <div class="page" id="pageId" (window:resize)="onResize($event)">
+    <div class="buttonBar">
+       <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
+       <div *ngIf="controls" class="btn-group" role="group" aria-label="Controls">
+          <button type="button" id="reset_graph" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset data" (click)="resetGraph()"><i class="bi bi-skip-backward"></i></button>
+          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
+          <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
+          <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset"><i class="bi bi-arrow-counterclockwise"></i></button>
+          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
+          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
+          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
+       </div>
+       <div class="input-group mt-3">
+          <div class="input-group-prepend">
+             <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
+             <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
+          </div>
+          <input type="text" id="searchInput" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search">
+          <div class="input-group-append">
+             <button class="btn btn-outline-secondary" type="button" id="searchButton"><i class="bi bi-search"></i></button>
+          </div>
+       </div>
+    </div>
+    <div *ngIf="zoom" class="zoomIndicator">
+       <span id="zoom_level" ></span>
+    </div>
   <app-context-menus
   (viewNodeContextMenuEvent)="viewNodeEvent()"
   (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
@@ -196,7 +206,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public resetGraph() {
-    this.directedGraphExperimentService.resetGraph(JSON.parse(localStorage.getItem('savedData')),
+    const data = JSON.parse(localStorage.getItem('savedData'));
+    this.directedGraphExperimentService.resetGraph(
+      data,
       this.graphElement.nativeElement,
       this.zoom,
       this.zoomToFit);
