@@ -911,7 +911,7 @@ export class DirectedGraphExperimentService {
       .attr('xlink:href', function (d) {
         const prefixUrl = 'https://randomuser.me/api/portraits/thumb/';
         const typeName = d.typeName + '/';
-        const icon = d.icon;
+        const icon = d.icon ? d.icon : '';
         const suffix = 'jpg';
         return `${prefixUrl}${typeName}${icon}.${suffix}`;
       })
