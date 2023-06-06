@@ -255,6 +255,7 @@ export class DirectedGraphExperimentService {
     const zoomContainer = _d3.select('svg g');
     let currentZoom = d3.zoomTransform(d3.select('svg').node());
     const updateZoomLevel = () => {
+      console.log("hit")
       const currentScale = currentZoom.k;
       const maxScale = zoom.scaleExtent()[1];
       const zoomPercentage = ((currentScale - 0.5) / (maxScale - 0.5)) * 200;
@@ -307,6 +308,7 @@ export class DirectedGraphExperimentService {
       const transform = d3.event.transform;
       zoomContainer.attr('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
       currentZoom = transform;
+      console.log("hit1")
       updateZoomLevel();
     };
 
@@ -341,6 +343,7 @@ export class DirectedGraphExperimentService {
     });
     // Zoom to fit function and Button
     const handleZoomToFit = () => {
+
       const nodeBBox = zoomContainer.node().getBBox();
       
       // Calculate scale and translate values to fit all nodes
@@ -489,11 +492,10 @@ export class DirectedGraphExperimentService {
 
 const handleSearch = (event: KeyboardEvent) => {
   if (event.key === 'Enter') {
-    event.preventDefault(); // Prevent form submission or page reload
+    event.preventDefault();
     performSearch();
   }
 };
-
 
 let matchingNodes = [];
 let currentMatchIndex = -1;
@@ -521,11 +523,13 @@ const showCurrentMatch = () => {
     .attr('opacity', '0.3');
 
   // Zoom to the matching node
-  const zoomTransform = d3.zoomTransform(svg.node());
-  const { x, y, k } = zoomTransform;
-  const { fx, fy } = matchingNode;
-  const newZoomTransform = d3.zoomIdentity.translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2).scale(k);
-  svg.transition().duration(750).call(zoom.transform, newZoomTransform);
+
+    const zoomTransform = d3.zoomTransform(svg.node());
+    
+    const { x, y, k } = zoomTransform;
+    const { fx, fy } = matchingNode;
+    const newZoomTransform = d3.zoomIdentity.translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2).scale(k);
+    zoomContainer.transition().duration(750).call(zoom.transform, newZoomTransform);
 
   // Disable/Enable navigation buttons
   const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
@@ -566,8 +570,8 @@ const performSearch = () => {
 const showNoMatches = () => {
   // Reset zoom level
   const newZoomTransform = d3.zoomIdentity.translate(0, 0).scale(1);
-  svg.transition().duration(750).call(zoom.transform, newZoomTransform);
-
+  zoomContainer.transition().duration(750).call(zoom.transform, newZoomTransform);
+  updateZoomLevel();
   // Disable navigation buttons
   const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
   const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
@@ -582,7 +586,7 @@ const showNoMatches = () => {
   setTimeout(() => {
     // Hide "no matches found" text with fade-out transition
     noMatchesText.classList.remove('show');
-  }, 3000); 
+  }, 3000);
 };
 
 const navigateNext = () => {
