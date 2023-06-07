@@ -497,7 +497,7 @@ export class DirectedGraphExperimentService {
 const searchBtn = document.getElementById('searchButton')
 // Check to see if exists - control bool
 if(searchBtn){
-  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+const searchInput = document.getElementById('searchInput') as HTMLInputElement;
 const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
   const handleSearch = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
@@ -613,13 +613,14 @@ const showNoMatches = () => {
 
   // Show "no matches found" text with fade-in transition
   const noMatchesText = document.getElementById('noMatchesText');
+  if(searchInput.value !== ''){
   noMatchesText.classList.add('show');
-
   // Fade away after a few seconds
   setTimeout(() => {
     // Hide "no matches found" text with fade-out transition
     noMatchesText.classList.remove('show');
   }, 3000);
+}
 };
   
 const navigateNext = () => {
@@ -637,7 +638,7 @@ const navigatePrevious = () => {
 };
 
 const clearSearchInput = () => {
-  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+ // const searchInput = document.getElementById('searchInput') as HTMLInputElement;
   searchInput.value = '';
   searchInput.focus();
   updateClearButton();
