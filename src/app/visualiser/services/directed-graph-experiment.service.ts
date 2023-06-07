@@ -636,7 +636,6 @@ const searchBtn = document.getElementById('searchButton')
 if(searchBtn){
 searchBtn.addEventListener('click', performSearch);
 document.getElementById('searchInput').addEventListener('keydown', handleSearch);
-//document.getElementById('searchInput').addEventListener('input', updateClearButton);
 document.getElementById('nextButton').addEventListener('click', navigateNext);
 document.getElementById('prevButton').addEventListener('click', navigatePrevious);
 document.getElementById('clearButton').addEventListener('click', clearSearchInput);
