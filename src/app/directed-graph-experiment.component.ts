@@ -59,7 +59,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
        </div>
-       <div class="input-group mt-3">
+       <div *ngIf="controls" class="input-group mt-3">
           <div class="input-group-prepend">
              <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
              <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>

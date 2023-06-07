@@ -203,8 +203,10 @@ export class DirectedGraphExperimentService {
     this.links = links || [];
 
     // Disable the reset btn
-    document.getElementById('reset_graph').setAttribute('disabled', 'true');
-
+    let resetBtn = document.getElementById('reset_graph')
+    if(resetBtn){
+      resetBtn.setAttribute('disabled', 'true');
+    }
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
@@ -602,12 +604,13 @@ const navigatePrevious = () => {
     showCurrentMatch();
   }
 };
-
-document.getElementById('searchButton').addEventListener('click', performSearch);
+const searchBtn = document.getElementById('searchButton')
+if(searchBtn){
+searchBtn.addEventListener('click', performSearch);
 document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 document.getElementById('nextButton').addEventListener('click', navigateNext);
 document.getElementById('prevButton').addEventListener('click', navigatePrevious);
-
+}
     // For arrows
     this.initDefinitions(svg);
 
@@ -884,7 +887,9 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
           .drag()
           .on('start', function dragstarted(d) {
             // Enable the reset btn
+            if(resetBtn){
             document.getElementById('reset_graph').removeAttribute('disabled');
+            }
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
 
             if (!d.selected && !this.shiftKey) {
