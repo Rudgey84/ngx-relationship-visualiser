@@ -638,7 +638,6 @@ const navigatePrevious = () => {
 };
 
 const clearSearchInput = () => {
- // const searchInput = document.getElementById('searchInput') as HTMLInputElement;
   searchInput.value = '';
   searchInput.focus();
   updateClearButton();
