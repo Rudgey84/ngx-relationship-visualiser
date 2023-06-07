@@ -71,7 +71,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
           <button class="btn btn-outline-secondary" type="button" id="searchButton" data-toggle="tooltip" data-placement="top" title="Search"><i class="bi bi-search"></i></button>
        </div>
        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" id="clearButton" data-toggle="tooltip" data-placement="top" title="Clear" (click)="clearSearchInput()" disabled><i class="bi bi-x"></i></button>
+          <button class="btn btn-outline-secondary" type="button" id="clearButton" data-toggle="tooltip" data-placement="top" title="Clear" disabled><i class="bi bi-x"></i></button>
        </div>
     </div>
     </div>

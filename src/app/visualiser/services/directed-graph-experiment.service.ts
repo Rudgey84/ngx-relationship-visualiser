@@ -497,6 +497,8 @@ export class DirectedGraphExperimentService {
 const searchBtn = document.getElementById('searchButton')
 // Check to see if exists - control bool
 if(searchBtn){
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
   const handleSearch = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -636,14 +638,12 @@ const updateClearButton = () => {
   clearButton.disabled = searchInput.value.trim().length === 0;
 };
 
-const searchInput = document.getElementById('searchInput') as HTMLInputElement;
-const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
 searchInput.addEventListener('input', updateClearButton);
 searchBtn.addEventListener('click', performSearch);
+clearButton.addEventListener('click', clearSearchInput);
 document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 document.getElementById('nextButton').addEventListener('click', navigateNext);
 document.getElementById('prevButton').addEventListener('click', navigatePrevious);
-document.getElementById('clearButton').addEventListener('click', clearSearchInput);
 }
     // For arrows
     this.initDefinitions(svg);
