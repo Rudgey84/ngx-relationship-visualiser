@@ -544,10 +544,10 @@ const performSearch = () => {
   // Remove any previously added background rectangle
   d3.selectAll('rect.highlight-background').remove();
 
-  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
-  const searchTerm = searchInput.value.toLowerCase();
+  const searchTerm = searchInput.value.toLowerCase().trim();
 
   if (searchTerm.length >= 3) {
+    // Perform the search
     matchingNodes = this.nodes.filter((node) => {
       const label = node.label.map((item) => item.toLowerCase());
 
@@ -566,8 +566,16 @@ const performSearch = () => {
       currentMatchIndex = -1;
       showNoMatches();
     }
+  } else {
+    // Clear search
+    matchingNodes = [];
+    currentMatchIndex = -1;
+    showNoMatches();
   }
+
+  updateClearButton();
 };
+
 
 const showNoMatches = () => {
   // Reset zoom level
@@ -608,19 +616,27 @@ const navigatePrevious = () => {
 const clearSearchInput = () => {
   const searchInput = document.getElementById('searchInput') as HTMLInputElement;
   searchInput.value = '';
+  searchInput.focus();
+  updateClearButton();
   matchingNodes = [];
   currentMatchIndex = -1;
-  performSearch();
-
-  // Reset the nextButton to disabled state
-  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
-  nextButton.disabled = true;
+  // Remove any previously added background rectangle
+  d3.selectAll('rect.highlight-background').remove();
 };
+
+const updateClearButton = () => {
+  clearButton.disabled = searchInput.value.trim().length === 0;
+};
+
+const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
+searchInput.addEventListener('input', updateClearButton);
 
 const searchBtn = document.getElementById('searchButton')
 if(searchBtn){
 searchBtn.addEventListener('click', performSearch);
 document.getElementById('searchInput').addEventListener('keydown', handleSearch);
+//document.getElementById('searchInput').addEventListener('input', updateClearButton);
 document.getElementById('nextButton').addEventListener('click', navigateNext);
 document.getElementById('prevButton').addEventListener('click', navigatePrevious);
 document.getElementById('clearButton').addEventListener('click', clearSearchInput);
