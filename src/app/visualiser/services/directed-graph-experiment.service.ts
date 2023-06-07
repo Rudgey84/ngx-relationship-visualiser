@@ -604,12 +604,26 @@ const navigatePrevious = () => {
     showCurrentMatch();
   }
 };
+
+const clearSearchInput = () => {
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+  searchInput.value = '';
+  matchingNodes = [];
+  currentMatchIndex = -1;
+  performSearch();
+
+  // Reset the nextButton to disabled state
+  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
+  nextButton.disabled = true;
+};
+
 const searchBtn = document.getElementById('searchButton')
 if(searchBtn){
 searchBtn.addEventListener('click', performSearch);
 document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 document.getElementById('nextButton').addEventListener('click', navigateNext);
 document.getElementById('prevButton').addEventListener('click', navigatePrevious);
+document.getElementById('clearButton').addEventListener('click', clearSearchInput);
 }
     // For arrows
     this.initDefinitions(svg);

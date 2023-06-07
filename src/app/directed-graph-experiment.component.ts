@@ -59,18 +59,20 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
        </div>
-       <div *ngIf="controls" class="input-group mt-3">
-          <div class="input-group-prepend">
-             <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
-             <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
-          </div>
-          <input type="text" id="searchInput" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search">
-          <div class="input-group-append">
-             <button class="btn btn-outline-secondary" type="button" id="searchButton"><i class="bi bi-search"></i></button>
-          </div>
-          
+       <div class="input-group mt-3">
+       <div class="input-group-prepend">
+         <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
+         <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
        </div>
-       <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
+       <input type="text" id="searchInput" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search">
+       <div class="input-group-append">
+         <button class="btn btn-outline-secondary" type="button" id="searchButton" data-toggle="tooltip" data-placement="top" title="Search" ><i class="bi bi-search"></i></button>
+       </div>
+       <div class="input-group-append">
+         <button class="btn btn-outline-secondary" type="button" id="clearButton" data-toggle="tooltip" data-placement="top" title="Clear" (click)="clearSearchInput()"><i class="bi bi-x"></i></button>
+       </div>
+     </div>
+     <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
     </div>
     <div *ngIf="zoom" class="zoomIndicator">
        <span id="zoom_level" ></span>
