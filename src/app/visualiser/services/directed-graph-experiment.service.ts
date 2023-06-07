@@ -303,11 +303,12 @@ export class DirectedGraphExperimentService {
         }
       }
     };
-
+    let zoomedInit
     const zoomed = () => {
       const transform = d3.event.transform;
       zoomContainer.attr('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
       currentZoom = transform;
+      zoomedInit = true;
       updateZoomLevel();
     };
 
@@ -386,9 +387,12 @@ export class DirectedGraphExperimentService {
       zoomContainer.transition().duration(750).attr('transform', `translate(${translateX}, ${translateY}) scale(${scale})`);
     
       // Update the currentZoom variable with the new transform
+      // zoomedInit - created because if zoomToFit is called before anything else it screws up the base transform - e.g. showCurrentMatch
+      if(zoomedInit){
       currentZoom.x = translateX;
       currentZoom.y = translateY;
       currentZoom.k = scale;
+      }
       updateZoomLevel();
 	  };
     d3.select('#zoom_to_fit').on('click', handleZoomToFit);
