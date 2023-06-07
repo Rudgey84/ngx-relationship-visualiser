@@ -625,9 +625,11 @@ const clearSearchInput = () => {
   // Remove any previously added background rectangle
   d3.selectAll('rect.highlight-background').remove();
   
-  // Disable the nextButton
+  // Disable the nextButton & prevButton
   const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
   nextButton.disabled = true;
+  const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
+  prevButton.disabled = true;
 };
 
 const updateClearButton = () => {
