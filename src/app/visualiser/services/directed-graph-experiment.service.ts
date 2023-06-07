@@ -494,89 +494,91 @@ export class DirectedGraphExperimentService {
     d3.select('#toggle_selection').on('click', handleToggleSelection);
 
 // search
-const handleSearch = (event: KeyboardEvent) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    performSearch();
-  }
-};
-
-let matchingNodes = [];
-let currentMatchIndex = -1;
-
-const showCurrentMatch = () => {
-  // Remove any previously added background rectangle
-  d3.selectAll('rect.highlight-background').remove();
-
-  const matchingNode = matchingNodes[currentMatchIndex];
-  // Highlight the matching node
-  const nodeWrapper = d3.selectAll('.node-wrapper')
-    .filter(function() {
-      return d3.select(this).attr('id') === matchingNode.id;
-    });
-
-  // Add a new background rectangle to the entire <g> node
-  const bbox = nodeWrapper.node().getBBox();
-  nodeWrapper.insert('rect', ':first-child')
-    .attr('class', 'highlight-background')
-    .attr('x', bbox.x)
-    .attr('y', bbox.y)
-    .attr('width', bbox.width)
-    .attr('height', bbox.height)
-    .attr('fill', 'yellow')
-    .attr('opacity', '0.3');
-
-  // Zoom to the matching node
-  const zoomTransform = d3.zoomTransform(svg.node());
-  const { x, y, k } = zoomTransform;
-  const { fx, fy } = matchingNode;
-  const newZoomTransform = d3.zoomIdentity.translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2).scale(k);
-  zoomContainer.transition().duration(750).call(zoom.transform, newZoomTransform);
-
-  // Disable/Enable navigation buttons
-  const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
-  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
-  prevButton.disabled = currentMatchIndex === 0;
-  nextButton.disabled = currentMatchIndex === matchingNodes.length - 1;
-};
-
-const performSearch = () => {
-  // Remove any previously added background rectangle
-  d3.selectAll('rect.highlight-background').remove();
-
-  const searchTerm = searchInput.value.toLowerCase().trim();
-
-  if (searchTerm.length >= 3) {
-    // Perform the search
-    matchingNodes = this.nodes.filter((node) => {
-      const label = node.label.map((item) => item.toLowerCase());
-
-      return (
-        label.some((labelItem) => labelItem.includes(searchTerm)) ||
-        node.label.some((obj) =>
-          Object.values(obj).some((value) => String(value).toLowerCase().includes(searchTerm))
-        )
-      );
-    });
-
-    if (matchingNodes.length > 0) {
-      currentMatchIndex = 0;
-      showCurrentMatch();
+const searchBtn = document.getElementById('searchButton')
+// Check to see if exists - control bool
+if(searchBtn){
+  const handleSearch = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      performSearch();
+    }
+  };
+  
+  let matchingNodes = [];
+  let currentMatchIndex = -1;
+  
+  const showCurrentMatch = () => {
+    // Remove any previously added background rectangle
+    d3.selectAll('rect.highlight-background').remove();
+  
+    const matchingNode = matchingNodes[currentMatchIndex];
+    // Highlight the matching node
+    const nodeWrapper = d3.selectAll('.node-wrapper')
+      .filter(function() {
+        return d3.select(this).attr('id') === matchingNode.id;
+      });
+  
+    // Add a new background rectangle to the entire <g> node
+    const bbox = nodeWrapper.node().getBBox();
+    nodeWrapper.insert('rect', ':first-child')
+      .attr('class', 'highlight-background')
+      .attr('x', bbox.x)
+      .attr('y', bbox.y)
+      .attr('width', bbox.width)
+      .attr('height', bbox.height)
+      .attr('fill', 'yellow')
+      .attr('opacity', '0.3');
+  
+    // Zoom to the matching node
+    const zoomTransform = d3.zoomTransform(svg.node());
+    const { x, y, k } = zoomTransform;
+    const { fx, fy } = matchingNode;
+    const newZoomTransform = d3.zoomIdentity.translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2).scale(k);
+    zoomContainer.transition().duration(750).call(zoom.transform, newZoomTransform);
+  
+    // Disable/Enable navigation buttons
+    const prevButton = document.getElementById('prevButton') as HTMLButtonElement;
+    const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
+    prevButton.disabled = currentMatchIndex === 0;
+    nextButton.disabled = currentMatchIndex === matchingNodes.length - 1;
+  };
+  
+  const performSearch = () => {
+    // Remove any previously added background rectangle
+    d3.selectAll('rect.highlight-background').remove();
+  
+    const searchTerm = searchInput.value.toLowerCase().trim();
+  
+    if (searchTerm.length >= 3) {
+      // Perform the search
+      matchingNodes = this.nodes.filter((node) => {
+        const label = node.label.map((item) => item.toLowerCase());
+  
+        return (
+          label.some((labelItem) => labelItem.includes(searchTerm)) ||
+          node.label.some((obj) =>
+            Object.values(obj).some((value) => String(value).toLowerCase().includes(searchTerm))
+          )
+        );
+      });
+  
+      if (matchingNodes.length > 0) {
+        currentMatchIndex = 0;
+        showCurrentMatch();
+      } else {
+        currentMatchIndex = -1;
+        showNoMatches();
+      }
     } else {
+      // Clear search
+      matchingNodes = [];
       currentMatchIndex = -1;
       showNoMatches();
     }
-  } else {
-    // Clear search
-    matchingNodes = [];
-    currentMatchIndex = -1;
-    showNoMatches();
-  }
-
-  updateClearButton();
-};
-
-
+  
+    updateClearButton();
+  };
+  
 const showNoMatches = () => {
   // Reset zoom level
   const newZoomTransform = d3.zoomIdentity.translate(0, 0).scale(1);
@@ -598,14 +600,14 @@ const showNoMatches = () => {
     noMatchesText.classList.remove('show');
   }, 3000);
 };
-
+  
 const navigateNext = () => {
   if (currentMatchIndex < matchingNodes.length - 1) {
     currentMatchIndex++;
     showCurrentMatch();
   }
 };
-
+  
 const navigatePrevious = () => {
   if (currentMatchIndex > 0) {
     currentMatchIndex--;
@@ -622,6 +624,10 @@ const clearSearchInput = () => {
   currentMatchIndex = -1;
   // Remove any previously added background rectangle
   d3.selectAll('rect.highlight-background').remove();
+  
+  // Disable the nextButton
+  const nextButton = document.getElementById('nextButton') as HTMLButtonElement;
+  nextButton.disabled = true;
 };
 
 const updateClearButton = () => {
@@ -631,9 +637,6 @@ const updateClearButton = () => {
 const searchInput = document.getElementById('searchInput') as HTMLInputElement;
 const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
 searchInput.addEventListener('input', updateClearButton);
-
-const searchBtn = document.getElementById('searchButton')
-if(searchBtn){
 searchBtn.addEventListener('click', performSearch);
 document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 document.getElementById('nextButton').addEventListener('click', navigateNext);

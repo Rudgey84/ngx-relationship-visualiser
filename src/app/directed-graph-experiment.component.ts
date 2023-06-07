@@ -49,8 +49,9 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 
     <div class="page" id="pageId" (window:resize)="onResize($event)">
     <div class="buttonBar">
-       <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
-       <div *ngIf="controls" class="btn-group" role="group" aria-label="Controls">
+    <div class="d-flex align-items-center">
+
+       <div *ngIf="controls" class="btn-group mr-3" role="group" aria-label="Controls">
           <button type="button" id="reset_graph" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset data" (click)="resetGraph()"><i class="bi bi-skip-backward"></i></button>
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
           <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
@@ -59,21 +60,23 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
        </div>
-       <div class="input-group mt-3">
+
+       <div *ngIf="controls" class="input-group">
        <div class="input-group-prepend">
-         <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
-         <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
+          <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
+          <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
        </div>
        <input type="text" id="searchInput" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search">
        <div class="input-group-append">
-         <button class="btn btn-outline-secondary" type="button" id="searchButton" data-toggle="tooltip" data-placement="top" title="Search" ><i class="bi bi-search"></i></button>
+          <button class="btn btn-outline-secondary" type="button" id="searchButton" data-toggle="tooltip" data-placement="top" title="Search"><i class="bi bi-search"></i></button>
        </div>
        <div class="input-group-append">
-         <button class="btn btn-outline-secondary" type="button" id="clearButton" data-toggle="tooltip" data-placement="top" title="Clear" (click)="clearSearchInput()" disabled><i class="bi bi-x"></i></button>
+          <button class="btn btn-outline-secondary" type="button" id="clearButton" data-toggle="tooltip" data-placement="top" title="Clear" (click)="clearSearchInput()" disabled><i class="bi bi-x"></i></button>
        </div>
-     </div>
-     <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
     </div>
+    </div>
+    <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
+ </div>
     <div *ngIf="zoom" class="zoomIndicator">
        <span id="zoom_level" ></span>
     </div>
