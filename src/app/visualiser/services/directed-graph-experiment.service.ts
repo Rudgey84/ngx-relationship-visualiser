@@ -519,17 +519,36 @@ const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
       .filter(function() {
         return d3.select(this).attr('id') === matchingNode.id;
       });
-  
-    // Add a new background rectangle to the entire <g> node
-    const bbox = nodeWrapper.node().getBBox();
-    nodeWrapper.insert('rect', ':first-child')
-      .attr('class', 'highlight-background')
-      .attr('x', bbox.x)
-      .attr('y', bbox.y)
-      .attr('width', bbox.width)
-      .attr('height', bbox.height)
-      .attr('fill', 'yellow')
-      .attr('opacity', '0.3');
+
+// Remove any previously added background circle
+d3.selectAll('circle.highlight-background').remove();
+
+// Add a new background circle to the entire <g> node
+const bbox = nodeWrapper.node().getBBox();
+const centerX = bbox.x + bbox.width / 2;
+const centerY = bbox.y + bbox.height / 2;
+const radius = Math.max(bbox.width + 30, bbox.height) / 2;
+
+nodeWrapper.insert('circle', ':first-child')
+.transition()
+.duration(1000)
+  .attr('class', 'highlight-background')
+  .attr('cx', centerX)
+  .attr('cy', centerY)
+  .attr('r', radius)
+  .attr('fill', 'yellow')
+  .attr('opacity', '0.3')
+  .transition()
+  .duration(1000)
+  .attr('r', radius / 4)
+  .attr('fill', 'yellow')
+  .attr('opacity', '0.5')
+  .transition()
+  .duration(1000)
+  .attr('r', radius)
+  .attr('fill', 'yellow')
+  .attr('opacity', '0.3')
+
   
     // Zoom to the matching node
     const zoomTransform = d3.zoomTransform(svg.node());
