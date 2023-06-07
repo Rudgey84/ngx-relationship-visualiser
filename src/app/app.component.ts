@@ -55,7 +55,7 @@ export class AppComponent {
         id: '789',
         version: 0,
         typeName: 'men',
-        label: ['Rick Smith', 'Software Developer', 'Software Developer', 'Software Developer', 'Software Developer test test test test test test test test test'],
+        label: ['Rick Smith', 'Software Developer'],
         icon: '99',
         xpos: 0,
         ypos: 0,
