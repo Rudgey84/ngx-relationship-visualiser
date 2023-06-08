@@ -44,40 +44,28 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
       .noMatchesText.show {
         opacity: 1;
       }
-      @keyframes floatInFromRight {
+      @keyframes floatInFromTop {
         from {
           opacity: 0;
-          transform: translateX(100%);
+          transform: translateY(-100%);
         }
         to {
           opacity: 1;
-          transform: translateX(0);
-        }
-      }
-      @keyframes floatOutToLeft {
-        from {
-          opacity: 1;
-          transform: translateX(0);
-        }
-        to {
-          opacity: 0;
-          transform: translateX(-100%);
+          transform: translateY(0);
         }
       }
       .input-group {
+        animation-name: floatInFromTop;
         animation-duration: 0.3s;
         animation-fill-mode: forwards;
         position: relative;
       }
-      .float-in {
-        animation-name: floatInFromRight;
+      .searchButtonActive {
+        opacity: 0.65;
       }
-      .float-out {
-        animation-name: floatOutToLeft;
-        animation-direction: reverse;
-        position: absolute;
-        top: 0;
-        left: 0;
+      
+      .searchButtonInactive {
+        opacity: 1;
       }
 		</style>
 
@@ -171,14 +159,14 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
             data-placement="top"
             title="Toggle search"
             id="toggle_search"
-            [style.opacity]="showSearch ? '0.65' : '1'"
+            [ngClass]="{'searchButtonActive': showSearch, 'searchButtonInactive': !showSearch}"
             (click)="toggleSearch()"
           >
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
-      <div class="input-group mt-3" [hidden]="!showSearch" [class.float-in]="showSearch" [class.float-out]="!showSearch">
+      <div class="input-group mt-3" [hidden]="!showSearch">
         <div class="input-group-prepend">
           <button
             type="button"
@@ -264,6 +252,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public selectedLinkArray;
   public width;
   public showSearch: boolean = false;
+  public storageItemName: string;
 
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
@@ -276,10 +265,15 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 
   @Input()
   set data(data: any) {
+
+    // Generate a random number so we can open two graphs without mixing the data
+    const randomNumber = Math.floor(Math.random() * 100000);
+    this.storageItemName = 'savedData' + randomNumber;
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
+
       // Take a copy of input for reset
-      localStorage.setItem('savedData', JSON.stringify(data));
+      localStorage.setItem(this.storageItemName, JSON.stringify(data));
       this.directedGraphExperimentService.update(
         data,
         this.graphElement.nativeElement,
@@ -336,6 +330,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public ngOnDestroy() {
     localStorage.setItem('nodes', JSON.stringify([]));
     localStorage.removeItem('nodes');
+    localStorage.removeItem(this.storageItemName);
   }
 
   public visualiserContextMenus(event): void {
@@ -389,7 +384,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public resetGraph() {
-    const data = JSON.parse(localStorage.getItem('savedData'));
+  
+    const data = JSON.parse(localStorage.getItem(this.storageItemName));
+    //const data = JSON.parse(localStorage.getItem('savedData'));
     this.directedGraphExperimentService.resetGraph(
       data,
       this.graphElement.nativeElement,
