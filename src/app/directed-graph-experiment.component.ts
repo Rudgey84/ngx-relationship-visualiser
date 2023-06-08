@@ -45,6 +45,40 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
       .noMatchesText.show {
         opacity: 1;
       }
+      @keyframes floatInFromRight {
+        from {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes floatOutToRight {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+      .input-group {
+        /* ... other styles ... */
+        animation-duration: 0.3s;
+        animation-fill-mode: forwards;
+      }
+      
+      .float-in {
+        animation-name: floatInFromRight;
+      }
+      
+      .float-out {
+        animation-name: floatOutToRight;
+      }
 		</style>
 
     <div class="page" id="pageId" (window:resize)="onResize($event)">
@@ -62,7 +96,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
           <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Toggle search" id="toggle_search" [style.opacity]="showSearch ? '0.65' : '1'" (click)="toggleSearch()"><i class="bi bi-search"></i></button>
        </div>
 
-       <div *ngIf="controls" class="input-group" [hidden]="!showSearch">
+       <div *ngIf="controls" class="input-group" [hidden]="!showSearch" [class.float-in]="showSearch" [class.float-out]="!showSearch">
        <div class="input-group-prepend">
           <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
           <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
