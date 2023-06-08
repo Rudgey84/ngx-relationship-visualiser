@@ -263,9 +263,17 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     private contextMenuService: ContextMenuService
   ) {}
 
+  public removeLocalStorageItemsByPrefix(prefix) {
+    for (var key in localStorage) {
+      if (key.startsWith(prefix)) {
+        localStorage.removeItem(key);
+      }
+    }
+  }
+
   @Input()
   set data(data: any) {
-
+    this.removeLocalStorageItemsByPrefix("savedData");
     // Generate a random number so we can open two graphs without mixing the data
     const randomNumber = Math.floor(Math.random() * 100000);
     this.storageItemName = 'savedData' + randomNumber;
