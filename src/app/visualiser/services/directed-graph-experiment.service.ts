@@ -203,7 +203,7 @@ export class DirectedGraphExperimentService {
     this.links = links || [];
 
     // Disable the reset btn
-    let resetBtn = document.getElementById('reset_graph')
+    let resetBtn = document.getElementById('reset_graph');
     if(resetBtn){
       resetBtn.setAttribute('disabled', 'true');
     }
@@ -305,7 +305,7 @@ export class DirectedGraphExperimentService {
         }
       }
     };
-    let zoomedInit
+    let zoomedInit;
     const zoomed = () => {
       const transform = d3.event.transform;
       zoomContainer.attr('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
