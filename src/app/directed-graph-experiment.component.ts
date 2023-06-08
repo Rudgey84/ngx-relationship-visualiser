@@ -83,47 +83,46 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 
     <div class="page" id="pageId" (window:resize)="onResize($event)">
     <div class="buttonBar">
-    <div *ngIf="controls">
-    <div class="d-flex justify-content-end">
-       <div class="btn-group" role="group" aria-label="Controls">
-          <button type="button" id="reset_graph" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset data" (click)="resetGraph()"><i class="bi bi-skip-backward"></i></button>
-          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
-          <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
-          <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset" disabled="true"><i class="bi bi-arrow-counterclockwise"></i></button>
-          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
-          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
-          <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
-          <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Toggle search" id="toggle_search" [style.opacity]="showSearch ? '0.65' : '1'" (click)="toggleSearch()"><i class="bi bi-search"></i></button>
+       <div *ngIf="controls">
+          <div class="d-flex justify-content-end">
+             <div class="btn-group" role="group" aria-label="Controls">
+                <button type="button" id="reset_graph" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset data" (click)="resetGraph()"><i class="bi bi-skip-backward"></i></button>
+                <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom in" id="zoom_in"><i class="bi bi-zoom-in"></i></button>
+                <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom out" id="zoom_out"><i class="bi bi-zoom-out"></i></button>
+                <button type="button" *ngIf="zoom"  class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom reset" id="zoom_reset" disabled="true"><i class="bi bi-arrow-counterclockwise"></i></button>
+                <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
+                <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
+                <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Toggle search" id="toggle_search" [style.opacity]="showSearch ? '0.65' : '1'" (click)="toggleSearch()"><i class="bi bi-search"></i></button>
+             </div>
+          </div>
+          <div class="input-group mt-3" [hidden]="!showSearch" [class.float-in]="showSearch" [class.float-out]="!showSearch">
+          <div class="input-group-prepend">
+             <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
+             <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
+          </div>
+          <input type="text" id="searchInput" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search">
+          <div class="input-group-append">
+             <button class="btn btn-outline-secondary" type="button" id="searchButton" data-toggle="tooltip" data-placement="top" title="Search"><i class="bi bi-search"></i></button>
+          </div>
+          <div class="input-group-append">
+             <button class="btn btn-outline-secondary" type="button" id="clearButton" data-toggle="tooltip" data-placement="top" title="Clear" disabled><i class="bi bi-x"></i></button>
+          </div>
        </div>
-</div>
-       <div class="input-group mt-3" [hidden]="!showSearch" [class.float-in]="showSearch" [class.float-out]="!showSearch">
-       <div class="input-group-prepend">
-          <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
-          <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
-       </div>
-       <input type="text" id="searchInput" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search">
-       <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" id="searchButton" data-toggle="tooltip" data-placement="top" title="Search"><i class="bi bi-search"></i></button>
-       </div>
-       <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" id="clearButton" data-toggle="tooltip" data-placement="top" title="Clear" disabled><i class="bi bi-x"></i></button>
-       </div>
-</div>
     </div>
     <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
  </div>
-    <div *ngIf="zoom" class="zoomIndicator">
-       <span id="zoom_level" ></span>
-    </div>
-  <app-context-menus
-  (viewNodeContextMenuEvent)="viewNodeEvent()"
-  (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
-  (createLinkContextMenuEvent)="createLinkEvent()"
-  (viewLinkContextMenuEvent)="viewLinkEvent()"
-></app-context-menus>
-
-     <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
-     </div>
+ <div *ngIf="zoom" class="zoomIndicator">
+    <span id="zoom_level" ></span>
+ </div>
+ <app-context-menus
+ (viewNodeContextMenuEvent)="viewNodeEvent()"
+ (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
+ (createLinkContextMenuEvent)="createLinkEvent()"
+ (viewLinkContextMenuEvent)="viewLinkEvent()"
+ ></app-context-menus>
+ <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
+ </div>
   `,
 })
 export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
