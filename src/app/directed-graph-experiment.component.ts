@@ -59,9 +59,10 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Zoom to fit" id="zoom_to_fit"><i class="bi bi-arrows-fullscreen"></i></button>
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Select all" id="select_all"><i class="bi bi-grid-fill"></i></button>
           <button type="button" *ngIf="zoom" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Invert selection" id="toggle_selection"><i class="bi bi-ui-checks-grid"></i></button>
+          <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Toggle search" id="toggle_search" [style.opacity]="showSearch ? '0.65' : '1'" (click)="toggleSearch()"><i class="bi bi-search"></i></button>
        </div>
 
-       <div *ngIf="controls" class="input-group">
+       <div *ngIf="controls" class="input-group" [hidden]="!showSearch">
        <div class="input-group-prepend">
           <button type="button" id="prevButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Previous" disabled><i class="bi bi-arrow-left-square"></i></button>
           <button type="button" id="nextButton" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Next" disabled><i class="bi bi-arrow-right-square"></i></button>
@@ -101,6 +102,11 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public selectedNodeId;
   public selectedLinkArray;
   public width;
+  showSearch: boolean = false;
+
+  toggleSearch() {
+    this.showSearch = !this.showSearch;
+  }
 
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
