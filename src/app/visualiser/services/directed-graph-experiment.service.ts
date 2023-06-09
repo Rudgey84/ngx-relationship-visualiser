@@ -16,7 +16,7 @@ export class DirectedGraphExperimentService {
   public extent = null;
   public zoom = false;
   public zoomToFit = false;
-
+  public resetSearch;
   /** RxJS subject to listen for updates of the selection */
   selectedNodesArray = new Subject<any[]>();
   dblClickNodePayload = new Subject();
@@ -198,6 +198,7 @@ export class DirectedGraphExperimentService {
   }
 
   public _update(_d3, svg, data) {
+    
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
@@ -656,6 +657,12 @@ const clearSearchInput = () => {
 const updateClearButton = () => {
   clearButton.disabled = searchInput.value.trim().length === 0;
 };
+
+// We reset the search when we reset the data
+if (this.resetSearch) {
+  clearSearchInput()
+  this.resetSearch = false
+}
 
 searchInput.addEventListener('input', updateClearButton);
 searchBtn.addEventListener('click', performSearch);
@@ -1284,6 +1291,8 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
   }
 
   public resetGraph(initialData, element, zoom, zoomToFit) {
+    // To reset the search when we reset the data
+   this.resetSearch = true;
     // Reset the data to its initial state
     this.nodes = [];
     this.links = [];
