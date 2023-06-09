@@ -74,6 +74,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
     <div *ngIf="controls">
       <div class="d-flex justify-content-end">
         <div class="btn-group" role="group" aria-label="Controls">
+        <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
           <button
             type="button"
             id="reset_graph"
