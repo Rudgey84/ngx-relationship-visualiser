@@ -64,6 +64,20 @@ export class AppComponent {
         fx: 55,
         fy: 60,
         attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
+      },
+      {
+        id: '666',
+        version: 0,
+        typeName: 'men',
+        label: ['James Jones', 'BA'],
+        icon: '9',
+        xpos: 0,
+        ypos: 0,
+        x: 0,
+        y: 0,
+        fx: 535,
+        fy: 630,
+        attachedToAuthorisedIRs: false,attachedToUnauthorisedIRs: false
       }
     ],
     links: [
@@ -159,6 +173,26 @@ export class AppComponent {
             target: '123',
             targetArrow: false,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
+          },
+        ],
+      },
+      {
+        source: '666',
+        target: '123',
+        label: ['Same University'],
+        lineStyle: 'Unconfirmed',
+        sourceArrow: true,
+        targetArrow: false,
+        linkId: '4',
+        relationships: [
+          {
+            label: ['Same University'],
+            lineStyle: 'Unconfirmed',
+            source: '666',
+            sourceArrow: false,
+            target: '123',
+            targetArrow: false,
+            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
           },
         ],
       },
