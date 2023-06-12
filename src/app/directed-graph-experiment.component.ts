@@ -404,16 +404,14 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public createLinkEvent() {
     this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
   }
-  
 
-  public saveGraph(event) {
+  public saveGraph() {
     this.directedGraphExperimentService.saveGraphData.subscribe(
       (saveGraphData) => {
        this.saveGraphData = this.removeLinksFromData(saveGraphData);
       }
     );
     this.saveGraphDataEvent.emit(this.saveGraphData);
-
   }
 
   public removeLinksFromData(data: any): any {

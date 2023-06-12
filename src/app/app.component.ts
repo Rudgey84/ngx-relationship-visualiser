@@ -227,7 +227,6 @@ export class AppComponent {
   }
 
   public saveGraphData(event) {
-    console.log(event)
     alert(JSON.stringify(event));
   }
 
