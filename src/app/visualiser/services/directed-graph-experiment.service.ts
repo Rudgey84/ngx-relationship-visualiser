@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { Subject } from 'rxjs';
+import { Subject,ReplaySubject, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +22,7 @@ export class DirectedGraphExperimentService {
   dblClickNodePayload = new Subject();
   dblClickLinkPayload = new Subject();
   selectedLinkArray = new Subject();
+  saveGraphData = new ReplaySubject();
 
   public update(data, element, zoom, zoomToFit) {
     const svg = d3.select(element);
@@ -995,6 +996,8 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
             }
             d.fx = d.x;
             d.fy = d.y;
+            // Subscribes to updated graph positions for save
+            self.saveGraphData.next(data);
           })
       )
       .attr('class', 'node-wrapper')

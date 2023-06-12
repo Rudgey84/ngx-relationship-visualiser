@@ -226,6 +226,11 @@ export class AppComponent {
     this.openModal('modalRef', template, config);
   }
 
+  public saveGraphData(event) {
+    console.log(event)
+    alert(JSON.stringify(event));
+  }
+
   // Open the modal
   public openModal(
     modalRef: string,

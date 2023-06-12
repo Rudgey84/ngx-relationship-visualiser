@@ -82,7 +82,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         data-toggle="tooltip"
         data-placement="top"
         title="Save data"
-        (click)="resetGraph()"
+        (click)="saveGraph()"
       >
       <i class="bi bi-save"></i>
       </button>
@@ -259,9 +259,11 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
+  @Output() saveGraphDataEvent = new EventEmitter<any>();
   public selectedNodesArray;
   public selectedNodeId;
   public selectedLinkArray;
+  public saveGraphData;
   public width;
   public showSearch: boolean = false;
   public storageItemName: string;
@@ -401,6 +403,23 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
   public createLinkEvent() {
     this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
+  }
+  
+
+  public saveGraph(event) {
+    this.directedGraphExperimentService.saveGraphData.subscribe(
+      (saveGraphData) => {
+       this.saveGraphData = this.removeLinksFromData(saveGraphData);
+      }
+    );
+    this.saveGraphDataEvent.emit(this.saveGraphData);
+
+  }
+
+  public removeLinksFromData(data: any): any {
+    const newData = { ...data }; 
+    delete newData.links;
+    return newData;
   }
 
   public resetGraph() {
