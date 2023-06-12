@@ -61,9 +61,11 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         position: relative;
       }
       .searchButtonActive {
-        opacity: 0.65;
+        outline: none;
+        -webkit-box-shadow: inset 0px 0px 5px #323232;
+           -moz-box-shadow: inset 0px 0px 5px #323232;
+                box-shadow: inset 0px 0px 5px #323232;
       }
-      
       .searchButtonInactive {
         opacity: 1;
       }
