@@ -205,8 +205,10 @@ export class DirectedGraphExperimentService {
 
     // Disable the reset btn
     let resetBtn = document.getElementById('reset_graph');
+    let saveBtn = document.getElementById('save_graph');
     if(resetBtn){
       resetBtn.setAttribute('disabled', 'true');
+      saveBtn.setAttribute('disabled', 'true');
     }
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
@@ -946,9 +948,10 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
         _d3
           .drag()
           .on('start', function dragstarted(d) {
-            // Enable the reset btn
+            // Enable the save & reset btn
             if(resetBtn){
             document.getElementById('reset_graph').removeAttribute('disabled');
+            document.getElementById('save_graph').removeAttribute('disabled');
             }
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
 

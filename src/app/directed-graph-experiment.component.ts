@@ -75,6 +75,17 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
       <div class="d-flex justify-content-end">
         <div class="btn-group" role="group" aria-label="Controls">
         <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
+        <button
+        type="button"
+        id="save_graph"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Save data"
+        (click)="resetGraph()"
+      >
+      <i class="bi bi-save"></i>
+      </button>
           <button
             type="button"
             id="reset_graph"
