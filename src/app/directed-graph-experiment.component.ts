@@ -408,10 +408,14 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public saveGraph() {
     this.directedGraphExperimentService.saveGraphData.subscribe(
       (saveGraphData) => {
-       this.saveGraphData = this.removeLinksFromData(saveGraphData);
+        this.saveGraphData = this.removeLinksFromData(saveGraphData);
       }
     );
     this.saveGraphDataEvent.emit(this.saveGraphData);
+    const saveBtn = document.getElementById('save_graph');
+    const resetBtn = document.getElementById('reset_graph');
+    saveBtn.setAttribute('disabled', 'true');
+    resetBtn.setAttribute('disabled', 'true');
   }
 
   public removeLinksFromData(data: any): any {
@@ -421,9 +425,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public resetGraph() {
-  
     const data = JSON.parse(localStorage.getItem(this.storageItemName));
-    //const data = JSON.parse(localStorage.getItem('savedData'));
     this.directedGraphExperimentService.resetGraph(
       data,
       this.graphElement.nativeElement,
