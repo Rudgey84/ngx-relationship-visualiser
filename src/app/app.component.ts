@@ -227,7 +227,7 @@ export class AppComponent {
   }
 
   public saveGraphData(event) {
-    alert(JSON.stringify(event));
+    console.log(JSON.stringify(event));
   }
 
   // Open the modal

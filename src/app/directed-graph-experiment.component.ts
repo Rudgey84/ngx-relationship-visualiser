@@ -69,6 +69,19 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
       .searchButtonInactive {
         opacity: 1;
       }
+      .confirmation-message {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.5s, transform 0.5s;
+      }
+
+      .confirmation-message.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-10px);
+      }
 		</style>
 
     <div class="page" id="pageId" (window:resize)="onResize($event)">
@@ -245,6 +258,9 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
  <div *ngIf="zoom" class="zoomIndicator">
     <span id="zoom_level"></span>
  </div>
+ <div class="alert alert-success confirmation-message" [class.show]="showConfirmation" role="alert">
+ Saved <i class="bi bi-check-circle"></i>
+</div>
  <app-context-menus
  (viewNodeContextMenuEvent)="viewNodeEvent()"
  (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
@@ -269,7 +285,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public width;
   public showSearch: boolean = false;
   public storageItemName: string;
-
+  public showConfirmation: boolean = false;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -412,7 +428,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
       (saveGraphData) => {
        // this.saveGraphData = this.removeLinksFromData(saveGraphData);
        this.saveGraphData = saveGraphData
-        console.log("data",saveGraphData)
       }
     );
     this.saveGraphDataEvent.emit(this.saveGraphData);
@@ -422,6 +437,14 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     resetBtn.setAttribute('disabled', 'true');
     // Save wont trigger a refresh, so we store the new values until the next refresh or save is executed again
     localStorage.setItem(this.storageItemName, JSON.stringify(this.saveGraphData));
+
+        // Show the confirmation message
+        this.showConfirmation = true;
+
+        // After a few seconds, hide the confirmation message
+        setTimeout(() => {
+          this.showConfirmation = false;
+        }, 3000); // Adjust the duration (in milliseconds) as needed
   }
 
   // public removeLinksFromData(data: any): any {
