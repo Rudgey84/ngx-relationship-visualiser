@@ -243,7 +243,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
     <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
   </div>
  <div *ngIf="zoom" class="zoomIndicator">
-    <span id="zoom_level" ></span>
+    <span id="zoom_level"></span>
  </div>
  <app-context-menus
  (viewNodeContextMenuEvent)="viewNodeEvent()"
@@ -410,7 +410,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public saveGraph() {
     this.directedGraphExperimentService.saveGraphData.subscribe(
       (saveGraphData) => {
-        this.saveGraphData = this.removeLinksFromData(saveGraphData);
+       // this.saveGraphData = this.removeLinksFromData(saveGraphData);
+       this.saveGraphData = saveGraphData
+        console.log("data",saveGraphData)
       }
     );
     this.saveGraphDataEvent.emit(this.saveGraphData);
@@ -418,13 +420,15 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     const resetBtn = document.getElementById('reset_graph');
     saveBtn.setAttribute('disabled', 'true');
     resetBtn.setAttribute('disabled', 'true');
+    // Save wont trigger a refresh, so we store the new values until the next refresh or save is executed again
+    localStorage.setItem(this.storageItemName, JSON.stringify(this.saveGraphData));
   }
 
-  public removeLinksFromData(data: any): any {
-    const newData = { ...data }; 
-    delete newData.links;
-    return newData;
-  }
+  // public removeLinksFromData(data: any): any {
+  //   const newData = { ...data }; 
+  //   delete newData.links;
+  //   return newData;
+  // }
 
   public resetGraph() {
     const data = JSON.parse(localStorage.getItem(this.storageItemName));
