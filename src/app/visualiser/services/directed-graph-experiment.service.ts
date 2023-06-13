@@ -18,11 +18,11 @@ export class DirectedGraphExperimentService {
   public zoomToFit = false;
   public resetSearch;
   /** RxJS subject to listen for updates of the selection */
-  selectedNodesArray = new Subject<any[]>();
-  dblClickNodePayload = new Subject();
-  dblClickLinkPayload = new Subject();
-  selectedLinkArray = new Subject();
-  saveGraphData = new ReplaySubject();
+  public selectedNodesArray = new Subject<any[]>();
+  public dblClickNodePayload = new Subject();
+  public dblClickLinkPayload = new Subject();
+  public selectedLinkArray = new Subject();
+  public saveGraphData = new ReplaySubject();
 
   public update(data, element, zoom, zoomToFit) {
     const svg = d3.select(element);

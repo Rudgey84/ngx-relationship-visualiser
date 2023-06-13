@@ -77,7 +77,6 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         opacity: 0;
         transition: opacity 0.5s, transform 0.5s;
       }
-
       .confirmation-message.show {
         opacity: 1;
         transform: translateX(-50%) translateY(-10px);
