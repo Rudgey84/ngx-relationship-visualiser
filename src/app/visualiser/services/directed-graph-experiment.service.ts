@@ -514,6 +514,9 @@ const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
   let currentMatchIndex = -1;
   
   const showCurrentMatch = () => {
+    // Remove any previously added background circle
+    d3.selectAll('circle.highlight-background').remove();
+    
     const matchingNode = matchingNodes[currentMatchIndex];
     // Highlight the matching node
     const nodeWrapper = d3.selectAll('.node-wrapper')
@@ -566,7 +569,7 @@ const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
   
   const performSearch = () => {
     // Remove any previously added background circle
-    //d3.selectAll('circle.highlight-background').remove();
+    d3.selectAll('circle.highlight-background').remove();
   
     const searchTerm = searchInput.value.toLowerCase().trim();
   
