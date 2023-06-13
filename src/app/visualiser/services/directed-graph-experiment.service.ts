@@ -516,16 +516,13 @@ const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
   const showCurrentMatch = () => {
     // Remove any previously added background circle
     d3.selectAll('circle.highlight-background').remove();
-    
+  
     const matchingNode = matchingNodes[currentMatchIndex];
     // Highlight the matching node
     const nodeWrapper = d3.selectAll('.node-wrapper')
-      .filter(function() {
+      .filter(function () {
         return d3.select(this).attr('id') === matchingNode.id;
       });
-  
-    // Remove any previously added background circles
-    nodeWrapper.selectAll('circle.highlight-background').remove();
   
     // Add a new background circle to the entire <g> node
     const bbox = nodeWrapper.node().getBBox();
@@ -533,26 +530,28 @@ const clearButton = document.getElementById('clearButton') as HTMLButtonElement;
     const centerY = bbox.y + bbox.height / 2;
     const radius = Math.max(bbox.width + 30, bbox.height) / 2;
   
-    nodeWrapper.insert('circle', ':first-child')
-      .transition()
-      .duration(1000)
+    const backgroundCircle = nodeWrapper
+      .insert('circle', ':first-child')
       .attr('class', 'highlight-background')
-      .attr('cx', centerX)
-      .attr('cy', centerY)
-      .attr('r', radius)
       .attr('fill', 'yellow')
       .attr('opacity', '0.3')
+      .attr('cx', centerX)
+      .attr('cy', centerY);
+  
+    // Animate the background circle
+    backgroundCircle
+      .transition()
+      .duration(1000)
+      .attr('r', radius)
       .transition()
       .duration(1000)
       .attr('r', radius / 4)
-      .attr('fill', 'yellow')
       .attr('opacity', '0.5')
       .transition()
       .duration(1000)
       .attr('r', radius)
-      .attr('fill', 'yellow')
       .attr('opacity', '0.3');
-
+  
     // Zoom to the matching node
     const zoomTransform = d3.zoomTransform(svg.node());
     const { x, y, k } = zoomTransform;
