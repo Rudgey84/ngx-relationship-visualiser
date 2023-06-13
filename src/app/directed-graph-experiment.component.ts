@@ -69,18 +69,40 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
       .searchButtonInactive {
         opacity: 1;
       }
-      .confirmation-message {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 0;
-        transition: opacity 0.5s, transform 0.5s;
-      }
-      .confirmation-message.show {
-        opacity: 1;
-        transform: translateX(-50%) translateY(-10px);
-      }
+			.confirmation-message-container {
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+
+			.confirmation-message {
+				position: relative;
+				top: 60px;
+				opacity: 0; /* Start with 0 opacity */
+				animation: fade-in 0.5s ease-in-out forwards;
+			}
+
+			@keyframes fade-in {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+
+			.fade-out {
+				animation: fade-out 0.5s ease-in-out forwards;
+			}
+
+			@keyframes fade-out {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
 		</style>
 
     <div class="page" id="pageId" (window:resize)="onResize($event)">
@@ -254,12 +276,16 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
     </div>
     <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
   </div>
+  <!-- Zoom indicator-->
  <div *ngIf="zoom" class="zoomIndicator">
     <span id="zoom_level"></span>
  </div>
- <div class="alert alert-success confirmation-message" [class.show]="showConfirmation" role="alert">
- Saved <i class="bi bi-check-circle"></i>
-</div>
+ <!-- Save confirmation-->
+ <div *ngIf="showConfirmation" class="confirmation-message-container">
+   <div class="alert alert-success confirmation-message" role="alert" [ngClass]="{ 'fade-out': !showConfirmation }">
+     Saved <i class="bi bi-check-circle"></i>
+   </div>
+ </div>
  <app-context-menus
  (viewNodeContextMenuEvent)="viewNodeEvent()"
  (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
@@ -423,28 +449,26 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public saveGraph() {
-    this.directedGraphExperimentService.saveGraphData.subscribe(
-      (saveGraphData) => {
-       // this.saveGraphData = this.removeLinksFromData(saveGraphData);
-       this.saveGraphData = saveGraphData
-      }
-    );
-    this.saveGraphDataEvent.emit(this.saveGraphData);
-    const saveBtn = document.getElementById('save_graph');
-    const resetBtn = document.getElementById('reset_graph');
-    saveBtn.setAttribute('disabled', 'true');
-    resetBtn.setAttribute('disabled', 'true');
-    // Save wont trigger a refresh, so we store the new values until the next refresh or save is executed again
-    localStorage.setItem(this.storageItemName, JSON.stringify(this.saveGraphData));
+		this.directedGraphExperimentService.saveGraphData.subscribe(saveGraphData => {
+      // this.saveGraphData = this.removeLinksFromData(saveGraphData);
+			this.saveGraphData = saveGraphData;
+		});
+		this.saveGraphDataEvent.emit(this.saveGraphData);
+		const saveBtn = document.getElementById('save_graph');
+		const resetBtn = document.getElementById('reset_graph');
+		saveBtn.setAttribute('disabled', 'true');
+		resetBtn.setAttribute('disabled', 'true');
+		// Save won't trigger a refresh, so we store the new values until the next refresh or save is executed again
+		localStorage.setItem(this.storageItemName, JSON.stringify(this.saveGraphData));
 
-        // Show the confirmation message
-        this.showConfirmation = true;
+		// Show the confirmation message
+		this.showConfirmation = true;
 
-        // After a few seconds, hide the confirmation message
-        setTimeout(() => {
-          this.showConfirmation = false;
-        }, 3000); // Adjust the duration (in milliseconds) as needed
-  }
+		// After a few seconds, hide the confirmation message
+		setTimeout(() => {
+			this.showConfirmation = false;
+		}, 3000);
+	}
 
   // public removeLinksFromData(data: any): any {
   //   const newData = { ...data }; 
