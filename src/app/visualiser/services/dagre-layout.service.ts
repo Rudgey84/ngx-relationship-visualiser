@@ -62,16 +62,14 @@ export class DagreNodesOnlyLayout {
       const dagreNode = this.dagreGraph._nodes[dagreNodeId];
       const node = graph.nodes.find(n => n.id === dagreNode.id);
     
-      if (node.fx === null && node.fy === null) {
-        // Check if the node has any associated edges
-        const associatedEdges = this.dagreGraph.nodeEdges(dagreNode);
-        const hasAssociatedEdges = associatedEdges && associatedEdges.length > 0;
-    
-        if (hasAssociatedEdges) {
-          node.fx = dagreNode.x;
-          node.fy = dagreNode.y;
-        }
+    if (node.fx === null && node.fy === null) {
+      // Check if the node has any associated edges
+      const hasAssociatedEdges = graph.links.some(link => link.source === dagreNode.id || link.target === dagreNode.id);
+      if (hasAssociatedEdges) {
+        node.fx = dagreNode.x;
+        node.fy = dagreNode.y;
       }
+    }
     
       node.dimension = {
         width: dagreNode.width,
@@ -91,21 +89,19 @@ export class DagreNodesOnlyLayout {
       const dagreNode = this.dagreGraph._nodes[dagreNodeId];
       const node = graph.nodes.find(n => n.id === dagreNode.id);
     
-    // Check if the node has any associated edges
-    const hasAssociatedEdges = graph.links.some(link => link.source === dagreNode.id || link.target === dagreNode.id);
+      // Check if the node has any associated edges
+      const hasAssociatedEdges = graph.links.some(link => link.source === dagreNode.id || link.target === dagreNode.id);
 
-    if (hasAssociatedEdges) {
-      node.fx = dagreNode.x;
-      node.fy = dagreNode.y;
-    }
+      if (hasAssociatedEdges) {
+        node.fx = dagreNode.x;
+        node.fy = dagreNode.y;
+      }
     
       node.dimension = {
         width: dagreNode.width,
         height: dagreNode.height 
       };
     }
-    
-
     return graph;
   }
 
