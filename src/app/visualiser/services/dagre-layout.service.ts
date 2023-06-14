@@ -39,7 +39,7 @@ export class DagreNodesOnlyLayout {
     orientation: Orientation.LEFT_TO_RIGHT,
     marginX: 40,
     marginY: 40,
-    edgePadding: 30,
+    edgePadding: 200,
     rankPadding: 300,
     nodePadding: 100,
     curveDistance: 20,
