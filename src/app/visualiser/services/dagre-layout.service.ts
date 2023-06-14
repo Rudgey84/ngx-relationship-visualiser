@@ -39,14 +39,14 @@ export class DagreNodesOnlyLayout {
     orientation: Orientation.LEFT_TO_RIGHT,
     marginX: 40,
     marginY: 40,
-    edgePadding: 300,
+    edgePadding: 30,
     rankPadding: 300,
     nodePadding: 100,
     curveDistance: 20,
     multigraph: true,
     compound: true,
     align: Alignment.UP_RIGHT,
-    acyclicer: 'greedy',
+    acyclicer: undefined,
     ranker: 'network-simplex'
   };
 
@@ -151,7 +151,8 @@ export class DagreNodesOnlyLayout {
     // update dagre
     for (const edge of this.dagreEdges) {
       if (settings.multigraph) {
-        this.dagreGraph.setEdge(edge.source, edge.target, edge, edge.id);
+
+        this.dagreGraph.setEdge(edge.source, edge.target, edge, edge.linkId);
       } else {
         this.dagreGraph.setEdge(edge.source, edge.target);
       }
