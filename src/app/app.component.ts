@@ -75,8 +75,8 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: 535,
-        fy: 630,
+        fx: null,
+        fy: null,
         attachedToAuthorisedIRs: false,attachedToUnauthorisedIRs: false
       }
     ],
