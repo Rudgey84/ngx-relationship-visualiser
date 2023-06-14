@@ -235,6 +235,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         <i class="bi bi-search"></i>
       </button>
       </div>
+      </div>
       <div class="input-group mt-3" [hidden]="!showSearch">
         <div class="input-group-prepend">
           <button
