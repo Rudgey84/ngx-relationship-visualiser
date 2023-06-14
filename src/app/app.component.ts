@@ -24,7 +24,7 @@ export class AppComponent {
   public mockedData = {
     nodes: [
       {
-        id: '1',
+        id: '123',
         version: 0,
         typeName: 'men',
         label: ['John Doe', '01/01/1970'],
@@ -38,7 +38,7 @@ export class AppComponent {
         attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
       },
       {
-        id: '2',
+        id: '456',
         version: 0,
         typeName: 'men',
         label: ['Richard Hill', '14/05/1982'],
@@ -52,7 +52,7 @@ export class AppComponent {
         attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
       },
       {
-        id: '3',
+        id: '789',
         version: 0,
         typeName: 'men',
         label: ['Rick Smith', 'Software Developer'],
@@ -82,95 +82,95 @@ export class AppComponent {
     ],
     links: [
       {
-        source: '1',
-        target: '2',
+        source: '123',
+        target: '456',
         label: ['Worked at IBM', 'Both in same scrum team'],
         lineStyle: 'Unconfirmed',
         sourceArrow: false,
         targetArrow: true,
-        linkId: '1',
+        linkId: '123',
         relationships: [
           {
             label: 'Worked at IBM',
             lineStyle: 'Unconfirmed',
-            source: '1',
+            source: '123',
             sourceArrow: false,
-            target: '2',
+            target: '456',
             targetArrow: true,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
           },
           {
             label: 'Both in same scrum team',
             lineStyle: 'Confirmed',
-            source: '1',
+            source: '123',
             sourceArrow: true,
-            target: '2',
+            target: '456',
             targetArrow: false,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
           },
         ],
       },
       {
-        source: '2',
-        target: '3',
+        source: '456',
+        target: '789',
         label: ['Play in the same football team', 'Daughters in the same class at school', 'Went on a family holiday together last year'],
         lineStyle: 'Confirmed',
         sourceArrow: true,
         targetArrow: true,
-        linkId: '2',
+        linkId: '456',
         relationships: [
           {
             label: 'Play in the same football team',
             lineStyle: 'Confirmed',
-            source: '2',
+            source: '456',
             sourceArrow: false,
-            target: '3',
+            target: '789',
             targetArrow: true,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
           {
             label: 'Daughters in the same class at school',
             lineStyle: 'Confirmed',
-            source: '2',
+            source: '456',
             sourceArrow: true,
-            target: '3',
+            target: '789',
             targetArrow: false,
           },
           {
             label: 'Went on a family holiday together last year',
             lineStyle: 'Confirmed',
-            source: '2',
+            source: '456',
             sourceArrow: true,
-            target: '3',
+            target: '789',
             targetArrow: false,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
         ],
       },
       {
-        source: '3',
-        target: '1',
+        source: '789',
+        target: '123',
         label: ['Drink in the same pub', 'Drinking friends'],
         lineStyle: 'Unconfirmed',
         sourceArrow: true,
         targetArrow: true,
-        linkId: '3',
+        linkId: '789',
         relationships: [
           {
             label: 'Drink in the same pub',
             lineStyle: 'Unconfirmed',
-            source: '3',
+            source: '789',
             sourceArrow: false,
-            target: '1',
+            target: '123',
             targetArrow: true,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
           {
             label: 'Drinking friends',
             lineStyle: 'Unconfirmed',
-            source: '3',
+            source: '789',
             sourceArrow: true,
-            target: '1',
+            target: '123',
             targetArrow: false,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
           },
@@ -178,7 +178,7 @@ export class AppComponent {
       },
       {
         source: '4',
-        target: '1',
+        target: '123',
         label: ['Same University'],
         lineStyle: 'Unconfirmed',
         sourceArrow: true,
@@ -190,7 +190,7 @@ export class AppComponent {
             lineStyle: 'Unconfirmed',
             source: '4',
             sourceArrow: false,
-            target: '1',
+            target: '123',
             targetArrow: false,
             attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
           },
