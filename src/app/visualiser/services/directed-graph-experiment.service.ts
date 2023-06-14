@@ -137,6 +137,9 @@ export class DirectedGraphExperimentService {
       if (!oldMap[node.id]) {
         // Node is new, mark it with the newItem property
         node.newItem = true;
+        // Remove the dagre coordinates from new nodes so we can set a random one in view
+        node.fx = null
+        node.fy = null
       }
     });
 
@@ -214,8 +217,6 @@ export class DirectedGraphExperimentService {
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
-    // If nodes don't have a fx/fy coordinate we generate a random one
-    this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
 
     // Check to see if nodes are in store
     if ('nodes' in localStorage) {
@@ -233,6 +234,9 @@ export class DirectedGraphExperimentService {
       // Add first set of nodes to store
       localStorage.setItem('nodes', JSON.stringify(data.nodes));
     }
+
+        // If nodes don't have a fx/fy coordinate we generate a random one
+        this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
 
     // Getting parents lineStyle and adding it to child objects
     const relationshipsArray = this.links.map(({ lineStyle, targetArrow, sourceArrow, relationships }) =>
@@ -1292,6 +1296,7 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
     });
 
     simulation.force('link').links(this.links);
+    self.saveGraphData.next(data);
   }
 
   public resetGraph(initialData, element, zoom, zoomToFit) {

@@ -9,6 +9,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
+import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';
 import { ContextMenuService } from 'ngx-contextmenu';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 
@@ -121,8 +122,18 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
     <div *ngIf="controls">
       <div class="d-flex justify-content-end">
       <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
-        <div class="btn-group" role="group" aria-label="Controls">
-        <button
+      <div class="btn-group" role="group" aria-label="Controls">
+      <button type="button"
+        id="dagre_layout"
+        class="btn btn-secondary" 
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Dagre layout"
+        (click)="layout()"
+      >
+        <i class="bi bi-diagram-3"></i>
+      </button>
+      <button
         type="button"
         id="save_graph"
         class="btn btn-secondary"
@@ -131,99 +142,98 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         title="Save data"
         (click)="saveGraph()"
       >
-      <i class="bi bi-save"></i>
+        <i class="bi bi-save"></i>
       </button>
-          <button
-            type="button"
-            id="reset_graph"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Reset data"
-            (click)="resetGraph()"
-          >
-            <i class="bi bi-skip-backward"></i>
-          </button>
-          <button
-            type="button"
-            *ngIf="zoom"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Zoom in"
-            id="zoom_in"
-          >
-            <i class="bi bi-zoom-in"></i>
-          </button>
-          <button
-            type="button"
-            *ngIf="zoom"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Zoom out"
-            id="zoom_out"
-          >
-            <i class="bi bi-zoom-out"></i>
-          </button>
-          <button
-            type="button"
-            *ngIf="zoom"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Zoom reset"
-            id="zoom_reset"
-            disabled="true"
-          >
-            <i class="bi bi-arrow-counterclockwise"></i>
-          </button>
-          <button
-            type="button"
-            *ngIf="zoom"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Zoom to fit"
-            id="zoom_to_fit"
-          >
-            <i class="bi bi-arrows-fullscreen"></i>
-          </button>
-          <button
-            type="button"
-            *ngIf="zoom"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Select all"
-            id="select_all"
-          >
-            <i class="bi bi-grid-fill"></i>
-          </button>
-          <button
-            type="button"
-            *ngIf="zoom"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Invert selection"
-            id="toggle_selection"
-          >
-            <i class="bi bi-ui-checks-grid"></i>
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Toggle search"
-            id="toggle_search"
-            [ngClass]="{'searchButtonActive': showSearch, 'searchButtonInactive': !showSearch}"
-            (click)="toggleSearch()"
-          >
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
+      <button
+        type="button"
+        id="reset_graph"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Reset data"
+        (click)="resetGraph()"
+      >
+        <i class="bi bi-skip-backward"></i>
+      </button>
+      <button
+        type="button"
+        *ngIf="zoom"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Zoom in"
+        id="zoom_in"
+      >
+        <i class="bi bi-zoom-in"></i>
+      </button>
+      <button
+        type="button"
+        *ngIf="zoom"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Zoom out"
+        id="zoom_out"
+      >
+        <i class="bi bi-zoom-out"></i>
+      </button>
+      <button
+        type="button"
+        *ngIf="zoom"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Zoom reset"
+        id="zoom_reset"
+        disabled="true"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+      </button>
+      <button
+        type="button"
+        *ngIf="zoom"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Zoom to fit"
+        id="zoom_to_fit"
+      >
+        <i class="bi bi-arrows-fullscreen"></i>
+      </button>
+      <button
+        type="button"
+        *ngIf="zoom"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Select all"
+        id="select_all"
+      >
+        <i class="bi bi-grid-fill"></i>
+      </button>
+      <button
+        type="button"
+        *ngIf="zoom"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Invert selection"
+        id="toggle_selection"
+      >
+        <i class="bi bi-ui-checks-grid"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Toggle search"
+        id="toggle_search"
+        [ngClass]="{'searchButtonActive': showSearch, 'searchButtonInactive': !showSearch}"
+        (click)="toggleSearch()"
+      >
+        <i class="bi bi-search"></i>
+      </button>
       </div>
       <div class="input-group mt-3" [hidden]="!showSearch">
         <div class="input-group-prepend">
@@ -320,15 +330,18 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public saveGraphData;
   public width;
   public showSearch: boolean = false;
-  public storageItemName: string;
+  public savedGraphData: string;
   public showConfirmation: boolean = false;
+  public isDagreLayout: boolean = false;
+  public storeDagreLayout: string;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
   @Input() zoomToFit: boolean = false;
   constructor(
     private directedGraphExperimentService: DirectedGraphExperimentService,
-    private contextMenuService: ContextMenuService
+    private contextMenuService: ContextMenuService,
+    private dagreNodesOnlyLayout: DagreNodesOnlyLayout
   ) {}
 
   public removeLocalStorageItemsByPrefix(prefix) {
@@ -341,15 +354,18 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 
   @Input()
   set data(data: any) {
-    this.removeLocalStorageItemsByPrefix("savedData");
+    
+    this.removeLocalStorageItemsByPrefix("savedGraphData");
+    this.removeLocalStorageItemsByPrefix("storeDagreLayout");
     // Generate a random number so we can open two graphs without mixing the data
     const randomNumber = Math.floor(Math.random() * 100000);
-    this.storageItemName = 'savedData' + randomNumber;
+    this.savedGraphData = 'savedGraphData' + randomNumber;
+    this.storeDagreLayout = 'storeDagreLayout'  + randomNumber;
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
-
+      this.dagreNodesOnlyLayout.renderLayout(data)
       // Take a copy of input for reset
-      localStorage.setItem(this.storageItemName, JSON.stringify(data));
+      localStorage.setItem(this.savedGraphData, JSON.stringify(data));
       this.directedGraphExperimentService.update(
         data,
         this.graphElement.nativeElement,
@@ -406,7 +422,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public ngOnDestroy() {
     localStorage.setItem('nodes', JSON.stringify([]));
     localStorage.removeItem('nodes');
-    localStorage.removeItem(this.storageItemName);
+    localStorage.removeItem(this.savedGraphData);
+    localStorage.removeItem(this.storeDagreLayout);
   }
 
   public visualiserContextMenus(event): void {
@@ -460,40 +477,63 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public saveGraph() {
-		this.directedGraphExperimentService.saveGraphData.subscribe(saveGraphData => {
-      // this.saveGraphData = this.removeLinksFromData(saveGraphData);
-			this.saveGraphData = saveGraphData;
-		});
-		this.saveGraphDataEvent.emit(this.saveGraphData);
-		const saveBtn = document.getElementById('save_graph');
-		const resetBtn = document.getElementById('reset_graph');
-		saveBtn.setAttribute('disabled', 'true');
-		resetBtn.setAttribute('disabled', 'true');
-		// Save won't trigger a refresh, so we store the new values until the next refresh or save is executed again
-		localStorage.setItem(this.storageItemName, JSON.stringify(this.saveGraphData));
-
-		// Show the confirmation message
-		this.showConfirmation = true;
-
-		// After a few seconds, hide the confirmation message
-		setTimeout(() => {
-			this.showConfirmation = false;
-		}, 3000);
-	}
-
-  // public removeLinksFromData(data: any): any {
-  //   const newData = { ...data }; 
-  //   delete newData.links;
-  //   return newData;
-  // }
-
+    this.directedGraphExperimentService.saveGraphData.subscribe((saveGraphData) => {
+      this.saveGraphData = saveGraphData;
+    });
+  
+    this.saveGraphDataEvent.emit(this.saveGraphData);
+    this.disableButtons(true);
+    localStorage.setItem(this.savedGraphData, JSON.stringify(this.saveGraphData));
+    this.showConfirmationMessage();
+  }
+  
   public resetGraph() {
-    const data = JSON.parse(localStorage.getItem(this.storageItemName));
+    let data;
+    if (this.isDagreLayout) {
+      data = JSON.parse(localStorage.getItem(this.storeDagreLayout));
+      this.isDagreLayout = false;
+    } else {
+      data = JSON.parse(localStorage.getItem(this.savedGraphData));
+      this.disableButtons(true);
+    }
+  
     this.directedGraphExperimentService.resetGraph(
       data,
       this.graphElement.nativeElement,
       this.zoom,
-      this.zoomToFit);
+      this.zoomToFit
+    );
+  }
+  
+  public layout() {
+    this.isDagreLayout = true;
+    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+    let newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
+    localStorage.setItem(this.storeDagreLayout, JSON.stringify(newDagreLayout));
+  
+    this.resetGraph();
+    this.enableButtons();
+  }
+  
+  private disableButtons(disabled: boolean) {
+    const saveBtn = document.getElementById('save_graph');
+    const resetBtn = document.getElementById('reset_graph');
+    saveBtn.setAttribute('disabled', String(disabled));
+    resetBtn.setAttribute('disabled', String(disabled));
+  }
+  
+  private showConfirmationMessage() {
+    this.showConfirmation = true;
+    setTimeout(() => {
+      this.showConfirmation = false;
+    }, 3000);
+  }
+  
+  private enableButtons() {
+    const saveBtn = document.getElementById('save_graph');
+    const resetBtn = document.getElementById('reset_graph');
+    saveBtn.removeAttribute('disabled');
+    resetBtn.removeAttribute('disabled');
   }
 
   newData() {
@@ -548,8 +588,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
           ypos: 0,
           x: 0,
           y: 0,
-          fx: 377,
-          fy: 510,
+          fx: null,
+          fy: null,
         },
         {
           id: '131415',
