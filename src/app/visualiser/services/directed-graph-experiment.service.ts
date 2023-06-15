@@ -353,14 +353,13 @@ export class DirectedGraphExperimentService {
     });
     // Zoom to fit function and Button
     const handleZoomToFit = () => {
-  
       const nodeBBox = zoomContainer.node().getBBox();
-      
+    
       // Calculate scale and translate values to fit all nodes
       const padding = 30;
       const scaleX = (parentWidth - padding * 2) / nodeBBox.width;
       const scaleY = (parentHeight - padding * 2) / nodeBBox.height;
-      const scale = Math.min(scaleX, scaleY);
+      const scale = Math.min(scaleX, scaleY, 1.0); // Restrict scale to a maximum of 1.0
     
       const translateX = -nodeBBox.x * scale + (parentWidth - nodeBBox.width * scale) / 2;
       const translateY = -nodeBBox.y * scale + (parentHeight - nodeBBox.height * scale) / 2;
@@ -369,14 +368,14 @@ export class DirectedGraphExperimentService {
       const allNodes = zoomContainer.selectAll('.node-wrapper');
       const allNodesBBox = allNodes.nodes().reduce(
         (acc, node) => {
-        const nodeBBox = node.getBBox();
-        acc.x = Math.min(acc.x, nodeBBox.x);
-        acc.y = Math.min(acc.y, nodeBBox.y);
-        acc.width = Math.max(acc.width, nodeBBox.x + nodeBBox.width);
-        acc.height = Math.max(acc.height, nodeBBox.y + nodeBBox.height);
-        return acc;
-      }, 
-      { x: Infinity, y: Infinity, width: -Infinity, height: -Infinity }
+          const nodeBBox = node.getBBox();
+          acc.x = Math.min(acc.x, nodeBBox.x);
+          acc.y = Math.min(acc.y, nodeBBox.y);
+          acc.width = Math.max(acc.width, nodeBBox.x + nodeBBox.width);
+          acc.height = Math.max(acc.height, nodeBBox.y + nodeBBox.height);
+          return acc;
+        },
+        { x: Infinity, y: Infinity, width: -Infinity, height: -Infinity }
       );
     
       // Check if all nodes are within the viewable container
@@ -398,13 +397,14 @@ export class DirectedGraphExperimentService {
     
       // Update the currentZoom variable with the new transform
       // zoomedInit - created because if zoomToFit is called before anything else it screws up the base transform - e.g. showCurrentMatch
-      if(zoomedInit){
-      currentZoom.x = translateX;
-      currentZoom.y = translateY;
-      currentZoom.k = scale;
+      if (zoomedInit) {
+        currentZoom.x = translateX;
+        currentZoom.y = translateY;
+        currentZoom.k = scale;
       }
       updateZoomLevel();
-	  };
+    };
+    
     d3.select('#zoom_to_fit').on('click', handleZoomToFit);
     
     // Check if zoom level is at 0% or 100% before allowing mousewheel zoom - this stabilises the canvas when the limit is reached
