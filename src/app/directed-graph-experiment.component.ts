@@ -355,22 +355,21 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 
   @Input()
   set data(data: any) {
-    
-    this.removeLocalStorageItemsByPrefix("savedGraphData");
-    this.removeLocalStorageItemsByPrefix("storeDagreLayout");
+    this.removeLocalStorageItemsByPrefix('savedGraphData');
+    this.removeLocalStorageItemsByPrefix('storeDagreLayout');
     // Generate a random number so we can open two graphs without mixing the data
     const randomNumber = Math.floor(Math.random() * 100000);
     this.savedGraphData = 'savedGraphData' + randomNumber;
-    this.storeDagreLayout = 'storeDagreLayout'  + randomNumber;
+    this.storeDagreLayout = 'storeDagreLayout' + randomNumber;
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
-      this.dagreNodesOnlyLayout.renderLayout(data)
+      this.dagreNodesOnlyLayout.renderLayout(data);
       // Take a copy of input for reset
       localStorage.setItem(this.savedGraphData, JSON.stringify(data));
       this.directedGraphExperimentService.update(
         data,
         this.graphElement.nativeElement,
-        this.zoom, 
+        this.zoom,
         this.zoomToFit
       );
     }, 500);
@@ -478,34 +477,35 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public saveGraph() {
-    this.directedGraphExperimentService.saveGraphData.subscribe((saveGraphData) => {
-      this.saveGraphData = saveGraphData;
-    });
+    this.directedGraphExperimentService.saveGraphData.subscribe(
+      (saveGraphData) => {
+        this.saveGraphData = saveGraphData;
+      }
+    );
 
-    const nodePositions = this.filterProperties(this.saveGraphData.nodes)
+    const nodePositions = this.filterProperties(this.saveGraphData);
     this.saveGraphDataEvent.emit(nodePositions);
 
     this.disableButtons(true);
-    localStorage.setItem(this.savedGraphData, JSON.stringify(this.saveGraphData));
+    localStorage.setItem(
+      this.savedGraphData,
+      JSON.stringify(this.saveGraphData)
+    );
     this.showConfirmationMessage();
   }
 
   // Filter out the properties we only need to send to the BE
-  private filterProperties(nodes) {
-    const allowedProperties = ["id", "fx", "fy"];
-    const filteredNodes = nodes.map(node => {
-      const filteredNode = {};
-      for (const prop in node) {
-        if (allowedProperties.includes(prop)) {
-          filteredNode[prop] = node[prop];
-        }
-      }
-      return filteredNode;
+  private filterProperties(data) {
+    const { irURN, nodes } = data;
+    const filteredNodes = nodes.map((node) => {
+      const { id, fx, fy } = node;
+      return { id, fx, fy };
     });
-  
-    return filteredNodes;
+
+    const filteredData = { irURN, nodes: filteredNodes };
+    return filteredData;
   }
-  
+
   public resetGraph() {
     let data;
     if (this.isDagreLayout) {
@@ -515,7 +515,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
       data = JSON.parse(localStorage.getItem(this.savedGraphData));
       this.disableButtons(true);
     }
-  
+
     this.directedGraphExperimentService.resetGraph(
       data,
       this.graphElement.nativeElement,
@@ -523,31 +523,31 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
       this.zoomToFit
     );
   }
-  
+
   public layout() {
     this.isDagreLayout = true;
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     let newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
     localStorage.setItem(this.storeDagreLayout, JSON.stringify(newDagreLayout));
-  
+
     this.resetGraph();
     this.enableButtons();
   }
-  
+
   private disableButtons(disabled: boolean) {
     const saveBtn = document.getElementById('save_graph');
     const resetBtn = document.getElementById('reset_graph');
     saveBtn.setAttribute('disabled', String(disabled));
     resetBtn.setAttribute('disabled', String(disabled));
   }
-  
+
   private showConfirmationMessage() {
     this.showConfirmation = true;
     setTimeout(() => {
       this.showConfirmation = false;
     }, 3000);
   }
-  
+
   private enableButtons() {
     const saveBtn = document.getElementById('save_graph');
     const resetBtn = document.getElementById('reset_graph');
@@ -622,7 +622,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
           y: 0,
           fx: null,
           fy: null,
-        }
+        },
       ],
       links: [
         {

@@ -22,6 +22,7 @@ export class AppComponent {
   public createLinkIds;
 
   public mockedData = {
+    irURN: '1234',
     nodes: [
       {
         id: '123',
