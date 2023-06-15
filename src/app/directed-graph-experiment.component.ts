@@ -481,11 +481,29 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     this.directedGraphExperimentService.saveGraphData.subscribe((saveGraphData) => {
       this.saveGraphData = saveGraphData;
     });
-  
-    this.saveGraphDataEvent.emit(this.saveGraphData);
+
+    const nodes = this.filterProperties(this.saveGraphData.nodes)
+    this.saveGraphDataEvent.emit(nodes);
+    
     this.disableButtons(true);
     localStorage.setItem(this.savedGraphData, JSON.stringify(this.saveGraphData));
     this.showConfirmationMessage();
+  }
+
+  // Filter out the properties we only need to send t0 the BE
+  private filterProperties(nodes) {
+    const allowedProperties = ["id", "fx", "fy"];
+    const filteredNodes = nodes.map(node => {
+      const filteredNode = {};
+      for (const prop in node) {
+        if (allowedProperties.includes(prop)) {
+          filteredNode[prop] = node[prop];
+        }
+      }
+      return filteredNode;
+    });
+  
+    return filteredNodes;
   }
   
   public resetGraph() {
