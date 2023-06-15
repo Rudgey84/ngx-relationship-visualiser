@@ -490,7 +490,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     this.showConfirmationMessage();
   }
 
-  // Filter out the properties we only need to send t0 the BE
+  // Filter out the properties we only need to send to the BE
   private filterProperties(nodes) {
     const allowedProperties = ["id", "fx", "fy"];
     const filteredNodes = nodes.map(node => {
