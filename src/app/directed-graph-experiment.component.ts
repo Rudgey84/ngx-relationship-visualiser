@@ -482,9 +482,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
       this.saveGraphData = saveGraphData;
     });
 
-    const nodes = this.filterProperties(this.saveGraphData.nodes)
-    this.saveGraphDataEvent.emit(nodes);
-    
+    const nodePositions = this.filterProperties(this.saveGraphData.nodes)
+    this.saveGraphDataEvent.emit(nodePositions);
+
     this.disableButtons(true);
     localStorage.setItem(this.savedGraphData, JSON.stringify(this.saveGraphData));
     this.showConfirmationMessage();
