@@ -496,13 +496,13 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 
   // Filter out the properties we only need to send to the BE
   private filterProperties(data) {
-    const { irURN, nodes } = data;
+    const { irUrn, nodes } = data;
     const filteredNodes = nodes.map((node) => {
       const { id, fx, fy } = node;
       return { id, fx, fy };
     });
 
-    const filteredData = { irURN, nodes: filteredNodes };
+    const filteredData = { irUrn, nodes: filteredNodes };
     return filteredData;
   }
 
@@ -557,6 +557,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 
   newData() {
     this.data = {
+      irUrn: '1234',
       nodes: [
         {
           id: '123',

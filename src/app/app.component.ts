@@ -22,7 +22,7 @@ export class AppComponent {
   public createLinkIds;
 
   public mockedData = {
-    irURN: '1234',
+    irUrn: '1234',
     nodes: [
       {
         id: '123',
@@ -228,7 +228,8 @@ export class AppComponent {
   }
 
   public saveGraphData(event) {
-    console.log(JSON.stringify(event));
+    const {irUrn, nodes} = event;
+    console.log(irUrn, nodes)
   }
 
   // Open the modal
