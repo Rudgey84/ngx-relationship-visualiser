@@ -359,8 +359,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     this.removeLocalStorageItemsByPrefix('storeDagreLayout');
     // Generate a random number so we can open two graphs without mixing the data
     const irUrn = data.irUrn;
-    this.savedGraphData = 'savedGraphData' + irUrn;
-    this.storeDagreLayout = 'storeDagreLayout' + irUrn;
+    const randomNumber = Math.floor(Math.random() * 100000);
+    this.savedGraphData = `savedGraphData${irUrn}_${randomNumber}`;
+    this.storeDagreLayout = `storeDagreLayout${irUrn}_${randomNumber}`;
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
       this.dagreNodesOnlyLayout.renderLayout(data);
