@@ -499,7 +499,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 private filterProperties(data) {
   const { irUrn, nodes } = data;
   const filteredNodes = nodes.map((node) => {
-    console.log(node.fx, node.fy);
     const { id, fx, fy } = node;
     return { id, fx: Math.floor(fx), fy: Math.floor(fy) };
   });
