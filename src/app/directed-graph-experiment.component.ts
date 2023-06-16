@@ -355,7 +355,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
 
   @Input()
   set data(data: any) {
-    console.log("data", data.irUrn)
     this.removeLocalStorageItemsByPrefix('savedGraphData');
     this.removeLocalStorageItemsByPrefix('storeDagreLayout');
     // Generate a random number so we can open two graphs without mixing the data
