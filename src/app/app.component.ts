@@ -34,8 +34,8 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: null,
-        fy: null,
+        fx: 1000,
+        fy: 400,
         attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
       },
       {
@@ -48,8 +48,8 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: null,
-        fy: null,
+        fx: 410,
+        fy: 284,
         attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
       },
       {
@@ -62,8 +62,8 @@ export class AppComponent {
         ypos: 0,
         x: 0,
         y: 0,
-        fx: null,
-        fy: null,
+        fx: 55,
+        fy: 60,
         attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
       },
       {
