@@ -333,7 +333,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public showSearch: boolean = false;
   public savedGraphData: string;
   public showConfirmation: boolean = false;
-  public storeDagreLayout: string;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -355,12 +354,10 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: any) {
     this.removeLocalStorageItemsByPrefix('savedGraphData');
-    this.removeLocalStorageItemsByPrefix('storeDagreLayout');
     // Generate a random number so we can open two graphs without mixing the data
     const irUrn = data.irUrn;
     const randomNumber = Math.floor(Math.random() * 100000);
     this.savedGraphData = `savedGraphData${irUrn}_${randomNumber}`;
-    this.storeDagreLayout = `storeDagreLayout${irUrn}_${randomNumber}`;
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
       this.dagreNodesOnlyLayout.renderLayout(data);
@@ -423,7 +420,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     localStorage.setItem('nodes', JSON.stringify([]));
     localStorage.removeItem('nodes');
     localStorage.removeItem(this.savedGraphData);
-    localStorage.removeItem(this.storeDagreLayout);
   }
 
   public visualiserContextMenus(event): void {
@@ -523,7 +519,6 @@ private filterProperties(data) {
   public layout() {
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     let newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
-    localStorage.setItem(this.storeDagreLayout, JSON.stringify(newDagreLayout));
 
     this.directedGraphExperimentService.resetGraph(
       newDagreLayout,
