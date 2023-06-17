@@ -167,7 +167,7 @@ export class DirectedGraphExperimentService {
         }
     
         if (adjustedRequiredSpace > availableSpace) {
-          throw new Error('Not enough space to accommodate all nodes.');
+          throw new Error('Not enough space to accommodate all nodes. Reduce padding vetween them.');
         }
       }
     
@@ -200,7 +200,7 @@ export class DirectedGraphExperimentService {
           }
     
           if (!canPlaceNode) {
-            throw new Error('Not enough space to accommodate all nodes.');
+            throw new Error('Not enough space to accommodate all nodes. Reduce padding vetween them.');
           }
         }
       });
