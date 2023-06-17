@@ -157,11 +157,16 @@ export class DirectedGraphExperimentService {
 
   private randomiseNodePositions(nodeData, width, height) {
     const minDistance = 100;
+    // Calculate the padding based on the difference between width and height, allows nodes to break free from canvas if too many
+    const padding = Math.max((width - height) / 2, 0); 
+  
     nodeData.forEach((node) => {
       if (node.fx === null && node.fy === null) {
         do {
-          node.fx = Math.floor(Math.random() * width);
-          node.fy = Math.floor(Math.random() * height);
+          const randomX = Math.random() * (width + 2 * padding);
+          const randomY = Math.random() * (height + 2 * padding);
+          node.fx = randomX < width ? randomX - padding : null; 
+          node.fy = randomY < height ? randomY - padding : null; 
         } while (
           nodeData.some((otherNode) => {
             if (
@@ -178,6 +183,7 @@ export class DirectedGraphExperimentService {
         );
       }
     });
+  
     return nodeData;
   }
 
