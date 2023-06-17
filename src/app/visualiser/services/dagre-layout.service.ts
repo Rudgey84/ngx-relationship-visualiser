@@ -37,8 +37,8 @@ export interface DagreSettings {
 export class DagreNodesOnlyLayout {
   defaultSettings = {
     orientation: Orientation.LEFT_TO_RIGHT,
-    marginX: 40,
-    marginY: 40,
+    marginX: 70,
+    marginY: 70,
     edgePadding: 200,
     rankPadding: 300,
     nodePadding: 100,
@@ -84,7 +84,7 @@ export class DagreNodesOnlyLayout {
   public initRenderLayout(graph) {
     this.createDagreGraph(graph);
     dagre.layout(this.dagreGraph);
-
+    let minFy = Infinity;
     for (const dagreNodeId in this.dagreGraph._nodes) {
       const dagreNode = this.dagreGraph._nodes[dagreNodeId];
       const node = graph.nodes.find(n => n.id === dagreNode.id);
@@ -95,6 +95,7 @@ export class DagreNodesOnlyLayout {
       if (hasAssociatedEdges) {
         node.fx = dagreNode.x;
         node.fy = dagreNode.y;
+        minFy = Math.min(minFy, dagreNode.y - this.defaultSettings.marginY);
       }
     
       node.dimension = {
@@ -102,6 +103,16 @@ export class DagreNodesOnlyLayout {
         height: dagreNode.height 
       };
     }
+
+    // Adjust the fy values to start from 0 if there are associated edges
+    if (minFy !== Infinity) {
+      for (const node of graph.nodes) {
+        if (node.fy !== null) {
+          node.fy -= minFy;
+        }
+      }
+    }
+
     return graph;
   }
 
