@@ -155,38 +155,59 @@ export class DirectedGraphExperimentService {
     return nodes;
   }
 
-  private randomiseNodePositions(nodeData, width, height) {
-    const minDistance = 100;
-    // Calculate the padding based on the difference between width and height, allows nodes to break free from canvas if too many
-    const padding = Math.max((width - height) / 2, 0); 
-  
-    nodeData.forEach((node) => {
-      if (node.fx === null && node.fy === null) {
-        do {
-          const randomX = Math.random() * (width + 2 * padding);
-          const randomY = Math.random() * (height + 2 * padding);
-          node.fx = randomX < width ? randomX - padding : null; 
-          node.fy = randomY < height ? randomY - padding : null; 
-        } while (
-          nodeData.some((otherNode) => {
-            if (
-              otherNode.fx === null ||
-              otherNode.fy === null ||
-              otherNode === node
-            ) {
-              return false;
-            }
-            const dx = otherNode.fx - node.fx;
-            const dy = otherNode.fy - node.fy;
-            return Math.sqrt(dx * dx + dy * dy) < minDistance;
-          })
-        );
+    private randomiseNodePositions(nodeData, width, height) {
+      let minDistance = 100;
+      const availableSpace = width * height;
+      let adjustedRequiredSpace = nodeData.length * minDistance * minDistance;
+    
+      if (adjustedRequiredSpace > availableSpace) {
+        while (adjustedRequiredSpace > availableSpace && minDistance > 0) {
+          minDistance -= 10;
+          adjustedRequiredSpace = nodeData.length * minDistance * minDistance;
+        }
+    
+        if (adjustedRequiredSpace > availableSpace) {
+          throw new Error('Not enough space to accommodate all nodes.');
+        }
       }
-    });
+    
+      nodeData.forEach((node) => {
+        if (node.fx === null && node.fy === null) {
+          let currentMinDistance = minDistance;
+          let canPlaceNode = false;
+    
+          while (!canPlaceNode && currentMinDistance > 0) {
+            node.fx = Math.floor(Math.random() * width);
+            node.fy = Math.floor(Math.random() * height);
+    
+            canPlaceNode = !nodeData.some((otherNode) => {
+              if (
+                otherNode.fx === null ||
+                otherNode.fy === null ||
+                otherNode === node
+              ) {
+                return false;
+              }
+    
+              const dx = otherNode.fx - node.fx;
+              const dy = otherNode.fy - node.fy;
+              return Math.sqrt(dx * dx + dy * dy) < currentMinDistance;
+            });
+    
+            if (!canPlaceNode) {
+              currentMinDistance--;
+            }
+          }
+    
+          if (!canPlaceNode) {
+            throw new Error('Not enough space to accommodate all nodes.');
+          }
+        }
+      });
+    console.log(minDistance)
+      return nodeData;
+    }    
   
-    return nodeData;
-  }
-
   private circleNodePositions(nodeData, width, height) {
     const middleX = width / 2;
     const middleY = height / 2;
