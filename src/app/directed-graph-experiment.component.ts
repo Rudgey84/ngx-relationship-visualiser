@@ -333,7 +333,6 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public showSearch: boolean = false;
   public savedGraphData: string;
   public showConfirmation: boolean = false;
-  public isDagreLayout: boolean = false;
   public storeDagreLayout: string;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
@@ -484,8 +483,9 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
       }
     );
 
-    const nodePositions = this.filterProperties(this.saveGraphData);
-    this.saveGraphDataEvent.emit(nodePositions);
+			const nodePositions = this.filterProperties(this.saveGraphData);
+			this.saveGraphDataEvent.emit(nodePositions);
+		
 
     this.disableButtons(true);
     localStorage.setItem(
@@ -510,14 +510,8 @@ private filterProperties(data) {
 
   public resetGraph() {
     let data;
-    if (this.isDagreLayout) {
-      data = JSON.parse(localStorage.getItem(this.storeDagreLayout));
-      this.isDagreLayout = false;
-    } else {
-      data = JSON.parse(localStorage.getItem(this.savedGraphData));
-      this.disableButtons(true);
-    }
-
+    data = JSON.parse(localStorage.getItem(this.savedGraphData));
+    this.disableButtons(true);
     this.directedGraphExperimentService.resetGraph(
       data,
       this.graphElement.nativeElement,
@@ -527,12 +521,16 @@ private filterProperties(data) {
   }
 
   public layout() {
-    this.isDagreLayout = true;
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     let newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
     localStorage.setItem(this.storeDagreLayout, JSON.stringify(newDagreLayout));
 
-    this.resetGraph();
+    this.directedGraphExperimentService.resetGraph(
+      newDagreLayout,
+      this.graphElement.nativeElement,
+      this.zoom,
+      this.zoomToFit
+    );
     this.enableButtons();
   }
 
