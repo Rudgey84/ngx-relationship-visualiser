@@ -96,6 +96,10 @@ export class DagreNodesOnlyLayout {
         node.fx = dagreNode.x;
         node.fy = dagreNode.y;
         minFy = Math.min(minFy, dagreNode.y - this.defaultSettings.marginY);
+      } else {
+        // Give them a null value to later random position them only when the layout button is pressed so they come into view
+        node.fx = null;
+        node.fy = null;
       }
     
       node.dimension = {
