@@ -340,7 +340,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   constructor(
     private directedGraphExperimentService: DirectedGraphExperimentService,
     private contextMenuService: ContextMenuService,
-    private dagreNodesOnlyLayout: DagreNodesOnlyLayout
+    readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
   ) {}
 
   public removeLocalStorageItemsByPrefix(prefix) {
