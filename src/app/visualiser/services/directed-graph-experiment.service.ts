@@ -355,7 +355,7 @@ export class DirectedGraphExperimentService {
       .on('start', function () {
         d3.select(this).style('cursor', this.zoom ? null : 'grabbing');
       })
-      .on('zoom', zoomed)
+      .on('zoom', this.zoom ? zoomed : null)
       .on('end', function () {
         d3.select(this).style('cursor', 'grab');
       });
