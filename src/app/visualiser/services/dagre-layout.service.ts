@@ -6,7 +6,7 @@ export enum Orientation {
   LEFT_TO_RIGHT = 'LR',
   RIGHT_TO_LEFT = 'RL',
   TOP_TO_BOTTOM = 'TB',
-  BOTTOM_TO_TOM = 'BT'
+  BOTTOM_TO_TOP = 'BT'
 }
 
 export enum Alignment {
