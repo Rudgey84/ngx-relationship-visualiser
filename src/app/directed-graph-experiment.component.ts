@@ -516,7 +516,7 @@ private filterProperties(data) {
 
   public layout() {
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-    let newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
+    const newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
 
     this.directedGraphExperimentService.resetGraph(
       newDagreLayout,
