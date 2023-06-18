@@ -25,7 +25,7 @@ export interface DagreSettings {
   rankPadding?: number;
   nodePadding?: number;
   align?: Alignment;
-  acyclicer?: 'greedy' | undefined;
+  acyclicer?: 'greedy';
   ranker?: 'network-simplex' | 'tight-tree' | 'longest-path';
   multigraph?: boolean;
   compound?: boolean;
