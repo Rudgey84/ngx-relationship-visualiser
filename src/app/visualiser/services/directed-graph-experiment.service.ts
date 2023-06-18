@@ -262,7 +262,7 @@ export class DirectedGraphExperimentService {
       localStorage.setItem('nodes', JSON.stringify(data.nodes));
     }
 
-        // If nodes don't have a fx/fy coordinate we generate a random one
+        // If nodes don't have a fx/fy coordinate we generate a random one - dagre nodes without links and new nodes added to canvas have null coordinates by design
         this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
 
     // Getting parents lineStyle and adding it to child objects
