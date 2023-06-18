@@ -504,8 +504,7 @@ private filterProperties(data) {
 
 
   public resetGraph() {
-    let data;
-    data = JSON.parse(localStorage.getItem(this.savedGraphData));
+    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     this.disableButtons(true);
     this.directedGraphExperimentService.resetGraph(
       data,
