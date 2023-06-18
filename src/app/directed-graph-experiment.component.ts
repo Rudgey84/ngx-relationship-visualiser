@@ -338,8 +338,8 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   @Input() controls: boolean = true;
   @Input() zoomToFit: boolean = false;
   constructor(
-    private directedGraphExperimentService: DirectedGraphExperimentService,
-    private contextMenuService: ContextMenuService,
+    readonly directedGraphExperimentService: DirectedGraphExperimentService,
+    readonly contextMenuService: ContextMenuService,
     readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
   ) {}
 
@@ -499,8 +499,7 @@ private filterProperties(data) {
     return { id, fx: Math.floor(fx), fy: Math.floor(fy) };
   });
 
-  const filteredData = { irUrn, nodes: filteredNodes };
-  return filteredData;
+  return { irUrn, nodes: filteredNodes };
 }
 
 
