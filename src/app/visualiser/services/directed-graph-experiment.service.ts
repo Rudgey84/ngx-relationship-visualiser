@@ -155,58 +155,58 @@ export class DirectedGraphExperimentService {
     return nodes;
   }
 
-    private randomiseNodePositions(nodeData, width, height) {
-      let minDistance = 100;
-      const availableSpace = width * height;
-      let adjustedRequiredSpace = nodeData.length * minDistance * minDistance;
-    
+  private randomiseNodePositions(nodeData, width, height) {
+    let minDistance = 100;
+    const availableSpace = width * height;
+    let adjustedRequiredSpace = nodeData.length * minDistance * minDistance;
+  
+    if (adjustedRequiredSpace > availableSpace) {
+      while (adjustedRequiredSpace > availableSpace && minDistance > 0) {
+        minDistance -= 10;
+        adjustedRequiredSpace = nodeData.length * minDistance * minDistance;
+      }
+  
       if (adjustedRequiredSpace > availableSpace) {
-        while (adjustedRequiredSpace > availableSpace && minDistance > 0) {
-          minDistance -= 10;
-          adjustedRequiredSpace = nodeData.length * minDistance * minDistance;
-        }
+        throw new Error('Not enough space to accommodate all nodes without a fixed position.');
+      }
+    }
     
-        if (adjustedRequiredSpace > availableSpace) {
+    nodeData.forEach((node) => {
+      if (node.fx === null && node.fy === null) {
+        let currentMinDistance = minDistance;
+        let canPlaceNode = false;
+  
+        while (!canPlaceNode && currentMinDistance > 0) {
+          node.fx = Math.floor(Math.random() * width);
+          node.fy = Math.floor(Math.random() * height);
+  
+          canPlaceNode = !nodeData.some((otherNode) => {
+            if (
+              otherNode.fx === null ||
+              otherNode.fy === null ||
+              otherNode === node
+            ) {
+              return false;
+            }
+  
+            const dx = otherNode.fx - node.fx;
+            const dy = otherNode.fy - node.fy;
+            return Math.sqrt(dx * dx + dy * dy) < currentMinDistance;
+          });
+  
+          if (!canPlaceNode) {
+            currentMinDistance--;
+          }
+        }
+  
+        if (!canPlaceNode) {
           throw new Error('Not enough space to accommodate all nodes without a fixed position.');
         }
       }
-    
-      nodeData.forEach((node) => {
-        if (node.fx === null && node.fy === null) {
-          let currentMinDistance = minDistance;
-          let canPlaceNode = false;
-    
-          while (!canPlaceNode && currentMinDistance > 0) {
-            node.fx = Math.floor(Math.random() * width);
-            node.fy = Math.floor(Math.random() * height);
-    
-            canPlaceNode = !nodeData.some((otherNode) => {
-              if (
-                otherNode.fx === null ||
-                otherNode.fy === null ||
-                otherNode === node
-              ) {
-                return false;
-              }
-    
-              const dx = otherNode.fx - node.fx;
-              const dy = otherNode.fy - node.fy;
-              return Math.sqrt(dx * dx + dy * dy) < currentMinDistance;
-            });
-    
-            if (!canPlaceNode) {
-              currentMinDistance--;
-            }
-          }
-    
-          if (!canPlaceNode) {
-            throw new Error('Not enough space to accommodate all nodes without a fixed position.');
-          }
-        }
-      });
+    });
 
-      return nodeData;
-    }    
+    return nodeData;
+  }    
   
   private circleNodePositions(nodeData, width, height) {
     const middleX = width / 2;
@@ -262,8 +262,8 @@ export class DirectedGraphExperimentService {
       localStorage.setItem('nodes', JSON.stringify(data.nodes));
     }
 
-        // If nodes don't have a fx/fy coordinate we generate a random one - dagre nodes without links and new nodes added to canvas have null coordinates by design
-        this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
+    // If nodes don't have a fx/fy coordinate we generate a random one - dagre nodes without links and new nodes added to canvas have null coordinates by design
+    this.nodes = this.randomiseNodePositions(this.nodes, parentWidth, parentHeight);
 
     // Getting parents lineStyle and adding it to child objects
     const relationshipsArray = this.links.map(({ lineStyle, targetArrow, sourceArrow, relationships }) =>
