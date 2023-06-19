@@ -487,14 +487,25 @@ export class DirectedGraphExperimentService {
       if (selectedCount > 0) {
         // Deselect selected nodes and select non-selected nodes
         selectedNodes.classed('selected', function (p) {
+          console.log(p)
           p.previouslySelected = p.selected;
           return (p.selected = false);
         });
     
         nonSelectedNodes.classed('selected', function (p) {
+          console.log(p)
           p.previouslySelected = p.selected;
           return (p.selected = true);
         });
+
+        // If there are only two nodes selected we need to update the subject selectedNodesArray so we can create a new link with the correct nodes attached. 
+        const selectedSize = svg.selectAll('.selected').size();
+        if (selectedSize <= 2) {
+          // get data from node
+          const localselectedNodesArray = _d3.selectAll('.selected').data();
+          const filterId = localselectedNodesArray.filter(x => x);
+          self.selectedNodesArray.next(filterId);
+        }
     
         // Update styles of node elements
         _d3.selectAll('.nodeText')
