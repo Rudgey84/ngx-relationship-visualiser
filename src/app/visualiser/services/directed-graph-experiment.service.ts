@@ -487,13 +487,11 @@ export class DirectedGraphExperimentService {
       if (selectedCount > 0) {
         // Deselect selected nodes and select non-selected nodes
         selectedNodes.classed('selected', function (p) {
-          console.log(p)
           p.previouslySelected = p.selected;
           return (p.selected = false);
         });
     
         nonSelectedNodes.classed('selected', function (p) {
-          console.log(p)
           p.previouslySelected = p.selected;
           return (p.selected = true);
         });
