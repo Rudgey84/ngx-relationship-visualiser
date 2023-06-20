@@ -79,6 +79,20 @@ export class AppComponent {
         fx: null,
         fy: null,
         attachedToAuthorisedIRs: false,attachedToUnauthorisedIRs: false
+      },
+            {
+        id: '4',
+        version: 0,
+        typeName: 'men',
+        label: ['James Jones', 'BA'],
+        icon: '9',
+        xpos: 0,
+        ypos: 0,
+        x: 0,
+        y: 0,
+        fx: null,
+        fy: null,
+        attachedToAuthorisedIRs: false,attachedToUnauthorisedIRs: false
       }
     ],
     links: [
