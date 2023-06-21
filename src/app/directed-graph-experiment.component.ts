@@ -7,6 +7,7 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
+  AfterViewInit
 } from '@angular/core';
 import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
 import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';
@@ -29,7 +30,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 			}
       .buttonBar {
         position: absolute;
-        right: 0px;
+       
         padding: 10px
       }
       .zoomIndicator {
@@ -60,6 +61,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         animation-duration: 0.3s;
         animation-fill-mode: forwards;
         position: relative;
+        width:407px;
       }
       .searchButtonActive {
         outline: none;
@@ -115,14 +117,27 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 					opacity: 0;
 				}
 			}
+      #buttonDragHandle {
+        cursor: move;
+    }
 		</style>
-
     <div class="page" id="pageId" (window:resize)="onResize($event)">
-    <div class="buttonBar">
+    <div id="draggable" class="buttonBar" [style.right]="buttonBarRightPosition">
     <div *ngIf="controls">
       <div class="d-flex justify-content-end">
       <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
       <div class="btn-group" role="group" aria-label="Controls">
+
+      <button type="button"
+      id="draggableHandle"
+      class="btn btn-light" 
+      data-toggle="tooltip"
+      data-placement="top"
+      title="Move toolbar"
+    >
+    <i class="bi bi-grip-vertical"></i>
+    </button>
+
       <button type="button"
         id="dagre_layout"
         class="btn btn-secondary" 
@@ -236,7 +251,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
       </button>
       </div>
       </div>
-      <div class="input-group mt-3" [hidden]="!showSearch">
+      <div class="search float-right input-group mt-3 pr-0" [hidden]="!showSearch">
         <div class="input-group-prepend">
           <button
             type="button"
@@ -317,8 +332,8 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
  <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
  </div>
   `,
-})
-export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
+}) 
+export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
@@ -333,6 +348,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   public showSearch: boolean = false;
   public savedGraphData: string;
   public showConfirmation: boolean = false;
+  public buttonBarRightPosition: string;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -373,6 +389,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
+    this.buttonBarRightPosition = '0';
     localStorage.setItem('nodes', JSON.stringify([]));
     localStorage.removeItem('nodes');
     this.updateWidth();
@@ -545,6 +562,77 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy {
     const resetBtn = document.getElementById('reset_graph');
     saveBtn.removeAttribute('disabled');
     resetBtn.removeAttribute('disabled');
+  }
+
+  ngAfterViewInit() {
+    this.registerDragElement();
+  }
+
+  private registerDragElement() {
+    const elmnt = document.getElementById('draggable');
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+    const dragMouseDown = (e) => {
+      e = e || window.event;
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    };
+
+    const elementDrag = (e) => {
+      this.buttonBarRightPosition = null;
+      e = e || window.event;
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+
+      // limit the element's movement within the boundaries of the page
+      const maxWidth = this.width - elmnt.offsetWidth;
+      const maxHeight = window.innerHeight - elmnt.offsetHeight;
+
+      let newLeft = elmnt.offsetLeft - pos1;
+      let newTop = elmnt.offsetTop - pos2;
+
+      newLeft = Math.max(0, Math.min(newLeft, maxWidth));
+      newTop = Math.max(0, Math.min(newTop, maxHeight));
+
+      // set the element's new position:
+      elmnt.style.left = newLeft + 'px';
+      elmnt.style.top = newTop + 'px';
+    };
+
+    const closeDragElement = () => {
+      /* stop moving when mouse button is released:*/
+      document.onmouseup = null;
+      document.onmousemove = null;
+    };
+
+    if (document.getElementById(elmnt.id + 'Handle')) {
+      /* if present, the header is where you move the DIV from:*/
+      document.getElementById(elmnt.id + 'Handle').onmousedown = dragMouseDown;
+    } else {
+      /* otherwise, move the DIV from anywhere inside the DIV:*/
+      elmnt.onmousedown = dragMouseDown;
+    }
+  }
+  
+  public allowDrop(ev): void {
+    ev.preventDefault();
+  }
+  
+  public drag(ev): void {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+  
+  public drop(ev): void {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
   }
 
   newData() {

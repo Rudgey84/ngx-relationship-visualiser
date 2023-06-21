@@ -80,11 +80,11 @@ export class AppComponent {
         fy: null,
         attachedToAuthorisedIRs: false,attachedToUnauthorisedIRs: false
       },
-            {
-        id: '4',
+      {
+        id: '423',
         version: 0,
-        typeName: 'men',
-        label: ['James Jones', 'BA'],
+        typeName: 'women',
+        label: ['Linda Jones', 'Pilot'],
         icon: '9',
         xpos: 0,
         ypos: 0,
