@@ -117,7 +117,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 					opacity: 0;
 				}
 			}
-      #buttonDragHandle {
+      #draggableHandle {
         cursor: move;
     }
 		</style>
