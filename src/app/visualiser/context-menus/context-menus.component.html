@@ -2,31 +2,11 @@
   <ng-template contextMenuItem let-item (execute)="viewNode()">
     View Node...
   </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Stop Auto-Arranging
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Find Direct Links
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Settings...
-  </ng-template>
 </context-menu>
 
 <context-menu #canvasContextMenu>
   <ng-template contextMenuItem let-item (execute)="findEntity()">
     Find Entities...
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Stop Auto-Arranging
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Settings...
   </ng-template>
 </context-menu>
 
@@ -34,26 +14,10 @@
   <ng-template contextMenuItem let-item (execute)="createLink()">
     Create Link...
   </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Stop Auto-Arranging
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Settings...
-  </ng-template>
 </context-menu>
 
 <context-menu #viewLinkContextMenu>
   <ng-template contextMenuItem let-item (execute)="viewLink()">
     View Link...
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Stop Auto-Arranging
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
-  <ng-template contextMenuItem let-item [enabled]="false">
-    Settings...
   </ng-template>
 </context-menu>
