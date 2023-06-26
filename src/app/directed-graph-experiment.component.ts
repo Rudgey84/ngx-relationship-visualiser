@@ -15,7 +15,7 @@ import { ContextMenuService } from 'ngx-contextmenu';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 
 @Component({
-  selector: 'dge-directed-graph-experiment',
+  selector: 'visualiser-graph',
   template: `
 
 		<style>

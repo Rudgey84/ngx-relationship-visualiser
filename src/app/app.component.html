@@ -1,4 +1,4 @@
-<dge-directed-graph-experiment
+<visualiser-graph
   [data]="mockedData"
   [readOnly]="false"
 	[zoom]="true"
@@ -8,7 +8,7 @@
   (viewNodeContextMenuEvent)="viewNodeEvent(viewNodeModal, $event)"
 	(createLinkContextMenuEvent)="createLinkEvent(createLinkModal, $event)"
 	(saveGraphDataEvent)="saveGraphData($event)"
-></dge-directed-graph-experiment>
+></visualiser-graph>
 
 	<!--VIEW LINK MODAL-->
 	<ng-template #viewLinkModal>
