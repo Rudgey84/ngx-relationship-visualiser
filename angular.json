@@ -134,33 +134,33 @@
         }
       }
     },
-    "directed-graph-experiment": {
-      "root": "projects/directed-graph-experiment",
-      "sourceRoot": "projects/directed-graph-experiment/src",
+    "visualiser-graph": {
+      "root": "projects/visualiser-graph",
+      "sourceRoot": "projects/visualiser-graph/src",
       "projectType": "library",
       "prefix": "dge",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/directed-graph-experiment/tsconfig.lib.json",
-            "project": "projects/directed-graph-experiment/ng-package.json"
+            "tsConfig": "projects/visualiser-graph/tsconfig.lib.json",
+            "project": "projects/visualiser-graph/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/directed-graph-experiment/src/test.ts",
-            "tsConfig": "projects/directed-graph-experiment/tsconfig.spec.json",
-            "karmaConfig": "projects/directed-graph-experiment/karma.conf.js"
+            "main": "projects/visualiser-graph/src/test.ts",
+            "tsConfig": "projects/visualiser-graph/tsconfig.spec.json",
+            "karmaConfig": "projects/visualiser-graph/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/directed-graph-experiment/tsconfig.lib.json",
-              "projects/directed-graph-experiment/tsconfig.spec.json"
+              "projects/visualiser-graph/tsconfig.lib.json",
+              "projects/visualiser-graph/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

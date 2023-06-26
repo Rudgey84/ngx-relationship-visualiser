@@ -5,7 +5,7 @@ import { Subject, ReplaySubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class DirectedGraphExperimentService {
+export class VisualiserGraphService {
   constructor() {}
   public links = [];
   public nodes = [];

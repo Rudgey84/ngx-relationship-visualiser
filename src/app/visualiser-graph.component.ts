@@ -9,7 +9,7 @@ import {
   OnDestroy,
   AfterViewInit
 } from '@angular/core';
-import { DirectedGraphExperimentService } from './visualiser/services/directed-graph-experiment.service';
+import { VisualiserGraphService } from './visualiser/services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';
 import { ContextMenuService } from 'ngx-contextmenu';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
@@ -333,7 +333,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
  </div>
   `,
 }) 
-export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, AfterViewInit {
+export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
@@ -354,7 +354,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, Afte
   @Input() controls: boolean = true;
   @Input() zoomToFit: boolean = false;
   constructor(
-    readonly directedGraphExperimentService: DirectedGraphExperimentService,
+    readonly visualiserGraphService: VisualiserGraphService,
     readonly contextMenuService: ContextMenuService,
     readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
   ) {}
@@ -379,7 +379,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, Afte
       this.dagreNodesOnlyLayout.renderLayout(data);
       // Take a copy of input for reset
       localStorage.setItem(this.savedGraphData, JSON.stringify(data));
-      this.directedGraphExperimentService.update(
+      this.visualiserGraphService.update(
         data,
         this.graphElement.nativeElement,
         this.zoom,
@@ -394,27 +394,27 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, Afte
     localStorage.removeItem('nodes');
     this.updateWidth();
     // Subscribe to the link selections in d3
-    this.directedGraphExperimentService.selectedNodesArray.subscribe(
+    this.visualiserGraphService.selectedNodesArray.subscribe(
       (selectedNodesArray) => {
         this.selectedNodesArray = selectedNodesArray;
       }
     );
 
-    this.directedGraphExperimentService.dblClickNodePayload.subscribe(
+    this.visualiserGraphService.dblClickNodePayload.subscribe(
       (dblClickNodePayload) => {
         this.selectedNodeId = dblClickNodePayload[0].id;
         this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
       }
     );
 
-    this.directedGraphExperimentService.dblClickLinkPayload.subscribe(
+    this.visualiserGraphService.dblClickLinkPayload.subscribe(
       (dblClickLinkPayload) => {
         this.selectedLinkArray = dblClickLinkPayload;
         this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
       }
     );
 
-    this.directedGraphExperimentService.selectedLinkArray.subscribe(
+    this.visualiserGraphService.selectedLinkArray.subscribe(
       (selectedLinkArray) => {
         this.selectedLinkArray = selectedLinkArray;
       }
@@ -490,7 +490,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, Afte
   }
 
   public saveGraph() {
-    this.directedGraphExperimentService.saveGraphData.subscribe(
+    this.visualiserGraphService.saveGraphData.subscribe(
       (saveGraphData) => {
         this.saveGraphData = saveGraphData;
       }
@@ -522,7 +522,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, Afte
   public resetGraph() {
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     this.disableButtons(true);
-    this.directedGraphExperimentService.resetGraph(
+    this.visualiserGraphService.resetGraph(
       data,
       this.graphElement.nativeElement,
       this.zoom,
@@ -534,7 +534,7 @@ export class DirectedGraphExperimentComponent implements OnInit, OnDestroy, Afte
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     const newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
 
-    this.directedGraphExperimentService.resetGraph(
+    this.visualiserGraphService.resetGraph(
       newDagreLayout,
       this.graphElement.nativeElement,
       this.zoom,
