@@ -1103,6 +1103,8 @@ document.getElementById('prevButton').addEventListener('click', navigatePrevious
         }
         return null;
       } else {
+        svg.selectAll('.node-wrapper').classed('selected', false);
+        d3.select(this).classed('selected', true);
         nodeEnter.each(function (d) {
           d.selected = false;
           d.previouslySelected = false;
