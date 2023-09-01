@@ -306,7 +306,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
             title="Clear"
             disabled
           >
-            <i class="bi bi-x"></i>
+            clear
           </button>
         </div>
       </div>
