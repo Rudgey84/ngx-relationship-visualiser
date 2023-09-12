@@ -421,19 +421,19 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
     );
   }
 
-  public toggleSearch() {
+  public toggleSearch(): void {
     this.showSearch = !this.showSearch;
   }
 
-  public onResize(event) {
+  public onResize(event): void {
     this.updateWidth();
   }
 
-  public updateWidth() {
+  public updateWidth(): void {
     this.width = document.getElementById('pageId').offsetWidth;
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     localStorage.setItem('nodes', JSON.stringify([]));
     localStorage.removeItem('nodes');
     localStorage.removeItem(this.savedGraphData);
@@ -479,17 +479,17 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
     event.preventDefault();
   }
 
-  public viewLinkEvent() {
+  public viewLinkEvent(): void {
     this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
   }
-  public viewNodeEvent() {
+  public viewNodeEvent(): void {
     this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
   }
-  public createLinkEvent() {
+  public createLinkEvent(): void {
     this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
   }
 
-  public saveGraph() {
+  public saveGraph(): void {
     this.visualiserGraphService.saveGraphData.subscribe(
       (saveGraphData) => {
         this.saveGraphData = saveGraphData;
@@ -519,7 +519,7 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
     return { irUrn, nodes: filteredNodes };
   }
 
-  public resetGraph() {
+  public resetGraph(): void {
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     this.disableButtons(true);
     this.visualiserGraphService.resetGraph(
@@ -530,7 +530,7 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
     );
   }
 
-  public layout() {
+  public layout(): void {
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     const newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
 
@@ -543,32 +543,32 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
     this.enableButtons();
   }
 
-  private disableButtons(disabled: boolean) {
+  private disableButtons(disabled: boolean): void {
     const saveBtn = document.getElementById('save_graph');
     const resetBtn = document.getElementById('reset_graph');
     saveBtn.setAttribute('disabled', String(disabled));
     resetBtn.setAttribute('disabled', String(disabled));
   }
 
-  private showConfirmationMessage() {
+  private showConfirmationMessage(): void {
     this.showConfirmation = true;
     setTimeout(() => {
       this.showConfirmation = false;
     }, 3000);
   }
 
-  private enableButtons() {
+  private enableButtons(): void {
     const saveBtn = document.getElementById('save_graph');
     const resetBtn = document.getElementById('reset_graph');
     saveBtn.removeAttribute('disabled');
     resetBtn.removeAttribute('disabled');
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     this.registerDragElement();
   }
 
-  private registerDragElement() {
+  private registerDragElement(): void {
     const elmnt = document.getElementById('draggable');
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
