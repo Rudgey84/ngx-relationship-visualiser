@@ -311,7 +311,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
         </div>
       </div>
     </div>
-    <div id="noMatchesText" class="noMatchesText float-right">No matches found</div>
+    <div [hidden]="!showSearch" id="noMatchesText" class="noMatchesText float-right">No matches found</div>
   </div>
   <!-- Zoom indicator-->
  <div *ngIf="zoom" class="zoomIndicator">
