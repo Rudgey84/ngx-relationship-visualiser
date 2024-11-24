@@ -1,4 +1,3 @@
-
 import * as dagre from 'dagre';
 import { Injectable } from '@angular/core';
 
@@ -6,7 +5,7 @@ export enum Orientation {
   LEFT_TO_RIGHT = 'LR',
   RIGHT_TO_LEFT = 'RL',
   TOP_TO_BOTTOM = 'TB',
-  BOTTOM_TO_TOP = 'BT'
+  BOTTOM_TO_TOP = 'BT',
 }
 
 export enum Alignment {
@@ -14,7 +13,7 @@ export enum Alignment {
   UP_LEFT = 'UL',
   UP_RIGHT = 'UR',
   DOWN_LEFT = 'DL',
-  DOWN_RIGHT = 'DR'
+  DOWN_RIGHT = 'DR',
 }
 
 export interface DagreSettings {
@@ -47,7 +46,7 @@ export class DagreNodesOnlyLayout {
     compound: true,
     align: Alignment.UP_RIGHT,
     acyclicer: undefined,
-    ranker: 'network-simplex'
+    ranker: 'network-simplex',
   };
 
   dagreGraph: any;
@@ -60,23 +59,24 @@ export class DagreNodesOnlyLayout {
 
     for (const dagreNodeId in this.dagreGraph._nodes) {
       const dagreNode = this.dagreGraph._nodes[dagreNodeId];
-      const node = graph.nodes.find(n => n.id === dagreNode.id);
-    
-    if (node.fx === null && node.fy === null) {
-      // Check if the node has any associated edges
-      const hasAssociatedEdges = graph.links.some(link => link.source === dagreNode.id || link.target === dagreNode.id);
-      if (hasAssociatedEdges) {
-        node.fx = dagreNode.x;
-        node.fy = dagreNode.y;
+      const node = graph.nodes.find((n) => n.id === dagreNode.id);
+
+      if (node.fx === null && node.fy === null) {
+        // Check if the node has any associated edges
+        const hasAssociatedEdges = graph.links.some(
+          (link) => link.source === dagreNode.id || link.target === dagreNode.id
+        );
+        if (hasAssociatedEdges) {
+          node.fx = dagreNode.x;
+          node.fy = dagreNode.y;
+        }
       }
-    }
-    
+
       node.dimension = {
         width: dagreNode.width,
-        height: dagreNode.height 
+        height: dagreNode.height,
       };
     }
-    
 
     return graph;
   }
@@ -87,10 +87,12 @@ export class DagreNodesOnlyLayout {
     let minFy = Infinity;
     for (const dagreNodeId in this.dagreGraph._nodes) {
       const dagreNode = this.dagreGraph._nodes[dagreNodeId];
-      const node = graph.nodes.find(n => n.id === dagreNode.id);
-    
+      const node = graph.nodes.find((n) => n.id === dagreNode.id);
+
       // Check if the node has any associated edges
-      const hasAssociatedEdges = graph.links.some(link => link.source === dagreNode.id || link.target === dagreNode.id);
+      const hasAssociatedEdges = graph.links.some(
+        (link) => link.source === dagreNode.id || link.target === dagreNode.id
+      );
 
       if (hasAssociatedEdges) {
         node.fx = dagreNode.x;
@@ -101,10 +103,10 @@ export class DagreNodesOnlyLayout {
         node.fx = null;
         node.fy = null;
       }
-    
+
       node.dimension = {
         width: dagreNode.width,
-        height: dagreNode.height 
+        height: dagreNode.height,
       };
     }
 
@@ -122,7 +124,10 @@ export class DagreNodesOnlyLayout {
 
   public createDagreGraph(graph): any {
     const settings = Object.assign({}, this.defaultSettings);
-    this.dagreGraph = new dagre.graphlib.Graph({ compound: settings.compound, multigraph: settings.multigraph });
+    this.dagreGraph = new dagre.graphlib.Graph({
+      compound: settings.compound,
+      multigraph: settings.multigraph,
+    });
     this.dagreGraph.setGraph({
       rankdir: settings.orientation,
       marginx: settings.marginX,
@@ -134,10 +139,10 @@ export class DagreNodesOnlyLayout {
       acyclicer: settings.acyclicer,
       ranker: settings.ranker,
       multigraph: settings.multigraph,
-      compound: settings.compound
+      compound: settings.compound,
     });
 
-    this.dagreNodes = graph.nodes.map(n => {
+    this.dagreNodes = graph.nodes.map((n) => {
       const node: any = Object.assign({}, n);
       node.width = 20;
       node.height = 20;
@@ -146,7 +151,7 @@ export class DagreNodesOnlyLayout {
       return node;
     });
 
-    this.dagreEdges = graph.links.map(l => {
+    this.dagreEdges = graph.links.map((l) => {
       const newLink: any = Object.assign({}, l);
       return newLink;
     });
@@ -166,7 +171,6 @@ export class DagreNodesOnlyLayout {
     // update dagre
     for (const edge of this.dagreEdges) {
       if (settings.multigraph) {
-
         this.dagreGraph.setEdge(edge.source, edge.target, edge, edge.linkId);
       } else {
         this.dagreGraph.setEdge(edge.source, edge.target);

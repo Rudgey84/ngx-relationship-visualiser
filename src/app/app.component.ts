@@ -8,7 +8,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class AppComponent {
   constructor(readonly modalService: BsModalService) {
     // Get a random icon
-    this.mockedData.nodes.forEach(node => {
+    this.mockedData.nodes.forEach((node) => {
       const randomIcon = Math.floor(Math.random() * 100).toString();
       node.icon = randomIcon;
     });
@@ -36,7 +36,8 @@ export class AppComponent {
         y: 0,
         fx: 1000,
         fy: 400,
-        attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
+        attachedToAuthorisedIRs: true,
+        attachedToUnauthorisedIRs: true,
       },
       {
         id: '456',
@@ -50,7 +51,8 @@ export class AppComponent {
         y: 0,
         fx: 410,
         fy: 284,
-        attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
+        attachedToAuthorisedIRs: true,
+        attachedToUnauthorisedIRs: false,
       },
       {
         id: '789',
@@ -64,7 +66,8 @@ export class AppComponent {
         y: 0,
         fx: 55,
         fy: 60,
-        attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs: true
+        attachedToAuthorisedIRs: true,
+        attachedToUnauthorisedIRs: true,
       },
       {
         id: '4',
@@ -78,7 +81,8 @@ export class AppComponent {
         y: 0,
         fx: null,
         fy: null,
-        attachedToAuthorisedIRs: false,attachedToUnauthorisedIRs: false
+        attachedToAuthorisedIRs: false,
+        attachedToUnauthorisedIRs: false,
       },
       {
         id: '423',
@@ -92,8 +96,9 @@ export class AppComponent {
         y: 0,
         fx: null,
         fy: null,
-        attachedToAuthorisedIRs: false,attachedToUnauthorisedIRs: false
-      }
+        attachedToAuthorisedIRs: false,
+        attachedToUnauthorisedIRs: false,
+      },
     ],
     links: [
       {
@@ -112,7 +117,8 @@ export class AppComponent {
             sourceArrow: false,
             target: '456',
             targetArrow: true,
-            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
+            attachedToAuthorisedIRs: true,
+            attachedToUnauthorisedIRs: true,
           },
           {
             label: 'Both in same scrum team',
@@ -121,14 +127,19 @@ export class AppComponent {
             sourceArrow: true,
             target: '456',
             targetArrow: false,
-            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
+            attachedToAuthorisedIRs: true,
+            attachedToUnauthorisedIRs: true,
           },
         ],
       },
       {
         source: '456',
         target: '789',
-        label: ['Play in the same football team', 'Daughters in the same class at school', 'Went on a family holiday together last year'],
+        label: [
+          'Play in the same football team',
+          'Daughters in the same class at school',
+          'Went on a family holiday together last year',
+        ],
         lineStyle: 'Confirmed',
         sourceArrow: true,
         targetArrow: true,
@@ -141,7 +152,8 @@ export class AppComponent {
             sourceArrow: false,
             target: '789',
             targetArrow: true,
-            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
+            attachedToAuthorisedIRs: true,
+            attachedToUnauthorisedIRs: false,
           },
           {
             label: 'Daughters in the same class at school',
@@ -158,7 +170,8 @@ export class AppComponent {
             sourceArrow: true,
             target: '789',
             targetArrow: false,
-            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
+            attachedToAuthorisedIRs: true,
+            attachedToUnauthorisedIRs: false,
           },
         ],
       },
@@ -178,7 +191,8 @@ export class AppComponent {
             sourceArrow: false,
             target: '123',
             targetArrow: true,
-            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
+            attachedToAuthorisedIRs: true,
+            attachedToUnauthorisedIRs: false,
           },
           {
             label: 'Drinking friends',
@@ -187,7 +201,8 @@ export class AppComponent {
             sourceArrow: true,
             target: '123',
             targetArrow: false,
-            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:false
+            attachedToAuthorisedIRs: true,
+            attachedToUnauthorisedIRs: false,
           },
         ],
       },
@@ -207,7 +222,8 @@ export class AppComponent {
             sourceArrow: false,
             target: '123',
             targetArrow: false,
-            attachedToAuthorisedIRs: true,attachedToUnauthorisedIRs:true
+            attachedToAuthorisedIRs: true,
+            attachedToUnauthorisedIRs: true,
           },
         ],
       },
@@ -242,8 +258,8 @@ export class AppComponent {
   }
 
   public saveGraphData(event) {
-    const {irUrn, nodes} = event;
-    console.log(irUrn, nodes)
+    const { irUrn, nodes } = event;
+    console.log(irUrn, nodes);
   }
 
   // Open the modal

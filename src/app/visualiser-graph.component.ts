@@ -7,7 +7,7 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import { VisualiserGraphService } from './visualiser/services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';
@@ -332,8 +332,10 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
  <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
  </div>
   `,
-}) 
-export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewInit {
+})
+export class VisualiserGraphComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
@@ -490,15 +492,12 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   public saveGraph(): void {
-    this.visualiserGraphService.saveGraphData.subscribe(
-      (saveGraphData) => {
-        this.saveGraphData = saveGraphData;
-      }
-    );
+    this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
+      this.saveGraphData = saveGraphData;
+    });
 
-			const nodePositions = this.filterProperties(this.saveGraphData);
-			this.saveGraphDataEvent.emit(nodePositions);
-		
+    const nodePositions = this.filterProperties(this.saveGraphData);
+    this.saveGraphDataEvent.emit(nodePositions);
 
     this.disableButtons(true);
     localStorage.setItem(
@@ -570,7 +569,10 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
 
   private registerDragElement(): void {
     const elmnt = document.getElementById('draggable');
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    let pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
 
     const dragMouseDown = (e) => {
       e = e || window.event;
@@ -620,18 +622,18 @@ export class VisualiserGraphComponent implements OnInit, OnDestroy, AfterViewIni
       elmnt.onmousedown = dragMouseDown;
     }
   }
-  
+
   public allowDrop(ev): void {
     ev.preventDefault();
   }
-  
+
   public drag(ev): void {
-    ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData('text', ev.target.id);
   }
-  
+
   public drop(ev): void {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
+    var data = ev.dataTransfer.getData('text');
     ev.target.appendChild(document.getElementById(data));
   }
 
