@@ -16,6 +16,9 @@
     "paths": {
       "visualiser-graph": ["dist/visualiser-graph"],
       "visualiser-graph/*": ["dist/visualiser-graph/*"]
-    }
+    },
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
   }
 }
