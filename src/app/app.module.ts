@@ -1,19 +1,23 @@
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { VisualiserGraphComponent } from './visualiser-graph.component';
-import { AppComponent } from './app.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
-import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { AppComponent } from './app.component';
+import { VisualiserGraphComponent } from './visualiser-graph.component';
+import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VisualiserGraphComponent,
-    ContextMenusComponent
+    ContextMenusComponent,
   ],
-  imports: [ContextMenuModule.forRoot({useBootstrap4: true}), BrowserModule, ModalModule.forRoot(),],
-  providers: [],
-  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    ContextMenuModule.forRoot({ useBootstrap4: true }),
+    ModalModule.forRoot(),
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

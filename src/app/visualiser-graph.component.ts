@@ -487,6 +487,9 @@ export class VisualiserGraphComponent
   public viewNodeEvent(): void {
     this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
   }
+  public siFindEntityDetailsEvent(): void {
+    console.log("empty")
+  }
   public createLinkEvent(): void {
     this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
   }

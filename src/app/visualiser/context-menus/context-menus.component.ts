@@ -4,7 +4,7 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
 @Component({
   selector: 'app-context-menus',
   templateUrl: './context-menus.component.html',
-  styleUrls: ['./context-menus.component.scss'],
+  styleUrls: ['./context-menus.component.scss']
 })
 export class ContextMenusComponent {
   @ViewChild('viewNodeContextMenu') viewNodeContextMenu: ContextMenuComponent;
