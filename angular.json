@@ -170,7 +170,6 @@
       }
     }
   },
-  "defaultProject": "angular-testapp",
   "cli": {
     "analytics": false
   }
