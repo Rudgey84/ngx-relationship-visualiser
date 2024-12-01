@@ -5,6 +5,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AppComponent } from './app.component';
 import { VisualiserGraphComponent } from './visualiser-graph.component';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
+import { ContextMenuService } from '@perfectmemory/ngx-contextmenu';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
     ContextMenuModule,
     ModalModule.forRoot(),
   ],
+  providers: [ContextMenuService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
