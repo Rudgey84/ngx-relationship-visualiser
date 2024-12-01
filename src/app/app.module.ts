@@ -1,6 +1,6 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ContextMenuModule } from 'ngx-contextmenu';
+import { ContextMenuModule } from '@perfectmemory/ngx-contextmenu';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AppComponent } from './app.component';
 import { VisualiserGraphComponent } from './visualiser-graph.component';
@@ -14,10 +14,9 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   ],
   imports: [
     BrowserModule,
-    ContextMenuModule.forRoot({ useBootstrap4: true }),
+    ContextMenuModule,
     ModalModule.forRoot(),
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

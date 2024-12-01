@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { VisualiserGraphService } from './visualiser/services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';
-import { ContextMenuService } from 'ngx-contextmenu';
+import { ContextMenuService } from '@perfectmemory/ngx-contextmenu';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 
 @Component({
@@ -357,7 +357,7 @@ export class VisualiserGraphComponent
   @Input() zoomToFit: boolean = false;
   constructor(
     readonly visualiserGraphService: VisualiserGraphService,
-    readonly contextMenuService: ContextMenuService,
+    readonly contextMenuService: ContextMenuService<any>,
     readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
   ) {}
 
@@ -471,10 +471,10 @@ export class VisualiserGraphComponent
       }
     }
 
-    this.contextMenuService.show.next({
-      contextMenu,
-      event,
-      item,
+    this.contextMenuService.show(contextMenu, {
+      x: event.clientX,
+      y: event.clientY,
+      value: item
     });
 
     event.stopPropagation();

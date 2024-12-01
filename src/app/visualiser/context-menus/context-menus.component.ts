@@ -1,5 +1,5 @@
 import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
-import { ContextMenuComponent } from 'ngx-contextmenu';
+import { ContextMenuComponent } from '@perfectmemory/ngx-contextmenu';
 
 @Component({
   selector: 'app-context-menus',
@@ -7,11 +7,11 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
   styleUrls: ['./context-menus.component.scss']
 })
 export class ContextMenusComponent {
-  @ViewChild('viewNodeContextMenu') viewNodeContextMenu: ContextMenuComponent;
-  @ViewChild('canvasContextMenu') canvasContextMenu: ContextMenuComponent;
+  @ViewChild('viewNodeContextMenu') viewNodeContextMenu: ContextMenuComponent<any>;
+  @ViewChild('canvasContextMenu') canvasContextMenu: ContextMenuComponent<any>;
   @ViewChild('createLinkContextMenu')
-  createLinkContextMenu: ContextMenuComponent;
-  @ViewChild('viewLinkContextMenu') viewLinkContextMenu: ContextMenuComponent;
+  createLinkContextMenu: ContextMenuComponent<any>;
+  @ViewChild('viewLinkContextMenu') viewLinkContextMenu: ContextMenuComponent<any>;
 
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   @Output() findEntityContextMenuEvent = new EventEmitter<any>();
