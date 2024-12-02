@@ -7,7 +7,7 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
-  AfterViewInit,
+  AfterViewInit
 } from '@angular/core';
 import { VisualiserGraphService } from './visualiser/services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';

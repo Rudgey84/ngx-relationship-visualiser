@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ContextMenuModule } from '@perfectmemory/ngx-contextmenu';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -11,14 +11,15 @@ import { ContextMenuService } from '@perfectmemory/ngx-contextmenu';
   declarations: [
     AppComponent,
     VisualiserGraphComponent,
-    ContextMenusComponent,
+    ContextMenusComponent
   ],
   imports: [
     BrowserModule,
     ContextMenuModule,
-    ModalModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [ContextMenuService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
