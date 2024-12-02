@@ -1,0 +1,23 @@
+<context-menu #viewNodeContextMenu>
+  <ng-template contextMenuItem let-item (execute)="viewNode()">
+    View Node...
+  </ng-template>
+</context-menu>
+
+<context-menu #canvasContextMenu>
+  <ng-template contextMenuItem let-item (execute)="findEntity()">
+    Find Nodes...
+  </ng-template>
+</context-menu>
+
+<context-menu #createLinkContextMenu>
+  <ng-template contextMenuItem let-item (execute)="createLink()">
+    Create Link...
+  </ng-template>
+</context-menu>
+
+<context-menu #viewLinkContextMenu>
+  <ng-template contextMenuItem let-item (execute)="viewLink()">
+    View Link...
+  </ng-template>
+</context-menu>

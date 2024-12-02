@@ -11,6 +11,8 @@ import {
 } from '@angular/core';
 import { VisualiserGraphService } from './visualiser/services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';
+import { ContextMenuService } from '@kreash/ngx-contextmenu';
+import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 
 @Component({
   selector: 'visualiser-graph',
@@ -321,7 +323,13 @@ import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service
      Saved <i class="bi bi-check-circle"></i>
    </div>
  </div>
- <svg #svgId [attr.width]="width" height="780"></svg>
+ <app-context-menus
+ (viewNodeContextMenuEvent)="viewNodeEvent()"
+ (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
+ (createLinkContextMenuEvent)="createLinkEvent()"
+ (viewLinkContextMenuEvent)="viewLinkEvent()"
+ ></app-context-menus>
+ <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
  </div>
   `,
 })
@@ -329,6 +337,7 @@ export class VisualiserGraphComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
   @ViewChild('svgId') graphElement: ElementRef;
+  @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
@@ -348,6 +357,7 @@ export class VisualiserGraphComponent
   @Input() zoomToFit: boolean = false;
   constructor(
     readonly visualiserGraphService: VisualiserGraphService,
+    readonly contextMenuService: ContextMenuService,
     readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
   ) {}
 
@@ -431,45 +441,45 @@ export class VisualiserGraphComponent
     localStorage.removeItem(this.savedGraphData);
   }
 
-  // public visualiserContextMenus(event): void {
-  //   if (this.readOnly) {
-  //     return;
-  //   }
+  public visualiserContextMenus(event): void {
+    if (this.readOnly) {
+      return;
+    }
 
-  //   let contextMenu;
-  //   let item;
+    let contextMenu;
+    let item;
 
-  //   if (this.selectedNodesArray?.length === 2) {
-  //     contextMenu = this.contextMenu.createLinkContextMenu;
-  //     item = this.selectedNodesArray;
-  //   } else {
-  //     const targetEl = event.target;
-  //     const localName = targetEl.localName;
-  //     const parentNodeId = targetEl.parentNode.id;
-  //     const data = targetEl.parentNode.__data__;
-  //     this.selectedNodeId = targetEl.id || (data && data.id);
+    if (this.selectedNodesArray?.length === 2) {
+      contextMenu = this.contextMenu.createLinkContextMenu;
+      item = this.selectedNodesArray;
+    } else {
+      const targetEl = event.target;
+      const localName = targetEl.localName;
+      const parentNodeId = targetEl.parentNode.id;
+      const data = targetEl.parentNode.__data__;
+      this.selectedNodeId = targetEl.id || (data && data.id);
 
-  //     if (localName === 'image' || parentNodeId === 'nodeText') {
-  //       contextMenu = this.contextMenu.viewNodeContextMenu;
-  //       item = this.selectedNodeId;
-  //     } else if (localName === 'textPath') {
-  //       contextMenu = this.contextMenu.viewLinkContextMenu;
-  //       item = this.selectedLinkArray;
-  //     } else if (localName === 'svg') {
-  //       contextMenu = this.contextMenu.canvasContextMenu;
-  //       item = 'item';
-  //     }
-  //   }
+      if (localName === 'image' || parentNodeId === 'nodeText') {
+        contextMenu = this.contextMenu.viewNodeContextMenu;
+        item = this.selectedNodeId;
+      } else if (localName === 'textPath') {
+        contextMenu = this.contextMenu.viewLinkContextMenu;
+        item = this.selectedLinkArray;
+      } else if (localName === 'svg') {
+        contextMenu = this.contextMenu.canvasContextMenu;
+        item = 'item';
+      }
+    }
 
-  //   this.contextMenuService.show(contextMenu, {
-  //     x: event.clientX,
-  //     y: event.clientY,
-  //     value: item
-  //   });
+    this.contextMenuService.show.next({
+      contextMenu,
+      event,
+      item,
+    });
 
-  //   event.stopPropagation();
-  //   event.preventDefault();
-  // }
+    event.stopPropagation();
+    event.preventDefault();
+  }
 
   public viewLinkEvent(): void {
     this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
