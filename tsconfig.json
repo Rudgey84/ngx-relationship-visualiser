@@ -5,14 +5,14 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2015",
+    "module": "ESNext",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es5",
+    "target": "ES2015",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
+    "lib": ["ES2018", "dom"],
     "paths": {
       "visualiser-graph": ["dist/visualiser-graph"],
       "visualiser-graph/*": ["dist/visualiser-graph/*"]
