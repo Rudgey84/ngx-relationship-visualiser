@@ -369,26 +369,7 @@ export class VisualiserGraphComponent
     }
   }
 
-  @Input()
-  set data(data: any) {
-    this.removeLocalStorageItemsByPrefix('savedGraphData');
-    // Generate a random number so we can open two graphs without mixing the data
-    const irUrn = data.irUrn;
-    const randomNumber = Math.floor(Math.random() * 100000);
-    this.savedGraphData = `savedGraphData${irUrn}_${randomNumber}`;
-    // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
-    setTimeout(() => {
-      this.dagreNodesOnlyLayout.renderLayout(data);
-      // Take a copy of input for reset
-      localStorage.setItem(this.savedGraphData, JSON.stringify(data));
-      this.visualiserGraphService.update(
-        data,
-        this.graphElement.nativeElement,
-        this.zoom,
-        this.zoomToFit
-      );
-    }, 500);
-  }
+
 
   public ngOnInit() {
     this.buttonBarRightPosition = '0';
