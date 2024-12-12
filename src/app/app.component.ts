@@ -15,7 +15,7 @@ export class AppComponent {
     });
   }
 
-  public title = 'angular-testapp';
+  public title = 'angular-visualiser';
   readonly defaultModalConfig = { class: 'modal-xl' };
   public modalRef?: BsModalRef;
   public viewLinkArray;

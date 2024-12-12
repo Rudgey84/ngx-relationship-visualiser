@@ -9,12 +9,12 @@ import {
   OnDestroy,
   AfterViewInit
 } from '@angular/core';
-import { VisualiserGraphService } from './visualiser/services/visualiser-graph.service';
-import { DagreNodesOnlyLayout } from './visualiser/services/dagre-layout.service';
+import { VisualiserGraphService } from '../app/visualiser/services/visualiser-graph.service';
+import { DagreNodesOnlyLayout } from '../app/visualiser/services/dagre-layout.service';
 import { ContextMenuService } from '@kreash/ngx-contextmenu';
-import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
-import { Data } from './models/data.interface';
-import { NEWDATA } from './models/mocked-data';
+import { ContextMenusComponent } from '../app/visualiser/context-menus/context-menus.component';
+import { Data } from '../app/models/data.interface';
+import { NEWDATA } from '../app/models/mocked-data';
 
 @Component({
   selector: 'visualiser-graph',
