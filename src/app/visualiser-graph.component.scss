@@ -1,0 +1,101 @@
+#zoom_level {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+.buttonBar {
+position: absolute;
+
+padding: 10px
+}
+.zoomIndicator {
+position: absolute;
+left: 0px;
+padding: 10px
+}
+.noMatchesText {
+opacity: 0;
+transition: opacity 0.5s;
+color: red;
+}
+.noMatchesText.show {
+opacity: 1;
+}
+@keyframes floatInFromTop {
+from {
+opacity: 0;
+transform: translateY(-100%);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+.input-group {
+animation-name: floatInFromTop;
+animation-duration: 0.3s;
+animation-fill-mode: forwards;
+position: relative;
+width:407px;
+}
+.searchButtonActive {
+outline: none;
+-webkit-box-shadow: inset 0px 0px 5px #323232;
+-moz-box-shadow: inset 0px 0px 5px #323232;
+    box-shadow: inset 0px 0px 5px #323232;
+}
+.searchButtonActive:focus,
+.searchButtonActive:active {
+outline: none;
+-webkit-box-shadow: inset 0px 0px 5px #323232;
+-moz-box-shadow: inset 0px 0px 5px #323232;
+    box-shadow: inset 0px 0px 5px #323232;
+}
+.searchButtonInactive {
+opacity: 1;
+outline: none;
+box-shadow: none;
+background-color: #6c757d !important;
+border-color: #6c757d !important;
+}
+.confirmation-message-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.confirmation-message {
+    position: relative;
+    top: 60px;
+    opacity: 0; /* Start with 0 opacity */
+    animation: fade-in 0.5s ease-in-out forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-out {
+    animation: fade-out 0.5s ease-in-out forwards;
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+#draggableHandle {
+cursor: move;
+}

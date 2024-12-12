@@ -16,322 +16,8 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
 
 @Component({
   selector: 'visualiser-graph',
-  template: `
-
-		<style>
-			#zoom_level {
-				position: relative;
-				background-color: rgba(0, 0, 0, 0.8);
-				color: #fff;
-				padding: 5px;
-				border-radius: 5px;
-				opacity: 0;
-				transition: opacity 1s ease-in-out;
-			}
-      .buttonBar {
-        position: absolute;
-       
-        padding: 10px
-      }
-      .zoomIndicator {
-        position: absolute;
-        left: 0px;
-        padding: 10px
-      }
-      .noMatchesText {
-        opacity: 0;
-        transition: opacity 0.5s;
-        color: red;
-      }
-      .noMatchesText.show {
-        opacity: 1;
-      }
-      @keyframes floatInFromTop {
-        from {
-          opacity: 0;
-          transform: translateY(-100%);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .input-group {
-        animation-name: floatInFromTop;
-        animation-duration: 0.3s;
-        animation-fill-mode: forwards;
-        position: relative;
-        width:407px;
-      }
-      .searchButtonActive {
-        outline: none;
-        -webkit-box-shadow: inset 0px 0px 5px #323232;
-           -moz-box-shadow: inset 0px 0px 5px #323232;
-                box-shadow: inset 0px 0px 5px #323232;
-      }
-      .searchButtonActive:focus,
-      .searchButtonActive:active {
-        outline: none;
-        -webkit-box-shadow: inset 0px 0px 5px #323232;
-           -moz-box-shadow: inset 0px 0px 5px #323232;
-                box-shadow: inset 0px 0px 5px #323232;
-      }
-      .searchButtonInactive {
-        opacity: 1;
-        outline: none;
-        box-shadow: none;
-        background-color: #6c757d !important;
-        border-color: #6c757d !important;
-      }
-			.confirmation-message-container {
-				position: absolute;
-				left: 50%;
-				transform: translateX(-50%);
-			}
-
-			.confirmation-message {
-				position: relative;
-				top: 60px;
-				opacity: 0; /* Start with 0 opacity */
-				animation: fade-in 0.5s ease-in-out forwards;
-			}
-
-			@keyframes fade-in {
-				0% {
-					opacity: 0;
-				}
-				100% {
-					opacity: 1;
-				}
-			}
-
-			.fade-out {
-				animation: fade-out 0.5s ease-in-out forwards;
-			}
-
-			@keyframes fade-out {
-				0% {
-					opacity: 1;
-				}
-				100% {
-					opacity: 0;
-				}
-			}
-      #draggableHandle {
-        cursor: move;
-    }
-		</style>
-    <div class="page" id="pageId" (window:resize)="onResize($event)">
-    <div id="draggable" class="buttonBar" [style.right]="buttonBarRightPosition">
-    <div *ngIf="controls">
-      <div class="d-flex justify-content-end">
-      <button type="button" class="btn btn-secondary mr-3" (click)="newData()"><i class="bi bi-arrow-counterclockwise"></i></button>
-      <div class="btn-group" role="group" aria-label="Controls">
-
-      <button type="button"
-      id="draggableHandle"
-      class="btn btn-light" 
-      data-toggle="tooltip"
-      data-placement="top"
-      title="Move toolbar"
-    >
-    <i class="bi bi-grip-vertical"></i>
-    </button>
-
-      <button type="button"
-        id="dagre_layout"
-        class="btn btn-secondary" 
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Dagre layout"
-        (click)="layout()"
-      >
-        <i class="bi bi-diagram-3"></i>
-      </button>
-      <button
-        type="button"
-        id="save_graph"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Save data"
-        (click)="saveGraph()"
-      >
-        <i class="bi bi-save"></i>
-      </button>
-      <button
-        type="button"
-        id="reset_graph"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Reset data"
-        (click)="resetGraph()"
-      >
-        <i class="bi bi-skip-backward"></i>
-      </button>
-      <button
-        type="button"
-        *ngIf="zoom"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Zoom in"
-        id="zoom_in"
-      >
-        <i class="bi bi-zoom-in"></i>
-      </button>
-      <button
-        type="button"
-        *ngIf="zoom"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Zoom out"
-        id="zoom_out"
-      >
-        <i class="bi bi-zoom-out"></i>
-      </button>
-      <button
-        type="button"
-        *ngIf="zoom"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Zoom reset"
-        id="zoom_reset"
-        disabled="true"
-      >
-        <i class="bi bi-arrow-counterclockwise"></i>
-      </button>
-      <button
-        type="button"
-        *ngIf="zoom"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Zoom to fit"
-        id="zoom_to_fit"
-      >
-        <i class="bi bi-arrows-fullscreen"></i>
-      </button>
-      <button
-        type="button"
-        *ngIf="zoom"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Select all"
-        id="select_all"
-      >
-        <i class="bi bi-grid-fill"></i>
-      </button>
-      <button
-        type="button"
-        *ngIf="zoom"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Invert selection"
-        id="toggle_selection"
-      >
-        <i class="bi bi-ui-checks-grid"></i>
-      </button>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Toggle search"
-        id="toggle_search"
-        [ngClass]="{'searchButtonActive': showSearch, 'searchButtonInactive': !showSearch}"
-        (click)="toggleSearch()"
-      >
-        <i class="bi bi-search"></i>
-      </button>
-      </div>
-      </div>
-      <div class="search float-right input-group mt-3 pr-0" [hidden]="!showSearch">
-        <div class="input-group-prepend">
-          <button
-            type="button"
-            id="prevButton"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Previous"
-            disabled
-          >
-            <i class="bi bi-arrow-left-square"></i>
-          </button>
-          <button
-            type="button"
-            id="nextButton"
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Next"
-            disabled
-          >
-            <i class="bi bi-arrow-right-square"></i>
-          </button>
-        </div>
-        <input
-          type="text"
-          id="searchInput"
-          class="form-control"
-          placeholder="Search"
-          aria-label="Search"
-          aria-describedby="search"
-        />
-        <div class="input-group-append">
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            id="searchButton"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Search"
-          >
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-        <div class="input-group-append">
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            id="clearButton"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Clear"
-            disabled
-          >
-            clear
-          </button>
-        </div>
-      </div>
-    </div>
-    <div [hidden]="!showSearch" id="noMatchesText" class="noMatchesText float-right">No matches found</div>
-  </div>
-  <!-- Zoom indicator-->
- <div *ngIf="zoom" class="zoomIndicator">
-    <span id="zoom_level"></span>
- </div>
- <!-- Save confirmation-->
- <div *ngIf="showConfirmation" class="confirmation-message-container">
-   <div class="alert alert-success confirmation-message" role="alert" [ngClass]="{ 'fade-out': !showConfirmation }">
-     Saved <i class="bi bi-check-circle"></i>
-   </div>
- </div>
- <app-context-menus
- (viewNodeContextMenuEvent)="viewNodeEvent()"
- (findEntityContextMenuEvent)="siFindEntityDetailsEvent()"
- (createLinkContextMenuEvent)="createLinkEvent()"
- (viewLinkContextMenuEvent)="viewLinkEvent()"
- ></app-context-menus>
- <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
- </div>
-  `,
+  templateUrl: "./visualiser-graph.component.html",
+  styleUrls: ["./visualiser-graph.component.scss"],
 })
 export class VisualiserGraphComponent
   implements OnInit, OnDestroy, AfterViewInit
@@ -423,8 +109,21 @@ export class VisualiserGraphComponent
     );
   }
 
-  public toggleSearch(): void {
+  toggleSearch() {
     this.showSearch = !this.showSearch;
+  
+    if (this.showSearch) {
+      setTimeout(() => {
+        const field = document.querySelector('#searchInput') as HTMLInputElement; // Correct selector for the input
+        if (field) {
+          console.log('Search input is ready for focus:', field);
+          field.focus();
+          field.setSelectionRange(0, 0); // Move cursor to start (optional)
+        } else {
+          console.error('Search input not found.');
+        }
+      }, 0); // Delay to allow DOM rendering
+    }
   }
 
   public onResize(event): void {
@@ -488,7 +187,7 @@ export class VisualiserGraphComponent
     this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
   }
   public siFindEntityDetailsEvent(): void {
-    console.log("empty")
+    this.toggleSearch();
   }
   public createLinkEvent(): void {
     this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
