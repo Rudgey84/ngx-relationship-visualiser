@@ -277,38 +277,41 @@ export class VisualiserGraphComponent
       pos3 = 0,
       pos4 = 0;
 
-    const dragMouseDown = (e) => {
-      e = e || window.event;
-      // get the mouse cursor position at startup:
+    const dragMouseDown = (e: MouseEvent): void => {
+      // Prevent any default behavior
+      e.preventDefault();
+
+      // Get the mouse cursor position at startup
       pos3 = e.clientX;
       pos4 = e.clientY;
+
+      // Set up mouse event listeners
       document.onmouseup = closeDragElement;
-      // call a function whenever the cursor moves:
       document.onmousemove = elementDrag;
     };
 
-    const elementDrag = (e) => {
+    const elementDrag = (e: MouseEvent): void => {
       this.buttonBarRightPosition = null;
-      e = e || window.event;
-      // calculate the new cursor position:
+    
+      // Calculate the new cursor position
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
       pos4 = e.clientY;
-
-      // limit the element's movement within the boundaries of the page
+    
+      // Limit the element's movement within the boundaries of the page
       const maxWidth = this.width - elmnt.offsetWidth;
       const maxHeight = window.innerHeight - elmnt.offsetHeight;
-
+    
       let newLeft = elmnt.offsetLeft - pos1;
       let newTop = elmnt.offsetTop - pos2;
-
+    
       newLeft = Math.max(0, Math.min(newLeft, maxWidth));
       newTop = Math.max(0, Math.min(newTop, maxHeight));
-
-      // set the element's new position:
-      elmnt.style.left = newLeft + 'px';
-      elmnt.style.top = newTop + 'px';
+    
+      // Set the element's new position
+      elmnt.style.left = `${newLeft}px`;
+      elmnt.style.top = `${newTop}px`;
     };
 
     const closeDragElement = () => {
