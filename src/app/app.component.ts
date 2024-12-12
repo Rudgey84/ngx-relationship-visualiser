@@ -1,11 +1,10 @@
 import { Component, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Data } from './models/data.interface';
-import { mockedData } from './models/mocked-data';
+import { MOCKEDDATA } from './models/mocked-data';
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   constructor(readonly modalService: BsModalService) {
@@ -22,7 +21,7 @@ export class AppComponent {
   public viewLinkArray;
   public viewNodeId;
   public createLinkIds;
-  public mockedData: Data = mockedData; 
+  public mockedData: Data = MOCKEDDATA; 
 
   public createLinkEvent(
     template: TemplateRef<any>,
