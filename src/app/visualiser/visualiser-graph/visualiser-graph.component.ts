@@ -9,12 +9,12 @@ import {
   OnDestroy,
   AfterViewInit
 } from '@angular/core';
-import { VisualiserGraphService } from '../app/visualiser/services/visualiser-graph.service';
-import { DagreNodesOnlyLayout } from '../app/visualiser/services/dagre-layout.service';
+import { VisualiserGraphService } from '../services/visualiser-graph.service';
+import { DagreNodesOnlyLayout } from '../services/dagre-layout.service';
 import { ContextMenuService } from '@kreash/ngx-contextmenu';
-import { ContextMenusComponent } from '../app/visualiser/context-menus/context-menus.component';
-import { Data } from '../app/models/data.interface';
-import { NEWDATA } from '../app/models/mocked-data';
+import { ContextMenusComponent } from '../context-menus/context-menus.component';
+import { Data } from '../../models/data.interface';
+import { NEWDATA } from '../../models/mocked-data';
 
 @Component({
   selector: 'visualiser-graph',
@@ -111,7 +111,7 @@ export class VisualiserGraphComponent
     );
   }
 
-  toggleSearch() {
+  public toggleSearch() {
     this.showSearch = !this.showSearch;
   
     if (this.showSearch) {
@@ -232,7 +232,7 @@ export class VisualiserGraphComponent
     );
   }
 
-  public layout(): void {
+  public applyLayout(): void {
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     const newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
 

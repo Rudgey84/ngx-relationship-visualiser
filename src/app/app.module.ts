@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ContextMenuModule } from '@kreash/ngx-contextmenu';
 import { AppComponent } from './app.component';
-import { VisualiserGraphComponent } from '../visualiser-graph/visualiser-graph.component';
+import { VisualiserGraphComponent } from './visualiser/visualiser-graph/visualiser-graph.component';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 
 @NgModule({
