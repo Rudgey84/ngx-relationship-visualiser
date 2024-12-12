@@ -8,11 +8,6 @@ import { MOCKEDDATA } from './models/mocked-data';
 })
 export class AppComponent {
   constructor(readonly modalService: BsModalService) {
-    // Get a random icon
-    this.mockedData.nodes.forEach((node) => {
-      const randomIcon = Math.floor(Math.random() * 100).toString();
-      node.icon = randomIcon;
-    });
   }
 
   public title = 'angular-visualiser';

@@ -25,7 +25,6 @@ export interface Relationship {
   export interface Node {
     id: string;
     version: number;
-    typeName: string;
     label: string[];
     icon: string;
     xpos: number;

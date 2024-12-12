@@ -1301,11 +1301,7 @@ export class VisualiserGraphService {
     nodeEnter
       .append('image')
       .attr('xlink:href', function (d) {
-        const prefixUrl = 'https://randomuser.me/api/portraits/thumb/';
-        const typeName = d.typeName + '/';
-        const icon = d.icon ? d.icon : '';
-        const suffix = 'jpg';
-        return `${prefixUrl}${typeName}${icon}.${suffix}`;
+        return d.icon;
       })
       .attr('x', -15)
       .attr('y', -60)
