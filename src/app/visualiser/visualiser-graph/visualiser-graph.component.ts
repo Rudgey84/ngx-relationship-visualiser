@@ -246,10 +246,9 @@ export class VisualiserGraphComponent
   }
 
   private disableButtons(disabled: boolean): void {
-    const saveBtn = document.getElementById('save_graph');
-    const resetBtn = document.getElementById('reset_graph');
-    saveBtn.setAttribute('disabled', String(disabled));
-    resetBtn.setAttribute('disabled', String(disabled));
+    document.querySelectorAll('#save_graph, #reset_graph').forEach(btn => {
+      btn.setAttribute('disabled', String(disabled));
+    });
   }
 
   private showConfirmationMessage(): void {
