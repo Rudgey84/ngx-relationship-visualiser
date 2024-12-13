@@ -180,8 +180,7 @@ export class VisualiserGraphService {
         while (!canPlaceNode && currentMinDistance > 0) {
           node.fx = crypto.getRandomValues(new Uint32Array(1))[0] % width;
           node.fy = crypto.getRandomValues(new Uint32Array(1))[0] % height;
-
-
+          
           canPlaceNode = !nodeData.some((otherNode) => {
             if (
               otherNode.fx === null ||
