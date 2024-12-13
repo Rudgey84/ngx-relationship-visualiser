@@ -7,7 +7,8 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
+  TemplateRef
 } from '@angular/core';
 import { VisualiserGraphService } from '../services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from '../services/dagre-layout.service';
@@ -15,6 +16,7 @@ import { ContextMenuService } from '@kreash/ngx-contextmenu';
 import { ContextMenusComponent } from '../context-menus/context-menus.component';
 import { Data } from '../../models/data.interface';
 import { NEWDATA } from '../../models/mocked-data';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'visualiser-graph',
@@ -22,13 +24,11 @@ import { NEWDATA } from '../../models/mocked-data';
   styleUrls: ["./visualiser-graph.component.scss"],
 })
 export class VisualiserGraphComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
-  @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
-  @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
-  @Output() createLinkContextMenuEvent = new EventEmitter<any>();
+  @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
+  @ViewChild('viewLinkModal') viewLinkModal: TemplateRef<any>;
   @Output() saveGraphDataEvent = new EventEmitter<any>();
   public selectedNodesArray;
   public selectedNodeId;
@@ -39,6 +39,8 @@ export class VisualiserGraphComponent
   public savedGraphData: string;
   public showConfirmation: boolean = false;
   public buttonBarRightPosition: string;
+  readonly defaultModalConfig = { class: 'modal-xl' };
+  public modalRef?: BsModalRef;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -46,8 +48,9 @@ export class VisualiserGraphComponent
   constructor(
     readonly visualiserGraphService: VisualiserGraphService,
     readonly contextMenuService: ContextMenuService,
-    readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
-  ) {}
+    readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout,
+    readonly modalService: BsModalService
+  ) { }
 
   public removeLocalStorageItemsByPrefix(prefix) {
     for (var key in localStorage) {
@@ -90,17 +93,29 @@ export class VisualiserGraphComponent
       }
     );
 
+    // Subscribe to the double-click node payload
     this.visualiserGraphService.dblClickNodePayload.subscribe(
       (dblClickNodePayload) => {
         this.selectedNodeId = dblClickNodePayload[0].id;
-        this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
+
+        if (this.viewNodeModal) {
+          this.modalEvent(this.viewNodeModal, this.defaultModalConfig);
+        } else {
+          console.error('Modal template is not available.');
+        }
       }
     );
 
+    // Subscribe to the double-click Link payload
     this.visualiserGraphService.dblClickLinkPayload.subscribe(
       (dblClickLinkPayload) => {
         this.selectedLinkArray = dblClickLinkPayload;
-        this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
+
+        if (this.viewLinkModal) {
+          this.modalEvent(this.viewLinkModal, this.defaultModalConfig);
+        } else {
+          console.error('Modal template is not available.');
+        }
       }
     );
 
@@ -113,7 +128,7 @@ export class VisualiserGraphComponent
 
   public toggleSearch() {
     this.showSearch = !this.showSearch;
-  
+
     if (this.showSearch) {
       setTimeout(() => {
         const field = document.querySelector('#searchInput') as HTMLInputElement;
@@ -166,7 +181,7 @@ export class VisualiserGraphComponent
         contextMenu = this.contextMenu.viewLinkContextMenu;
         item = this.selectedLinkArray;
       } else if (localName === 'svg') {
-        contextMenu = this.contextMenu.canvasContextMenu;
+        contextMenu = this.contextMenu.findNodesContextMenu;
         item = 'item';
       }
     }
@@ -181,17 +196,8 @@ export class VisualiserGraphComponent
     event.preventDefault();
   }
 
-  public viewLinkEvent(): void {
-    this.viewLinkContextMenuEvent.emit(this.selectedLinkArray);
-  }
-  public viewNodeEvent(): void {
-    this.viewNodeContextMenuEvent.emit(this.selectedNodeId);
-  }
-  public siFindEntityDetailsEvent(): void {
+  public findNodesEvent(): void {
     this.toggleSearch();
-  }
-  public createLinkEvent(): void {
-    this.createLinkContextMenuEvent.emit(this.selectedNodesArray);
   }
 
   public saveGraph(): void {
@@ -291,23 +297,23 @@ export class VisualiserGraphComponent
 
     const elementDrag = (e: MouseEvent): void => {
       this.buttonBarRightPosition = null;
-    
+
       // Calculate the new cursor position
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
       pos4 = e.clientY;
-    
+
       // Limit the element's movement within the boundaries of the page
       const maxWidth = this.width - elmnt.offsetWidth;
       const maxHeight = window.innerHeight - elmnt.offsetHeight;
-    
+
       let newLeft = elmnt.offsetLeft - pos1;
       let newTop = elmnt.offsetTop - pos2;
-    
+
       newLeft = Math.max(0, Math.min(newLeft, maxWidth));
       newTop = Math.max(0, Math.min(newTop, maxHeight));
-    
+
       // Set the element's new position
       elmnt.style.left = `${newLeft}px`;
       elmnt.style.top = `${newTop}px`;
@@ -340,6 +346,27 @@ export class VisualiserGraphComponent
     ev.preventDefault();
     var data = ev.dataTransfer.getData('text');
     ev.target.appendChild(document.getElementById(data));
+  }
+
+  public modalEvent(
+    template: TemplateRef<any>,
+    config = this.defaultModalConfig
+  ) {
+    this.openModal('modalRef', template, config);
+  }
+
+  public openModal(
+    modalRef: string,
+    template: TemplateRef<any>,
+    config = this.defaultModalConfig
+  ) {
+    this[modalRef] = this.modalService.show(template, config);
+  }
+
+  public closeModal(modalRef: string): void {
+    if (this[modalRef]) {
+      this[modalRef].hide();
+    }
   }
 
   newData() {

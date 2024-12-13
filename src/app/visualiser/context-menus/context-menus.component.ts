@@ -7,12 +7,12 @@ import { ContextMenuComponent } from '@kreash/ngx-contextmenu';
 })
 export class ContextMenusComponent {
   @ViewChild('viewNodeContextMenu') viewNodeContextMenu: ContextMenuComponent;
-  @ViewChild('canvasContextMenu') canvasContextMenu: ContextMenuComponent;
+  @ViewChild('findNodesContextMenu') findNodesContextMenu: ContextMenuComponent;
   @ViewChild('createLinkContextMenu') createLinkContextMenu: ContextMenuComponent;
   @ViewChild('viewLinkContextMenu') viewLinkContextMenu: ContextMenuComponent;
 
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
-  @Output() findEntityContextMenuEvent = new EventEmitter<any>();
+  @Output() findNodesContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
   @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
 
@@ -20,10 +20,10 @@ export class ContextMenusComponent {
     this.viewNodeContextMenuEvent.emit(true);
   }
 
-  findEntity() {
-    this.findEntityContextMenuEvent.emit(true);
+  findNodes() {
+    this.findNodesContextMenuEvent.emit(true);
   }
-  
+
   createLink() {
     this.createLinkContextMenuEvent.emit(true);
   }

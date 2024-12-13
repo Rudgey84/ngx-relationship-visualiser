@@ -1,4 +1,4 @@
-import { NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ContextMenuModule } from '@kreash/ngx-contextmenu';
@@ -15,7 +15,7 @@ import { ContextMenusComponent } from './visualiser/context-menus/context-menus.
   imports: [
     BrowserModule,
     ModalModule.forRoot(),
-    ContextMenuModule.forRoot({useBootstrap4: true})
+    ContextMenuModule.forRoot({ useBootstrap4: true })
   ],
   bootstrap: [AppComponent]
 })
