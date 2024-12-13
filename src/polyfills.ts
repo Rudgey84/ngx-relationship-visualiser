@@ -85,5 +85,13 @@ import 'zone.js';
 
 
 /***************************************************************************************************
- * APPLICATION IMPORTS
+ * Suppress 3rd party benign warnings
  */
+
+const originalWarn = console.warn;
+console.warn = function (...args) {
+    if (args[0]?.includes('Unknown pseudo-class :lang')) {
+        return;
+    }
+    originalWarn.apply(console, args);
+};
