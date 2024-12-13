@@ -1369,7 +1369,7 @@ export class VisualiserGraphService {
         return textHeight + dyOffset;
       })
       .attr('xlink:href', function (d) {
-        return `https://raw.githubusercontent.com/Rudgey84/d3-visualiser/1f83debd80578edcd29eaf2559bba2988a0f437a/src/unauthPill.png`;
+        return './assets/unauthPill.png';
       });
 
     // transition effects for new pulsating nodes
