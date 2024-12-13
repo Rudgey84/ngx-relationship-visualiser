@@ -178,8 +178,9 @@ export class VisualiserGraphService {
         let canPlaceNode = false;
 
         while (!canPlaceNode && currentMinDistance > 0) {
-          node.fx = Math.floor(Math.random() * width);
-          node.fy = Math.floor(Math.random() * height);
+          node.fx = crypto.getRandomValues(new Uint32Array(1))[0] % width;
+          node.fy = crypto.getRandomValues(new Uint32Array(1))[0] % height;
+
 
           canPlaceNode = !nodeData.some((otherNode) => {
             if (

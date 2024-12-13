@@ -65,7 +65,7 @@ export class VisualiserGraphComponent
     this.removeLocalStorageItemsByPrefix('savedGraphData');
     // Generate a random number so we can open two graphs without mixing the data
     const irUrn = data.irUrn;
-    const randomNumber = Math.floor(Math.random() * 100000);
+    const randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
     this.savedGraphData = `savedGraphData${irUrn}_${randomNumber}`;
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
