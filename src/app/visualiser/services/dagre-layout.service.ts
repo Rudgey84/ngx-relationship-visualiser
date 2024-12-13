@@ -1,4 +1,4 @@
-import * as dagre from 'dagre';
+import * as dagre from '@dagrejs/dagre';
 import { Injectable } from '@angular/core';
 
 export enum Orientation {
