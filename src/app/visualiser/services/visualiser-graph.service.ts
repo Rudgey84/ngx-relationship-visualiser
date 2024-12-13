@@ -1030,9 +1030,9 @@ export class VisualiserGraphService {
       .append('tspan')
       .style('fill', '#856404')
       .style('font-weight', '700')
-      .text(' (U)');
+      .text(' (Strong Link)');
 
-    // on normal label link click - hightlight labels
+    // on normal label link click - highlight labels
     svg.selectAll('.edgelabel').on('click', function (d) {
       _d3.event.stopPropagation();
       nodeEnter.each(function (d) {
