@@ -99,7 +99,7 @@ export class VisualiserGraphComponent
         this.selectedNodeId = dblClickNodePayload[0].id;
 
         if (this.viewNodeModal) {
-          this.modalEvent(this.viewNodeModal, this.defaultModalConfig);
+          this.openModal(this.viewNodeModal, this.defaultModalConfig);
         } else {
           console.error('Modal template is not available.');
         }
@@ -112,7 +112,7 @@ export class VisualiserGraphComponent
         this.selectedLinkArray = dblClickLinkPayload;
 
         if (this.viewLinkModal) {
-          this.modalEvent(this.viewLinkModal, this.defaultModalConfig);
+          this.openModal(this.viewLinkModal, this.defaultModalConfig);
         } else {
           console.error('Modal template is not available.');
         }
@@ -348,18 +348,11 @@ export class VisualiserGraphComponent
     ev.target.appendChild(document.getElementById(data));
   }
 
-  public modalEvent(
-    template: TemplateRef<any>,
-    config = this.defaultModalConfig
-  ) {
-    this.openModal('modalRef', template, config);
-  }
-
   public openModal(
-    modalRef: string,
     template: TemplateRef<any>,
     config = this.defaultModalConfig
   ) {
+    const modalRef = 'modalRef';
     this[modalRef] = this.modalService.show(template, config);
   }
 

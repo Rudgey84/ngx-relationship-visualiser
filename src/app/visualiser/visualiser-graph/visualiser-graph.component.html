@@ -96,10 +96,10 @@
   </div>
 
   <app-context-menus 
-    (viewNodeContextMenuEvent)="modalEvent(viewNodeModal, $event)"
+    (viewNodeContextMenuEvent)="openModal(viewNodeModal, $event)"
     (findNodesContextMenuEvent)="findNodesEvent()"
-    (createLinkContextMenuEvent)="modalEvent(createLinkModal, $event)"
-    (viewLinkContextMenuEvent)="modalEvent(viewLinkModal, $event)">
+    (createLinkContextMenuEvent)="openModal(createLinkModal, $event)"
+    (viewLinkContextMenuEvent)="openModal(viewLinkModal, $event)">
   </app-context-menus>
 
   <!--VIEW NODE MODAL-->
