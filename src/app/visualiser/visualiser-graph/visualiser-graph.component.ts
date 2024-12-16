@@ -352,8 +352,11 @@ export class VisualiserGraphComponent
     template: TemplateRef<any>,
     config = this.defaultModalConfig
   ) {
-    const modalRef = 'modalRef';
-    this[modalRef] = this.modalService.show(template, config);
+    if (!template) {
+      console.error('Template is required to open a modal.');
+      return null;
+    }
+    this.modalRef = this.modalService.show(template, config);
   }
 
   public closeModal(modalRef: string): void {
