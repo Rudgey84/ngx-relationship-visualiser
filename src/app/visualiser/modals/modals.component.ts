@@ -11,8 +11,10 @@ export class ModalsComponent {
   @Input() selectedNodesArray: any[];
   @Output() closeModalEvent = new EventEmitter<string>();
   @ViewChild('viewLinkModal') viewLinkModal: TemplateRef<any>;
+  @Output() confirmSaveEvent = new EventEmitter<void>();
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
+  @ViewChild('confirmationModal') confirmationModal: TemplateRef<any>;
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };
 
@@ -32,5 +34,10 @@ export class ModalsComponent {
     if (this[modalRef]) {
       this[modalRef].hide();
     }
+  }
+
+  public confirmSave(): void {
+    this.closeModal('modalRef');
+    this.confirmSaveEvent.emit();
   }
 }

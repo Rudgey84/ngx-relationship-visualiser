@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Data } from './models/data.interface';
 import { MOCKEDDATA } from './models/mocked-data';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'

@@ -93,7 +93,7 @@ export class VisualiserGraphComponent
     this.visualiserGraphService.dblClickNodePayload.subscribe(
       (dblClickNodePayload) => {
         this.selectedNodeId = dblClickNodePayload[0].id;
-        
+
         if (this.modalsComponent) {
           this.modalsComponent.openModal(this.modalsComponent.viewNodeModal);
         } else {
@@ -197,6 +197,10 @@ export class VisualiserGraphComponent
   }
 
   public saveGraph(): void {
+    this.modalsComponent.openModal(this.modalsComponent.confirmationModal);
+  }
+
+  public onConfirmSave(): void {
     this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
       this.saveGraphData = saveGraphData;
     });

@@ -105,7 +105,8 @@
   <app-modals
   [selectedNodeId]="selectedNodeId"
   [selectedLinkArray]="selectedLinkArray"
-  [selectedNodesArray]="selectedNodesArray">
+  [selectedNodesArray]="selectedNodesArray"
+  (confirmSaveEvent)="onConfirmSave()">
   </app-modals>
 
   <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
