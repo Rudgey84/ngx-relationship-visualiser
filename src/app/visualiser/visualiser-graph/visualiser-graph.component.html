@@ -95,56 +95,18 @@
     </div>
   </div>
 
-  <app-context-menus 
-    (viewNodeContextMenuEvent)="openModal(viewNodeModal, $event)"
-    (findNodesContextMenuEvent)="findNodesEvent()"
-    (createLinkContextMenuEvent)="openModal(createLinkModal, $event)"
-    (viewLinkContextMenuEvent)="openModal(viewLinkModal, $event)">
+  <app-context-menus
+  (viewNodeContextMenuEvent)="openModal('viewNodeModal')"
+  (findNodesContextMenuEvent)="findNodesEvent()"
+  (createLinkContextMenuEvent)="openModal('createLinkModal')"
+  (viewLinkContextMenuEvent)="openModal('viewLinkModal')">
   </app-context-menus>
 
-  <!--VIEW NODE MODAL-->
-  <ng-template #viewNodeModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">View Node</h4>
-      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
-        <span aria-hidden="true" class="visually-hidden">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">ID: {{ selectedNodeId }}</div>
-  </ng-template>
-  <!-- ./MODAL-->
-
-  <!--VIEW LINK MODAL-->
-  <ng-template #viewLinkModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">View Link</h4>
-      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
-        <span aria-hidden="true" class="visually-hidden">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      {{ selectedLinkArray[0].label }}
-    </div>
-  </ng-template>
-  <!-- ./MODAL-->
-
-  <!--CREATE LINK MODAL-->
-  <ng-template #createLinkModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Create Link</h4>
-      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
-        <span aria-hidden="true" class="visually-hidden">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div *ngFor="let link of selectedNodesArray">
-        <div *ngFor="let label of link.label">
-          {{ label }}
-        </div>
-      </div>
-    </div>
-  </ng-template>
-  <!-- ./MODAL-->
+  <app-modals
+  [selectedNodeId]="selectedNodeId"
+  [selectedLinkArray]="selectedLinkArray"
+  [selectedNodesArray]="selectedNodesArray">
+  </app-modals>
 
   <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>
 </div>

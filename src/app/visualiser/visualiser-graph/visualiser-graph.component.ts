@@ -16,7 +16,7 @@ import { ContextMenuService } from '@kreash/ngx-contextmenu';
 import { ContextMenusComponent } from '../context-menus/context-menus.component';
 import { Data } from '../../models/data.interface';
 import { NEWDATA } from '../../models/mocked-data';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ModalsComponent } from '../modals/modals.component';
 
 @Component({
   selector: 'visualiser-graph',
@@ -27,8 +27,6 @@ export class VisualiserGraphComponent
   implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
-  @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
-  @ViewChild('viewLinkModal') viewLinkModal: TemplateRef<any>;
   @Output() saveGraphDataEvent = new EventEmitter<any>();
   public selectedNodesArray;
   public selectedNodeId;
@@ -39,17 +37,15 @@ export class VisualiserGraphComponent
   public savedGraphData: string;
   public showConfirmation: boolean = false;
   public buttonBarRightPosition: string;
-  readonly defaultModalConfig = { class: 'modal-xl' };
-  public modalRef?: BsModalRef;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
   @Input() zoomToFit: boolean = false;
+  @ViewChild(ModalsComponent) public modalsComponent: ModalsComponent;
   constructor(
     readonly visualiserGraphService: VisualiserGraphService,
     readonly contextMenuService: ContextMenuService,
-    readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout,
-    readonly modalService: BsModalService
+    readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
   ) { }
 
   public removeLocalStorageItemsByPrefix(prefix) {
@@ -97,11 +93,11 @@ export class VisualiserGraphComponent
     this.visualiserGraphService.dblClickNodePayload.subscribe(
       (dblClickNodePayload) => {
         this.selectedNodeId = dblClickNodePayload[0].id;
-
-        if (this.viewNodeModal) {
-          this.openModal(this.viewNodeModal, this.defaultModalConfig);
+        
+        if (this.modalsComponent) {
+          this.modalsComponent.openModal(this.modalsComponent.viewNodeModal);
         } else {
-          console.error('Modal template is not available.');
+          console.error('Modal component is not available.');
         }
       }
     );
@@ -111,10 +107,10 @@ export class VisualiserGraphComponent
       (dblClickLinkPayload) => {
         this.selectedLinkArray = dblClickLinkPayload;
 
-        if (this.viewLinkModal) {
-          this.openModal(this.viewLinkModal, this.defaultModalConfig);
+        if (this.modalsComponent) {
+          this.modalsComponent.openModal(this.modalsComponent.viewLinkModal);
         } else {
-          console.error('Modal template is not available.');
+          console.error('Modal component is not available.');
         }
       }
     );
@@ -348,20 +344,12 @@ export class VisualiserGraphComponent
     ev.target.appendChild(document.getElementById(data));
   }
 
-  public openModal(
-    template: TemplateRef<any>,
-    config = this.defaultModalConfig
-  ) {
-    if (!template) {
-      console.error('Template is required to open a modal.');
-      return null;
-    }
-    this.modalRef = this.modalService.show(template, config);
-  }
-
-  public closeModal(modalRef: string): void {
-    if (this[modalRef]) {
-      this[modalRef].hide();
+  openModal(modal: string) {
+    const modalTemplate = this.modalsComponent[modal] as TemplateRef<any>;
+    if (modalTemplate) {
+      this.modalsComponent.openModal(modalTemplate);
+    } else {
+      console.error(`Modal template ${modal} is not available.`);
     }
   }
 
