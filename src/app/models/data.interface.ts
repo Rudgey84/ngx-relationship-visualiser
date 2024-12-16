@@ -7,8 +7,7 @@ export interface Relationship {
     sourceArrow: boolean;
     target: string;
     targetArrow: boolean;
-    attachedToAuthorisedIRs: boolean;
-    attachedToUnauthorisedIRs: boolean;
+    linkStrength: boolean;
   }
   
   export interface Link {
@@ -33,8 +32,7 @@ export interface Relationship {
     y: number;
     fx: number | null;
     fy: number | null;
-    attachedToAuthorisedIRs: boolean;
-    attachedToUnauthorisedIRs: boolean;
+    linkStrength: boolean;
   }
   
   export interface Data {

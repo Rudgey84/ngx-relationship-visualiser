@@ -1025,7 +1025,7 @@ export class VisualiserGraphService {
     edgelabelsEnter
       .selectAll('textPath')
       .filter(function (d) {
-        return d.attachedToUnauthorisedIRs;
+        return d.linkStrength;
       })
       .append('tspan')
       .style('fill', '#856404')
@@ -1347,7 +1347,7 @@ export class VisualiserGraphService {
 
     nodeEnter
       .filter(function (d) {
-        if (!d.attachedToUnauthorisedIRs) {
+        if (!d.linkStrength) {
           return null;
         }
         return true;
