@@ -38,7 +38,7 @@ export interface Relationship {
   }
   
   export interface Data {
-    irUrn: string;
+    dataId: string;
     nodes: Node[];
     links: Link[];
   }

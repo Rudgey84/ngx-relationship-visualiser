@@ -1,7 +1,7 @@
 import { Data } from './data.interface';
 
 export const MOCKEDDATA: Data = {
-  irUrn: '1234',
+  dataId: '1234',
   nodes: [
     {
       id: '123',
@@ -207,7 +207,7 @@ export const MOCKEDDATA: Data = {
 };
 
 export const NEWDATA: Data = {
-    irUrn: '1234',
+  dataId: '1234',
       nodes: [
         {
           id: '123',

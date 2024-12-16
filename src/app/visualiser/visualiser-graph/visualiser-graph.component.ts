@@ -60,9 +60,9 @@ export class VisualiserGraphComponent
   set data(data: Data) {
     this.removeLocalStorageItemsByPrefix('savedGraphData');
     // Generate a random number so we can open two graphs without mixing the data
-    const irUrn = data.irUrn;
+    const dataId = data.dataId;
     const randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
-    this.savedGraphData = `savedGraphData${irUrn}_${randomNumber}`;
+    this.savedGraphData = `savedGraphData${dataId}_${randomNumber}`;
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
     setTimeout(() => {
       this.dagreNodesOnlyLayout.renderLayout(data);
@@ -218,13 +218,13 @@ export class VisualiserGraphComponent
 
   // Filter out the properties we only need to send to the BE
   private filterProperties(data) {
-    const { irUrn, nodes } = data;
+    const { dataId, nodes } = data;
     const filteredNodes = nodes.map((node) => {
       const { id, fx, fy } = node;
       return { id, fx: Math.floor(fx), fy: Math.floor(fy) };
     });
 
-    return { irUrn, nodes: filteredNodes };
+    return { dataId, nodes: filteredNodes };
   }
 
   public resetGraph(): void {

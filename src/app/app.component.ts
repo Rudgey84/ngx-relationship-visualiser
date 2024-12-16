@@ -12,7 +12,7 @@ export class AppComponent {
   public mockedData: Data = MOCKEDDATA;
 
   public saveGraphData(event) {
-    const { irUrn, nodes } = event;
-    console.log(irUrn, nodes);
+    const { dataId, nodes } = event;
+    console.log(dataId, nodes);
   }
 }
