@@ -41,6 +41,14 @@ export class ModalsComponent implements OnInit {
     return this.linkForm.get('label') as FormArray;
   }
 
+  public addLabel() {
+    this.labelArray.push(this.fb.control('', Validators.required));
+  }
+
+  public removeLabel(index: number) {
+    this.labelArray.removeAt(index);
+  }
+
   public openModal(
     template: TemplateRef<any>
   ) {
