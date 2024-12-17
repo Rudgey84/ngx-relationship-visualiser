@@ -39,11 +39,35 @@
       </button>
     </div>
     <div class="modal-body">
-      <div *ngFor="let link of selectedNodesArray">
-        <div *ngFor="let label of link.label">
-          {{ label }}
+      <form [formGroup]="linkForm">
+        <div class="form-group">
+          <label for="lineStyle">Line Style</label>
+          <select id="lineStyle" formControlName="lineStyle" class="form-control">
+            <option value="Confirmed">Confirmed</option>
+            <option value="Unconfirmed">Unconfirmed</option>
+          </select>
         </div>
-      </div>
+        <div class="form-group">
+          <label for="sourceArrow">Source Arrow</label>
+          <input type="checkbox" id="sourceArrow" formControlName="sourceArrow" class="form-check-input">
+        </div>
+        <div class="form-group">
+          <label for="targetArrow">Target Arrow</label>
+          <input type="checkbox" id="targetArrow" formControlName="targetArrow" class="form-check-input">
+        </div>
+        <div class="form-group">
+          <label for="label">Labels</label>
+          <div formArrayName="label">
+            <div *ngFor="let label of labelArray.controls; let i = index">
+              <input [formControlName]="i" class="form-control mb-2">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="linkStrength">Link Strength</label>
+          <input type="checkbox" id="linkStrength" formControlName="linkStrength" class="form-check-input">
+        </div>
+      </form>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ContextMenuModule } from '@kreash/ngx-contextmenu';
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { ModalsComponent } from './visualiser/modals/modals.component';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     ModalModule.forRoot(),
     ContextMenuModule.forRoot({ useBootstrap4: true })
   ],
