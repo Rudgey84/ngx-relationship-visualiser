@@ -334,20 +334,6 @@ export class VisualiserGraphComponent
     }
   }
 
-  public allowDrop(ev): void {
-    ev.preventDefault();
-  }
-
-  public drag(ev): void {
-    ev.dataTransfer.setData('text', ev.target.id);
-  }
-
-  public drop(ev): void {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData('text');
-    ev.target.appendChild(document.getElementById(data));
-  }
-
   openModal(modal: string) {
     const modalTemplate = this.modalsComponent[modal] as TemplateRef<any>;
     if (modalTemplate) {
