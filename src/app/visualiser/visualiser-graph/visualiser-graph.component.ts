@@ -109,7 +109,7 @@ export class VisualiserGraphComponent
         this.selectedLinkArray = dblClickLinkPayload;
 
         if (this.modalsComponent) {
-          this.modalsComponent.openModal(this.modalsComponent.viewLinkModal);
+          this.modalsComponent.openModal(this.modalsComponent.editLinkModal);
         } else {
           console.error('Modal component is not available.');
         }
@@ -160,10 +160,10 @@ export class VisualiserGraphComponent
 
     let contextMenu;
     let item;
-
+    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     if (this.selectedNodesArray?.length === 2) {
       contextMenu = this.contextMenu.createLinkContextMenu;
-      item = this.selectedNodesArray;
+      item = data;
     } else {
       const targetEl = event.target;
       const localName = targetEl.localName;
@@ -175,7 +175,7 @@ export class VisualiserGraphComponent
         contextMenu = this.contextMenu.viewNodeContextMenu;
         item = this.selectedNodeId;
       } else if (localName === 'textPath') {
-        contextMenu = this.contextMenu.viewLinkContextMenu;
+        contextMenu = this.contextMenu.editLinkContextMenu;
         item = this.selectedLinkArray;
       } else if (localName === 'svg') {
         contextMenu = this.contextMenu.findNodesContextMenu;

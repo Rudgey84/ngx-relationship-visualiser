@@ -11,11 +11,11 @@ export class ModalsComponent implements OnInit {
   @Input() selectedLinkArray: any[];
   @Input() selectedNodesArray: any[];
   @Output() closeModalEvent = new EventEmitter<string>();
-  @ViewChild('viewLinkModal') viewLinkModal: TemplateRef<any>;
   @Output() confirmSaveEvent = new EventEmitter<void>();
   @Output() createLinkEvent = new EventEmitter<any>();
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
+  @ViewChild('editLinkModal') editLinkModal: TemplateRef<any>;
   @ViewChild('confirmationModal') confirmationModal: TemplateRef<any>;
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };

@@ -9,12 +9,12 @@ export class ContextMenusComponent {
   @ViewChild('viewNodeContextMenu') viewNodeContextMenu: ContextMenuComponent;
   @ViewChild('findNodesContextMenu') findNodesContextMenu: ContextMenuComponent;
   @ViewChild('createLinkContextMenu') createLinkContextMenu: ContextMenuComponent;
-  @ViewChild('viewLinkContextMenu') viewLinkContextMenu: ContextMenuComponent;
+  @ViewChild('editLinkContextMenu') editLinkContextMenu: ContextMenuComponent;
 
   @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
   @Output() findNodesContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
-  @Output() viewLinkContextMenuEvent = new EventEmitter<any>();
+  @Output() editLinkContextMenuEvent = new EventEmitter<any>();
 
   viewNode() {
     this.viewNodeContextMenuEvent.emit(true);
@@ -28,7 +28,12 @@ export class ContextMenusComponent {
     this.createLinkContextMenuEvent.emit(true);
   }
 
-  viewLink() {
-    this.viewLinkContextMenuEvent.emit(true);
+  editLink() {
+    this.editLinkContextMenuEvent.emit(true);
+  }
+
+  public isMenuItemOutsideValue = (item: any): boolean => {
+    console.log(item)
+    return item
   }
 }
