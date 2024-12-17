@@ -216,6 +216,45 @@ export class VisualiserGraphComponent
     this.showConfirmationMessage();
   }
 
+  public onCreateLink(): void {
+    if (this.selectedNodesArray.length === 2) {
+      const sourceNode = this.selectedNodesArray[0];
+      const targetNode = this.selectedNodesArray[1];
+
+      const newLink = {
+        source: sourceNode.id,
+        target: targetNode.id,
+        label: [],
+        lineStyle: 'Confirmed',
+        sourceArrow: true,
+        targetArrow: true,
+        linkId: `${sourceNode.id}_${targetNode.id}`,
+        relationships: [
+          {
+            label: [],
+            lineStyle: 'Confirmed',
+            source: sourceNode.id,
+            sourceArrow: true,
+            target: targetNode.id,
+            targetArrow: true,
+            linkStrength: true,
+          },
+        ],
+      };
+
+      // Push the new link into the existing data
+      const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+      data.links.push(newLink);
+      localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+
+      this.data = data;
+
+      console.log('New link created', newLink);
+    } else {
+      console.error('Please select exactly two nodes to create a link.');
+    }
+  }
+
   // Filter out the properties we only need to send to the BE
   private filterProperties(data) {
     const { dataId, nodes } = data;

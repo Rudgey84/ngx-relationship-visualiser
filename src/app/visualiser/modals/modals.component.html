@@ -7,6 +7,9 @@
       </button>
     </div>
     <div class="modal-body">ID: {{ selectedNodeId }}</div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
+    </div>
   </ng-template>
   <!-- ./MODAL-->
   
@@ -20,6 +23,9 @@
     </div>
     <div class="modal-body">
       {{ selectedLinkArray[0].label }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
     </div>
   </ng-template>
   <!-- ./MODAL-->
@@ -38,6 +44,10 @@
           {{ label }}
         </div>
       </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="createLink()">Create Link</button>
     </div>
   </ng-template>
   <!-- ./MODAL-->
