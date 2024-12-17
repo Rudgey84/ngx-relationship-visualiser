@@ -11,8 +11,7 @@ export class AppComponent {
   public title = 'angular-visualiser';
   public mockedData: Data = MOCKEDDATA;
 
-  public saveGraphData(event) {
-    const { dataId, nodes } = event;
-    console.log(dataId, nodes);
+  public saveGraphData(data) {
+    console.log("saved Data", data);
   }
 }

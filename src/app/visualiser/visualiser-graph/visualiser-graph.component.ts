@@ -17,6 +17,7 @@ import { ContextMenusComponent } from '../context-menus/context-menus.component'
 import { Data } from '../../models/data.interface';
 import { NEWDATA } from '../../models/mocked-data';
 import { ModalsComponent } from '../modals/modals.component';
+declare var bootbox: any;
 
 @Component({
   selector: 'visualiser-graph',
@@ -205,8 +206,7 @@ export class VisualiserGraphComponent
       this.saveGraphData = saveGraphData;
     });
 
-    const nodePositions = this.filterProperties(this.saveGraphData);
-    this.saveGraphDataEvent.emit(nodePositions);
+    this.saveGraphDataEvent.emit(this.saveGraphData);
 
     this.disableButtons(true);
     localStorage.setItem(
@@ -242,28 +242,32 @@ export class VisualiserGraphComponent
         relationships,
       };
 
-      // Push the new link into the existing data
-      const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-      data.links.push(newLink);
-      localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+      bootbox.confirm({
+        message: "Creating a link will save this data, are you sure?",
+        buttons: {
+          confirm: {
+            label: 'Yes',
+            className: 'btn-success'
+          },
+          cancel: {
+            label: 'No',
+            className: 'btn-danger'
+          }
+        },
+        callback: (result) => {
+          if (result) {
+            const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+            data.links.push(newLink);
+            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
 
-      this.data = data;
-
-      console.log('New link created', newLink);
+            this.data = data;
+            this.saveGraphDataEvent.emit(data);
+          }
+        }
+      });
     } else {
       console.error('Please select exactly two nodes to create a link.');
     }
-  }
-
-  // Filter out the properties we only need to send to the BE
-  private filterProperties(data) {
-    const { dataId, nodes } = data;
-    const filteredNodes = nodes.map((node) => {
-      const { id, fx, fy } = node;
-      return { id, fx: Math.floor(fx), fy: Math.floor(fy) };
-    });
-
-    return { dataId, nodes: filteredNodes };
   }
 
   public resetGraph(): void {
