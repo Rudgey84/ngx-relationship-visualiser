@@ -107,7 +107,7 @@
   [selectedLinkArray]="selectedLinkArray"
   [selectedNodesArray]="selectedNodesArray"
   (confirmSaveEvent)="onConfirmSave()"
-  (createLinkEvent)="onCreateLink()">
+  (createLinkEvent)="onCreateLink($event)">
   </app-modals>
 
   <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>

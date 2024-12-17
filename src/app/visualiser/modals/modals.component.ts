@@ -12,7 +12,7 @@ export class ModalsComponent {
   @Output() closeModalEvent = new EventEmitter<string>();
   @ViewChild('viewLinkModal') viewLinkModal: TemplateRef<any>;
   @Output() confirmSaveEvent = new EventEmitter<void>();
-  @Output() createLinkEvent = new EventEmitter<void>();
+  @Output() createLinkEvent = new EventEmitter<any>();
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
   @ViewChild('confirmationModal') confirmationModal: TemplateRef<any>;
@@ -44,6 +44,13 @@ export class ModalsComponent {
 
   public createLink(): void {
     this.closeModal('modalRef');
-    this.createLinkEvent.emit();
+    const linkData = {
+      lineStyle: 'Confirmed',
+      sourceArrow: false,
+      targetArrow: true,
+      label: ['test', 'Another Test'],
+      linkStrength: false,
+    };
+    this.createLinkEvent.emit(linkData);
   }
 }

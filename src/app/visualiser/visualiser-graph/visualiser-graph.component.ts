@@ -216,30 +216,30 @@ export class VisualiserGraphComponent
     this.showConfirmationMessage();
   }
 
-  public onCreateLink(): void {
+  public onCreateLink(linkData): void {
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
       const targetNode = this.selectedNodesArray[1];
 
+      const relationships = linkData.label.map((label) => ({
+        label,
+        lineStyle: linkData.lineStyle,
+        source: sourceNode.id,
+        sourceArrow: linkData.sourceArrow,
+        target: targetNode.id,
+        targetArrow: linkData.targetArrow,
+        linkStrength: linkData.linkStrength,
+      }));
+
       const newLink = {
         source: sourceNode.id,
         target: targetNode.id,
-        label: [],
-        lineStyle: 'Confirmed',
-        sourceArrow: true,
-        targetArrow: true,
+        label: linkData.label,
+        lineStyle: linkData.lineStyle,
+        sourceArrow: linkData.sourceArrow,
+        targetArrow: linkData.targetArrow,
         linkId: `${sourceNode.id}_${targetNode.id}`,
-        relationships: [
-          {
-            label: [],
-            lineStyle: 'Confirmed',
-            source: sourceNode.id,
-            sourceArrow: true,
-            target: targetNode.id,
-            targetArrow: true,
-            linkStrength: true,
-          },
-        ],
+        relationships,
       };
 
       // Push the new link into the existing data
