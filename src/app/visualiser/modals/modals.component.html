@@ -34,7 +34,7 @@
   <ng-template #createLinkModal>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Create Link</h4>
-      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('createLinkModal')">
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
     </div>
@@ -72,7 +72,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="closeModal('createLinkModal')">Cancel</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
       <button type="button" class="btn btn-primary" (click)="createLink()">Create Link</button>
     </div>
   </ng-template>
