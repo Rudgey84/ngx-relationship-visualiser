@@ -66,7 +66,7 @@
         <div formArrayName="label">
           <div *ngFor="let label of labelArray.controls; let i = index" [formGroupName]="i" class="d-flex flex-column align-items-start">
             <div class="d-flex align-items-center w-100">
-              <input formControlName="label" class="form-control mb-2" placeholder="Label" [id]="'label-' + i">
+              <input formControlName="label" class="form-control" placeholder="Label" [id]="'label-' + i">
               <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
             </div>
             <div class="form-group form-check">
@@ -118,7 +118,7 @@
         <div formArrayName="label">
           <div *ngFor="let label of labelArray.controls; let i = index" [formGroupName]="i" class="d-flex flex-column align-items-start">
             <div class="d-flex align-items-center w-100">
-              <input formControlName="label" class="form-control mb-2" placeholder="Label" [id]="'label-' + i">
+              <input formControlName="label" class="form-control" placeholder="Label" [id]="'label-' + i">
               <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
             </div>
             <div class="form-group form-check">

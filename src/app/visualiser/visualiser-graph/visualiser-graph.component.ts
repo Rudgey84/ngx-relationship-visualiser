@@ -239,7 +239,7 @@ export class VisualiserGraphComponent
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
       const targetNode = this.selectedNodesArray[1];
-  
+      
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
       const relationships: Relationship[] = linkData.label.map((item) => ({
         label: item.label,
@@ -278,7 +278,12 @@ export class VisualiserGraphComponent
         callback: (result) => {
           if (result) {
             const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-            data.links.push(newLink);
+            const existingLinkIndex = data.links.findIndex(link => link.linkId === newLink.linkId);
+            if (existingLinkIndex !== -1) {
+              data.links[existingLinkIndex] = newLink;
+            } else {
+              data.links.push(newLink);
+            }
             localStorage.setItem(this.savedGraphData, JSON.stringify(data));
   
             this.data = data;

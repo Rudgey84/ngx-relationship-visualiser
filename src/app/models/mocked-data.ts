@@ -77,7 +77,7 @@ export const MOCKEDDATA: Data = {
       lineStyle: 'Unconfirmed',
       sourceArrow: false,
       targetArrow: true,
-      linkId: '123',
+      linkId: '123_456',
       relationships: [
         {
           label: 'Worked at IBM',
@@ -110,7 +110,7 @@ export const MOCKEDDATA: Data = {
       lineStyle: 'Confirmed',
       sourceArrow: true,
       targetArrow: true,
-      linkId: '456',
+      linkId: '456_789',
       relationships: [
         {
           label: 'Play in the same football team',
@@ -148,7 +148,7 @@ export const MOCKEDDATA: Data = {
       lineStyle: 'Unconfirmed',
       sourceArrow: true,
       targetArrow: true,
-      linkId: '789',
+      linkId: '789_123',
       relationships: [
         {
           label: 'Drink in the same pub',
@@ -177,7 +177,7 @@ export const MOCKEDDATA: Data = {
       lineStyle: 'Unconfirmed',
       sourceArrow: true,
       targetArrow: false,
-      linkId: '4',
+      linkId: '4_123',
       relationships: [
         {
           label: ['Same University'],
@@ -270,7 +270,7 @@ export const NEWDATA: Data = {
           lineStyle: 'Unconfirmed',
           sourceArrow: false,
           targetArrow: true,
-          linkId: '1',
+          linkId: '123_456',
           relationships: [
             {
               label: 'Worked at IBM',
@@ -303,7 +303,7 @@ export const NEWDATA: Data = {
           lineStyle: 'Confirmed',
           sourceArrow: true,
           targetArrow: true,
-          linkId: '2',
+          linkId: '456_789',
           relationships: [
             {
               label: 'Play in the same football team',
@@ -341,7 +341,7 @@ export const NEWDATA: Data = {
           lineStyle: 'Unconfirmed',
           sourceArrow: true,
           targetArrow: true,
-          linkId: '3',
+          linkId: '789_123',
           relationships: [
             {
               label: 'Drink in the same pub',
@@ -370,7 +370,7 @@ export const NEWDATA: Data = {
           lineStyle: 'Confirmed',
           sourceArrow: true,
           targetArrow: true,
-          linkId: '4',
+          linkId: '123_101112',
           relationships: [
             {
               label: 'Married',

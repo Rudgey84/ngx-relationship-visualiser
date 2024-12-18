@@ -124,12 +124,7 @@ export class ModalsComponent implements OnInit, OnChanges {
       this.createLinkEvent.emit(formData);
 
       // Reset form after submission
-      this.createLinkForm.reset({
-        lineStyle: 'Unconfirmed',
-        sourceArrow: false,
-        targetArrow: false,
-        label: [],
-      });
+      this.resetForm();
 
       // Close the modal after form submission
       this.closeModal('modalRef');
