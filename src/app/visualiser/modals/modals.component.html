@@ -44,10 +44,44 @@
     </button>
   </div>
   <div class="modal-body">
-    <pre>{{editLinksData | json }}</pre>
+    <form [formGroup]="createLinkForm">
+      <div class="form-group">
+        <label for="lineStyle">Line Style</label>
+        <select id="lineStyle" formControlName="lineStyle" class="form-control">
+          <option value="Confirmed">Confirmed</option>
+          <option value="Unconfirmed">Unconfirmed</option>
+        </select>
+      </div>
+      <div class="form-group form-check">
+        <input type="checkbox" id="sourceArrow" formControlName="sourceArrow" class="form-check-input">
+        <label for="sourceArrow">Source Arrow</label>
+      </div>
+      <div class="form-group form-check">
+        <input type="checkbox" id="targetArrow" formControlName="targetArrow" class="form-check-input">
+        <label for="targetArrow">Target Arrow</label>
+      </div>
+
+      <div class="form-group">
+        <label for="label">Labels</label>
+        <div formArrayName="label">
+          <div *ngFor="let label of labelArray.controls; let i = index" [formGroupName]="i" class="d-flex flex-column align-items-start">
+            <div class="d-flex align-items-center w-100">
+              <input formControlName="label" class="form-control mb-2" placeholder="Label" [id]="'label-' + i">
+              <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" formControlName="linkStrength" class="form-check-input" [id]="'linkStrength-' + i">
+              <label [for]="'linkStrength-' + i">Strong link?</label>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary mt-2" (click)="addLabel()">Add Label</button>
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="createLink()">Save Changes</button>
   </div>
 </ng-template>
 <!-- ./MODAL-->
@@ -82,16 +116,15 @@
       <div class="form-group">
         <label for="label">Labels</label>
         <div formArrayName="label">
-          <div *ngFor="let label of labelArray.controls; let i = index" [formGroupName]="i" class="d-flex align-items-center">
-            <input formControlName="label" class="form-control" placeholder="Label" [id]="'label-' + i">
-            <label [for]="'label-' + i" class="visually-hidden">Label</label>
-      
-            <div class="form-check">
-              <input type="checkbox" formControlName="linkStrength" class="form-check-input" [id]="'linkStrength-' + i">
-              <label [for]="'linkStrength-' + i">Link Strength</label>
+          <div *ngFor="let label of labelArray.controls; let i = index" [formGroupName]="i" class="d-flex flex-column align-items-start">
+            <div class="d-flex align-items-center w-100">
+              <input formControlName="label" class="form-control mb-2" placeholder="Label" [id]="'label-' + i">
+              <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
             </div>
-      
-            <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
+            <div class="form-group form-check">
+              <input type="checkbox" formControlName="linkStrength" class="form-check-input" [id]="'linkStrength-' + i">
+              <label [for]="'linkStrength-' + i">Strong Link?</label>
+            </div>
           </div>
         </div>
         <button type="button" class="btn btn-secondary mt-2" (click)="addLabel()">Add Label</button>

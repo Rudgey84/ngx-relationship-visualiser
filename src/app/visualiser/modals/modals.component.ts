@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
   selector: 'app-modals',
   templateUrl: './modals.component.html',
 })
-export class ModalsComponent implements OnInit {
+export class ModalsComponent implements OnInit, OnChanges {
   @Input() selectedNodeId: string;
   @Input() selectedLinkArray: any[];
   @Input() editLinksData: any;
@@ -31,6 +31,13 @@ export class ModalsComponent implements OnInit {
       targetArrow: [false],
       label: this.fb.array([]),
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.editLinksData && this.editLinksData) {
+      this.resetForm();
+      this.populateEditLinkForm(this.editLinksData);
+    }
   }
   
   get labelArray(): FormArray {
@@ -60,7 +67,45 @@ export class ModalsComponent implements OnInit {
       console.error('Template is required to open a modal.');
       return null;
     }
+
+    if (template === this.editLinksModal && this.editLinksData) {
+      this.resetForm();
+      this.populateEditLinkForm(this.editLinksData);
+    } else if (template === this.createLinkModal) {
+      this.resetForm();
+    }
+
     this.modalRef = this.modalService.show(template, this.defaultModalConfig);
+  }
+
+  // Reset the form before populating it with new data
+  private resetForm() {
+    this.createLinkForm.reset({
+      lineStyle: 'Unconfirmed',
+      sourceArrow: false,
+      targetArrow: false,
+      label: this.fb.array([]),
+    });
+    this.labelArray.clear();
+  }
+
+  // Populate the form with the data for editing links
+  private populateEditLinkForm(data: any) {
+    this.createLinkForm.patchValue({
+      lineStyle: data.lineStyle,
+      sourceArrow: data.sourceArrow,
+      targetArrow: data.targetArrow,
+    });
+
+    if (data.relationships) {
+      data.relationships.forEach((relationship) => {
+        const labelGroup = this.fb.group({
+          label: relationship.label,
+          linkStrength: relationship.linkStrength,
+        });
+        this.labelArray.push(labelGroup);
+      });
+    }
   }
 
   // Close the modal by hiding the modal reference
