@@ -15,7 +15,7 @@ export class ModalsComponent implements OnInit {
   @Output() createLinkEvent = new EventEmitter<any>();
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
-  @ViewChild('editLinkModal') editLinkModal: TemplateRef<any>;
+  @ViewChild('editLinkLabelModal') editLinkLabelModal: TemplateRef<any>;
   @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
   @ViewChild('confirmationModal') confirmationModal: TemplateRef<any>;
   public modalRef?: BsModalRef;

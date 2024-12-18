@@ -10,7 +10,7 @@
   </ng-template>
 </context-menu>
 
-<context-menu #createLinkContextMenu>
+<context-menu #createEditLinkContextMenu>
   <ng-template [visible]="!linksExist || linksDoNotExist" contextMenuItem let-item (execute)="createLink()">
     Create Link...
   </ng-template>
@@ -19,8 +19,8 @@
   </ng-template>
 </context-menu>
 
-<context-menu #editLinkContextMenu>
-  <ng-template contextMenuItem let-item (execute)="editLink()">
+<context-menu #editLinkLabelContextMenu>
+  <ng-template contextMenuItem let-item (execute)="editLinkLabel()">
     Edit Link label...
   </ng-template>
 </context-menu>

@@ -109,7 +109,7 @@ export class VisualiserGraphComponent
         this.selectedLinkArray = dblClickLinkPayload;
 
         if (this.modalsComponent) {
-          this.modalsComponent.openModal(this.modalsComponent.editLinkModal);
+          this.modalsComponent.openModal(this.modalsComponent.editLinkLabelModal);
         } else {
           console.error('Modal component is not available.');
         }
@@ -162,7 +162,7 @@ export class VisualiserGraphComponent
     let item;
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     if (this.selectedNodesArray?.length === 2) {
-      contextMenu = this.contextMenu.createLinkContextMenu;
+      contextMenu = this.contextMenu.createEditLinkContextMenu;
       item = {
         graphData: data,
         selectedNodes: this.selectedNodesArray
@@ -178,7 +178,7 @@ export class VisualiserGraphComponent
         contextMenu = this.contextMenu.viewNodeContextMenu;
         item = this.selectedNodeId;
       } else if (localName === 'textPath') {
-        contextMenu = this.contextMenu.editLinkContextMenu;
+        contextMenu = this.contextMenu.editLinkLabelContextMenu;
         item = this.selectedLinkArray;
       } else if (localName === 'svg') {
         contextMenu = this.contextMenu.findNodesContextMenu;
