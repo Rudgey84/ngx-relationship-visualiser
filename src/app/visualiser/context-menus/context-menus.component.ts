@@ -17,6 +17,8 @@ export class ContextMenusComponent {
   @Output() editLinkLabelContextMenuEvent = new EventEmitter<any>();
   @Output() editLinksContextMenuEvent = new EventEmitter<any>();
 
+  public currentMatchingLink: any = null;
+
   viewNode() {
     this.viewNodeContextMenuEvent.emit(true);
   }
@@ -34,7 +36,11 @@ export class ContextMenusComponent {
   }
 
   editLinks() {
-    this.editLinksContextMenuEvent.emit(true);
+    if (this.currentMatchingLink) {
+      this.editLinksContextMenuEvent.emit(this.currentMatchingLink);
+    } else {
+      console.warn("No matching link to edit.");
+    }
   }
 
   public linksExist = (item: any): boolean => {
@@ -42,8 +48,10 @@ export class ContextMenusComponent {
   
     if (matchingLink) {
       console.log("Link details:", matchingLink);
+      this.currentMatchingLink = matchingLink;
       return true;
     } else {
+      this.currentMatchingLink = null;
       return false;
     }
   };

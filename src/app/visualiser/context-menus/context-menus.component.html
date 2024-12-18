@@ -11,7 +11,7 @@
 </context-menu>
 
 <context-menu #createEditLinkContextMenu>
-  <ng-template [visible]="!linksExist || linksDoNotExist" contextMenuItem let-item (execute)="createLink()">
+  <ng-template [visible]="linksDoNotExist" contextMenuItem let-item (execute)="createLink()">
     Create Link...
   </ng-template>
   <ng-template [visible]="linksExist" (execute)="editLinks()" contextMenuItem let-item>
