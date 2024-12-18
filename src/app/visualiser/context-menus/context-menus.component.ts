@@ -51,7 +51,6 @@ export class ContextMenusComponent {
     const matchingLink = this.checkLinkBetweenSelectedNodes(item);
   
     if (matchingLink) {
-      console.log("Link details:", matchingLink);
       this.currentMatchingLink = matchingLink;
       return true;
     } else {

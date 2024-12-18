@@ -76,7 +76,6 @@ export class ModalsComponent implements OnInit {
     // Check if the form is valid before emitting the data
     if (this.createLinkForm.valid) {
       const formData = this.createLinkForm.value;
-      console.log(formData);
       this.createLinkEvent.emit(formData);
 
       // Reset form after submission

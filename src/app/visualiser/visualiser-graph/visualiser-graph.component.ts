@@ -14,7 +14,7 @@ import { VisualiserGraphService } from '../services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from '../services/dagre-layout.service';
 import { ContextMenuService } from '@kreash/ngx-contextmenu';
 import { ContextMenusComponent } from '../context-menus/context-menus.component';
-import { Data } from '../../models/data.interface';
+import { Data, Link, Relationship } from '../../models/data.interface';
 import { NEWDATA } from '../../models/mocked-data';
 import { ModalsComponent } from '../modals/modals.component';
 declare var bootbox: any;
@@ -235,25 +235,23 @@ export class VisualiserGraphComponent
   }
 
   public onCreateLink(linkData): void {
-    console.log(linkData);
-  
     // Ensure that exactly two nodes are selected
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
       const targetNode = this.selectedNodesArray[1];
   
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
-      const relationships = linkData.label.map((label, index) => ({
-        label:linkData.label[index].label,
+      const relationships: Relationship[] = linkData.label.map((item) => ({
+        label: item.label,
         lineStyle: linkData.lineStyle,
         source: sourceNode.id,
         sourceArrow: linkData.sourceArrow,
         target: targetNode.id,
         targetArrow: linkData.targetArrow,
-        linkStrength: linkData.label[index].linkStrength
+        linkStrength: item.linkStrength
       }));
   
-      const newLink = {
+      const newLink: Link = {
         source: sourceNode.id,
         target: targetNode.id,
         label: linkData.label.map(item => item.label),
