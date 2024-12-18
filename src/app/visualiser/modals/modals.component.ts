@@ -19,25 +19,22 @@ export class ModalsComponent implements OnInit {
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };
 
-  linkForm: FormGroup;
+  createLinkForm: FormGroup;
 
   constructor(private modalService: BsModalService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.linkForm = this.fb.group({
-      lineStyle: ['Confirmed', Validators.required],
+    this.createLinkForm = this.fb.group({
+      lineStyle: ['Unconfirmed', Validators.required],
       sourceArrow: [false],
-      targetArrow: [true],
-      label: this.fb.array([
-        this.fb.control('test', Validators.required),
-        this.fb.control('Another Test', Validators.required)
-      ]),
+      targetArrow: [false],
+      label: this.fb.array([]),
       linkStrength: [false]
     });
   }
 
   get labelArray(): FormArray {
-    return this.linkForm.get('label') as FormArray;
+    return this.createLinkForm.get('label') as FormArray;
   }
 
   public addLabel() {
@@ -65,8 +62,17 @@ export class ModalsComponent implements OnInit {
   }
 
   public createLink(): void {
-    if (this.linkForm.valid) {
-      this.createLinkEvent.emit(this.linkForm.value);
+    if (this.createLinkForm.valid) {
+      this.createLinkEvent.emit(this.createLinkForm.value);
+
+      this.createLinkForm.reset({
+        lineStyle: 'Unconfirmed',
+        sourceArrow: false,
+        targetArrow: false,
+        label: [],
+        linkStrength: false
+      });
+
       this.closeModal('modalRef');
     }
   }
