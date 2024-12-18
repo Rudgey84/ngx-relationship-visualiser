@@ -44,7 +44,6 @@ export class ContextMenusComponent {
       console.log("Link details:", matchingLink);
       return true;
     } else {
-      console.log("No link exists between the selected nodes.");
       return false;
     }
   };
