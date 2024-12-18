@@ -36,8 +36,12 @@ export class ContextMenusComponent {
   }
 
   editLinks() {
+    const payload = {
+      open: true,
+      data: this.currentMatchingLink
+    };
     if (this.currentMatchingLink) {
-      this.editLinksContextMenuEvent.emit(this.currentMatchingLink);
+      this.editLinksContextMenuEvent.emit(payload);
     } else {
       console.warn("No matching link to edit.");
     }

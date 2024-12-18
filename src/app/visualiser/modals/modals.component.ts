@@ -10,6 +10,7 @@ export class ModalsComponent implements OnInit {
   @Input() selectedNodeId: string;
   @Input() selectedLinkArray: any[];
   @Input() selectedNodesArray: any[];
+  @Input() editLinksData: any;
   @Output() closeModalEvent = new EventEmitter<string>();
   @Output() confirmSaveEvent = new EventEmitter<void>();
   @Output() createLinkEvent = new EventEmitter<any>();

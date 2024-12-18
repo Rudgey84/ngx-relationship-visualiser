@@ -13,7 +13,7 @@
   </ng-template>
   <!-- ./MODAL-->
   
-  <!--EDIT LINK MODAL-->
+  <!--EDIT LINK LABEL MODAL-->
   <ng-template #editLinkLabelModal>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Edit Link Label</h4>
@@ -44,7 +44,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <pre>{{ selectedLinkArray | json }}</pre>
+    <pre>{{editLinksData | json }}</pre>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>

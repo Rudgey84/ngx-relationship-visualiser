@@ -100,11 +100,12 @@
   (findNodesContextMenuEvent)="findNodesEvent()"
   (createLinkContextMenuEvent)="openModal('createLinkModal')"
   (editLinkLabelContextMenuEvent)="openModal('editLinkLabelModal')"
-  (editLinksContextMenuEvent)="openModal('editLinksModal')">
+  (editLinksContextMenuEvent)="handleEditLinksEvent($event)">
   </app-context-menus>
 
   <app-modals
   [selectedNodeId]="selectedNodeId"
+  [editLinksData]="editLinksData"
   [selectedLinkArray]="selectedLinkArray"
   [selectedNodesArray]="selectedNodesArray"
   (confirmSaveEvent)="onConfirmSave()"

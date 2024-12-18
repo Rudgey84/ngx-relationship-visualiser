@@ -38,6 +38,7 @@ export class VisualiserGraphComponent
   public savedGraphData: string;
   public showConfirmation: boolean = false;
   public buttonBarRightPosition: string;
+  public editLinksData: any = null; 
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -270,6 +271,13 @@ export class VisualiserGraphComponent
       });
     } else {
       console.error('Please select exactly two nodes to create a link.');
+    }
+  }
+
+  public handleEditLinksEvent(event: { open: boolean; data: any }) {
+    if (event.open) {
+      this.openModal('editLinksModal');
+      this.editLinksData = event.data;
     }
   }
 
