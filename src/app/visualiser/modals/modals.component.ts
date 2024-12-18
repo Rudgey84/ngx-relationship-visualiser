@@ -12,16 +12,17 @@ export class ModalsComponent implements OnInit, OnChanges {
   @Input() editLinksData: any;
   @Output() closeModalEvent = new EventEmitter<string>();
   @Output() createLinkEvent = new EventEmitter<any>();
+  @Output() deleteLinkEvent = new EventEmitter<any>();
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
   @ViewChild('editLinkLabelModal') editLinkLabelModal: TemplateRef<any>;
   @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
-  
+
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };
   createLinkForm: FormGroup;
 
-  constructor(private modalService: BsModalService, private fb: FormBuilder) {}
+  constructor(private modalService: BsModalService, private fb: FormBuilder) { }
 
   ngOnInit() {
     // Initialize form with an empty label array and other fields
@@ -39,11 +40,11 @@ export class ModalsComponent implements OnInit, OnChanges {
       this.populateEditLinkForm(this.editLinksData);
     }
   }
-  
+
   get labelArray(): FormArray {
     return this.createLinkForm.get('label') as FormArray;
   }
-  
+
   // Adds a new label group to the form array
   public addLabel() {
     const labelGroup = this.fb.group({
@@ -117,7 +118,7 @@ export class ModalsComponent implements OnInit, OnChanges {
 
   // Handles link creation and emits the data
   public createLink(): void {
-    
+
     // Check if the form is valid before emitting the data
     if (this.createLinkForm.valid) {
       const formData = this.createLinkForm.value;
@@ -126,8 +127,21 @@ export class ModalsComponent implements OnInit, OnChanges {
       // Reset form after submission
       this.resetForm();
 
-      // Close the modal after form submission
+      // Close the modal after link form submission
       this.closeModal('modalRef');
     }
+  }
+
+  // Handles link deletion and emits the linkId
+  public deleteLink(): void {
+    const linkId = this.editLinksData.linkId;
+    this.deleteLinkEvent.emit(linkId);
+
+    // Reset form after deletion
+    this.resetForm();
+
+    // Close the modal after link deletion
+    this.closeModal('modalRef');
+
   }
 }

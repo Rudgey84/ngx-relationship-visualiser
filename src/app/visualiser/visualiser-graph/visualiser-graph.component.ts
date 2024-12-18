@@ -38,7 +38,7 @@ export class VisualiserGraphComponent
   public savedGraphData: string;
   public showConfirmation: boolean = false;
   public buttonBarRightPosition: string;
-  public editLinksData: any = null; 
+  public editLinksData: any = null;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -167,7 +167,7 @@ export class VisualiserGraphComponent
       item = {
         graphData: data,
         selectedNodes: this.selectedNodesArray
-    };
+      };
     } else {
       const targetEl = event.target;
       const localName = targetEl.localName;
@@ -220,9 +220,9 @@ export class VisualiserGraphComponent
           this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
             this.saveGraphData = saveGraphData;
           });
-      
+
           this.saveGraphDataEvent.emit(this.saveGraphData);
-      
+
           this.disableButtons(true);
           localStorage.setItem(
             this.savedGraphData,
@@ -239,7 +239,7 @@ export class VisualiserGraphComponent
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
       const targetNode = this.selectedNodesArray[1];
-      
+
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
       const relationships: Relationship[] = linkData.label.map((item) => ({
         label: item.label,
@@ -250,7 +250,7 @@ export class VisualiserGraphComponent
         targetArrow: linkData.targetArrow,
         linkStrength: item.linkStrength
       }));
-  
+
       const newLink: Link = {
         source: sourceNode.id,
         target: targetNode.id,
@@ -261,7 +261,7 @@ export class VisualiserGraphComponent
         linkId: `${sourceNode.id}_${targetNode.id}`,
         relationships,
       };
-  
+
       bootbox.confirm({
         title: "Creating link",
         message: "Creating a link will save graph data, are you sure?",
@@ -285,7 +285,7 @@ export class VisualiserGraphComponent
               data.links.push(newLink);
             }
             localStorage.setItem(this.savedGraphData, JSON.stringify(data));
-  
+
             this.data = data;
             this.saveGraphDataEvent.emit(data);
           }
@@ -294,6 +294,36 @@ export class VisualiserGraphComponent
     } else {
       console.error('Please select exactly two nodes to create a link.');
     }
+  }
+
+  public onDeleteLink(linkId): void {
+    bootbox.confirm({
+      title: "Deleting link",
+      message: "Are you sure you want to delete this link?",
+      buttons: {
+        confirm: {
+          label: 'Yes',
+          className: 'btn-success'
+        },
+        cancel: {
+          label: 'No',
+          className: 'btn-danger'
+        }
+      },
+      callback: (result) => {
+        if (result) {
+          const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+          const existingLinkIndex = data.links.findIndex(link => link.linkId === linkId);
+          if (existingLinkIndex !== -1) {
+            data.links.splice(existingLinkIndex, 1);
+            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+
+            this.data = data;
+            this.saveGraphDataEvent.emit(data);
+          }
+        }
+      }
+    });
   }
 
   public handleEditLinksEvent(event: { open: boolean; data: any }) {

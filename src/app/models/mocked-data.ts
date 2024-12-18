@@ -59,7 +59,7 @@ export const MOCKEDDATA: Data = {
       id: '423',
       version: 0,
       label: ['Linda Jones', 'Pilot'],
-      icon: 'https://randomuser.me/api/portraits/thumb/women/9.jpg',
+      icon: 'https://randomuser.me/api/portraits/thumb/women/10.jpg',
       xpos: 0,
       ypos: 0,
       x: 0,
