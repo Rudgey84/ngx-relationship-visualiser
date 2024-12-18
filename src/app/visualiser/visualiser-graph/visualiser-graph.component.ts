@@ -244,19 +244,19 @@ export class VisualiserGraphComponent
   
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
       const relationships = linkData.label.map((label, index) => ({
-        label:label[index],
+        label:linkData.label[index].label,
         lineStyle: linkData.lineStyle,
         source: sourceNode.id,
         sourceArrow: linkData.sourceArrow,
         target: targetNode.id,
         targetArrow: linkData.targetArrow,
-        linkStrength: linkData.label[index].linkStrength // Use the linkStrength specific to this label
+        linkStrength: linkData.label[index].linkStrength
       }));
   
       const newLink = {
         source: sourceNode.id,
         target: targetNode.id,
-        label: linkData.label.map(item => item.label), // Assuming linkData.label is now an array of label objects
+        label: linkData.label.map(item => item.label),
         lineStyle: linkData.lineStyle,
         sourceArrow: linkData.sourceArrow,
         targetArrow: linkData.targetArrow,

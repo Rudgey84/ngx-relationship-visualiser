@@ -82,12 +82,12 @@
       <div class="form-group">
         <label for="label">Labels</label>
         <div formArrayName="label">
-          <div *ngFor="let label of labelArray.controls; let i = index" class="d-flex align-items-center">
-            <input [formControlName]="i + '.label'" class="form-control" placeholder="Label" [id]="'label-' + i">
+          <div *ngFor="let label of labelArray.controls; let i = index" [formGroupName]="i" class="d-flex align-items-center">
+            <input formControlName="label" class="form-control" placeholder="Label" [id]="'label-' + i">
             <label [for]="'label-' + i" class="visually-hidden">Label</label>
       
             <div class="form-check">
-              <input type="checkbox" [formControlName]="i + '.linkStrength'" class="form-check-input" [id]="'linkStrength-' + i">
+              <input type="checkbox" formControlName="linkStrength" class="form-check-input" [id]="'linkStrength-' + i">
               <label [for]="'linkStrength-' + i">Link Strength</label>
             </div>
       
