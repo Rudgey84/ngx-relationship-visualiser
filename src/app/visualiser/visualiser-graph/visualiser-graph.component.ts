@@ -235,32 +235,35 @@ export class VisualiserGraphComponent
   }
 
   public onCreateLink(linkData): void {
-    console.log(linkData)
+    console.log(linkData);
+  
+    // Ensure that exactly two nodes are selected
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
       const targetNode = this.selectedNodesArray[1];
-
-      const relationships = linkData.label.map((label) => ({
-        label,
+  
+      // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
+      const relationships = linkData.label.map((label, index) => ({
+        label:label[index],
         lineStyle: linkData.lineStyle,
         source: sourceNode.id,
         sourceArrow: linkData.sourceArrow,
         target: targetNode.id,
         targetArrow: linkData.targetArrow,
-        linkStrength: linkData.linkStrength,
+        linkStrength: linkData.label[index].linkStrength // Use the linkStrength specific to this label
       }));
-
+  
       const newLink = {
         source: sourceNode.id,
         target: targetNode.id,
-        label: linkData.label,
+        label: linkData.label.map(item => item.label), // Assuming linkData.label is now an array of label objects
         lineStyle: linkData.lineStyle,
         sourceArrow: linkData.sourceArrow,
         targetArrow: linkData.targetArrow,
         linkId: `${sourceNode.id}_${targetNode.id}`,
         relationships,
       };
-
+  
       bootbox.confirm({
         title: "Creating link",
         message: "Creating a link will save graph data, are you sure?",
@@ -279,7 +282,7 @@ export class VisualiserGraphComponent
             const data = JSON.parse(localStorage.getItem(this.savedGraphData));
             data.links.push(newLink);
             localStorage.setItem(this.savedGraphData, JSON.stringify(data));
-
+  
             this.data = data;
             this.saveGraphDataEvent.emit(data);
           }

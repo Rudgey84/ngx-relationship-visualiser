@@ -16,38 +16,46 @@ export class ModalsComponent implements OnInit {
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
   @ViewChild('editLinkLabelModal') editLinkLabelModal: TemplateRef<any>;
   @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
+  
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };
-
   createLinkForm: FormGroup;
 
   constructor(private modalService: BsModalService, private fb: FormBuilder) {}
 
   ngOnInit() {
+    // Initialize form with an empty label array and other fields
     this.createLinkForm = this.fb.group({
       lineStyle: ['Unconfirmed', Validators.required],
       sourceArrow: [false],
       targetArrow: [false],
       label: this.fb.array([]),
-      linkStrength: [false]
     });
   }
-
+  
   get labelArray(): FormArray {
     return this.createLinkForm.get('label') as FormArray;
   }
-
+  
+  // Adds a new label group to the form array
   public addLabel() {
-    this.labelArray.push(this.fb.control('', Validators.required));
+    const labelGroup = this.fb.group({
+      label: '',
+      linkStrength: [false],
+    });
+    this.labelArray.push(labelGroup);
   }
 
+  // Removes a label group at a specific index from the form array
   public removeLabel(index: number) {
-    this.labelArray.removeAt(index);
+    // Removing the label group from the form array by index
+    if (this.labelArray.length > 0) {
+      this.labelArray.removeAt(index);
+    }
   }
 
-  public openModal(
-    template: TemplateRef<any>
-  ) {
+  // Opens a modal based on the provided template reference
+  public openModal(template: TemplateRef<any>) {
     if (!template) {
       console.error('Template is required to open a modal.');
       return null;
@@ -55,24 +63,31 @@ export class ModalsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, this.defaultModalConfig);
   }
 
+  // Close the modal by hiding the modal reference
   public closeModal(modalRef: string): void {
     if (this[modalRef]) {
       this[modalRef].hide();
     }
   }
 
+  // Handles link creation and emits the data
   public createLink(): void {
+    
+    // Check if the form is valid before emitting the data
     if (this.createLinkForm.valid) {
-      this.createLinkEvent.emit(this.createLinkForm.value);
+      const formData = this.createLinkForm.value;
+      console.log(formData);
+      this.createLinkEvent.emit(formData);
 
+      // Reset form after submission
       this.createLinkForm.reset({
         lineStyle: 'Unconfirmed',
         sourceArrow: false,
         targetArrow: false,
         label: [],
-        linkStrength: false
       });
 
+      // Close the modal after form submission
       this.closeModal('modalRef');
     }
   }

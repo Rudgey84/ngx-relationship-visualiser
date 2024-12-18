@@ -53,51 +53,54 @@
 <!-- ./MODAL-->
 
   
-  <!--CREATE LINK MODAL-->
-  <ng-template #createLinkModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Create Link</h4>
-      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
-        <span aria-hidden="true" class="visually-hidden">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form [formGroup]="createLinkForm">
-        <div class="form-group">
-          <label for="lineStyle">Line Style</label>
-          <select id="lineStyle" formControlName="lineStyle" class="form-control">
-            <option value="Confirmed">Confirmed</option>
-            <option value="Unconfirmed">Unconfirmed</option>
-          </select>
-        </div>
-        <div class="form-group form-check">
-          <input type="checkbox" id="sourceArrow" formControlName="sourceArrow" class="form-check-input">
-          <label for="sourceArrow">Source Arrow</label>
-        </div>
-        <div class="form-group form-check">
-          <input type="checkbox" id="targetArrow" formControlName="targetArrow" class="form-check-input">
-          <label for="targetArrow">Target Arrow</label>
-        </div>
+<!--CREATE LINK MODAL-->
+<ng-template #createLinkModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Create Link</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="createLinkForm">
+      <div class="form-group">
+        <label for="lineStyle">Line Style</label>
+        <select id="lineStyle" formControlName="lineStyle" class="form-control">
+          <option value="Confirmed">Confirmed</option>
+          <option value="Unconfirmed">Unconfirmed</option>
+        </select>
+      </div>
+      <div class="form-group form-check">
+        <input type="checkbox" id="sourceArrow" formControlName="sourceArrow" class="form-check-input">
+        <label for="sourceArrow">Source Arrow</label>
+      </div>
+      <div class="form-group form-check">
+        <input type="checkbox" id="targetArrow" formControlName="targetArrow" class="form-check-input">
+        <label for="targetArrow">Target Arrow</label>
+      </div>
 
-        <div class="form-group">
-          <label for="label">Labels</label>
-          <div formArrayName="label">
-            <div *ngFor="let label of labelArray.controls; let i = index" class="d-flex align-items-center">
-              <input [formControlName]="i" class="form-control">
-              <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
+      <div class="form-group">
+        <label for="label">Labels</label>
+        <div formArrayName="label">
+          <div *ngFor="let label of labelArray.controls; let i = index" class="d-flex align-items-center">
+            <input [formControlName]="i + '.label'" class="form-control" placeholder="Label" [id]="'label-' + i">
+            <label [for]="'label-' + i" class="visually-hidden">Label</label>
+      
+            <div class="form-check">
+              <input type="checkbox" [formControlName]="i + '.linkStrength'" class="form-check-input" [id]="'linkStrength-' + i">
+              <label [for]="'linkStrength-' + i">Link Strength</label>
             </div>
+      
+            <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
           </div>
-          <button type="button" class="btn btn-secondary mt-2" (click)="addLabel()">Add Label</button>
         </div>
-        <div class="form-group form-check">
-          <input type="checkbox" id="linkStrength" formControlName="linkStrength" class="form-check-input">
-          <label for="linkStrength">Link Strength</label>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
-      <button type="button" class="btn btn-primary" (click)="createLink()">Create Link</button>
-    </div>
-  </ng-template>
-  <!-- ./MODAL-->
+        <button type="button" class="btn btn-secondary mt-2" (click)="addLabel()">Add Label</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="createLink()">Create Link</button>
+  </div>
+</ng-template>
+<!-- ./MODAL-->
