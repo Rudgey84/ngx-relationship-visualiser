@@ -16,7 +16,7 @@
             <i class="bi bi-diagram-3"></i>
           </button>
           <button type="button" id="save_graph" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"
-            title="Save data" (click)="saveGraph()">
+            title="Save data" (click)="onConfirmSave()">
             <i class="bi bi-save"></i>
           </button>
           <button type="button" id="reset_graph" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"
@@ -107,8 +107,6 @@
   [selectedNodeId]="selectedNodeId"
   [editLinksData]="editLinksData"
   [selectedLinkArray]="selectedLinkArray"
-  [selectedNodesArray]="selectedNodesArray"
-  (confirmSaveEvent)="onConfirmSave()"
   (createLinkEvent)="onCreateLink($event)">
   </app-modals>
 

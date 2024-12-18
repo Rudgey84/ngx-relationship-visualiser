@@ -9,16 +9,13 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 export class ModalsComponent implements OnInit {
   @Input() selectedNodeId: string;
   @Input() selectedLinkArray: any[];
-  @Input() selectedNodesArray: any[];
   @Input() editLinksData: any;
   @Output() closeModalEvent = new EventEmitter<string>();
-  @Output() confirmSaveEvent = new EventEmitter<void>();
   @Output() createLinkEvent = new EventEmitter<any>();
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
   @ViewChild('editLinkLabelModal') editLinkLabelModal: TemplateRef<any>;
   @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
-  @ViewChild('confirmationModal') confirmationModal: TemplateRef<any>;
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };
 
@@ -65,11 +62,6 @@ export class ModalsComponent implements OnInit {
     if (this[modalRef]) {
       this[modalRef].hide();
     }
-  }
-
-  public confirmSave(): void {
-    this.closeModal('modalRef');
-    this.confirmSaveEvent.emit();
   }
 
   public createLink(): void {

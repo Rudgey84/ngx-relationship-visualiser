@@ -201,23 +201,37 @@ export class VisualiserGraphComponent
     this.toggleSearch();
   }
 
-  public saveGraph(): void {
-    this.modalsComponent.openModal(this.modalsComponent.confirmationModal);
-  }
-
   public onConfirmSave(): void {
-    this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
-      this.saveGraphData = saveGraphData;
+    bootbox.confirm({
+      title: "Save Graph",
+      message: "Are you sure you want to save the graph?",
+      buttons: {
+        confirm: {
+          label: 'Yes',
+          className: 'btn-success'
+        },
+        cancel: {
+          label: 'No',
+          className: 'btn-danger'
+        }
+      },
+      callback: (result) => {
+        if (result) {
+          this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
+            this.saveGraphData = saveGraphData;
+          });
+      
+          this.saveGraphDataEvent.emit(this.saveGraphData);
+      
+          this.disableButtons(true);
+          localStorage.setItem(
+            this.savedGraphData,
+            JSON.stringify(this.saveGraphData)
+          );
+          this.showConfirmationMessage();
+        }
+      }
     });
-
-    this.saveGraphDataEvent.emit(this.saveGraphData);
-
-    this.disableButtons(true);
-    localStorage.setItem(
-      this.savedGraphData,
-      JSON.stringify(this.saveGraphData)
-    );
-    this.showConfirmationMessage();
   }
 
   public onCreateLink(linkData): void {
@@ -247,7 +261,8 @@ export class VisualiserGraphComponent
       };
 
       bootbox.confirm({
-        message: "Creating a link will save this data, are you sure?",
+        title: "Creating link",
+        message: "Creating a link will save graph data, are you sure?",
         buttons: {
           confirm: {
             label: 'Yes',
