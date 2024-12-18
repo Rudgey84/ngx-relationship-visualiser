@@ -11,10 +11,10 @@
 </context-menu>
 
 <context-menu #createLinkContextMenu>
-  <ng-template contextMenuItem let-item (execute)="createLink()">
+  <ng-template [visible]="!linksExist || linksDoNotExist" contextMenuItem let-item (execute)="createLink()">
     Create Link...
   </ng-template>
-  <ng-template [visible]="isMenuItemOutsideValue" (execute)="editLinks()" contextMenuItem let-item>
+  <ng-template [visible]="linksExist" (execute)="editLinks()" contextMenuItem let-item>
     Edit Links...
   </ng-template>
 </context-menu>
