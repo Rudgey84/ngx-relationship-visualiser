@@ -16,6 +16,7 @@ export class ModalsComponent implements OnInit {
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
   @ViewChild('editLinkModal') editLinkModal: TemplateRef<any>;
+  @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
   @ViewChild('confirmationModal') confirmationModal: TemplateRef<any>;
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };

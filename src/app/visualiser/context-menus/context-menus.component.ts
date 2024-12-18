@@ -15,6 +15,7 @@ export class ContextMenusComponent {
   @Output() findNodesContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
   @Output() editLinkContextMenuEvent = new EventEmitter<any>();
+  @Output() editLinksContextMenuEvent = new EventEmitter<any>();
 
   viewNode() {
     this.viewNodeContextMenuEvent.emit(true);
@@ -30,6 +31,10 @@ export class ContextMenusComponent {
 
   editLink() {
     this.editLinkContextMenuEvent.emit(true);
+  }
+
+  editLinks() {
+    this.editLinksContextMenuEvent.emit(true);
   }
 
   public isMenuItemOutsideValue = (item: any): boolean => {

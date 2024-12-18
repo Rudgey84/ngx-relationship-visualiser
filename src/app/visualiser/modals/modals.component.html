@@ -29,6 +29,23 @@
     </div>
   </ng-template>
   <!-- ./MODAL-->
+
+    <!--EDIT LINKS MODAL-->
+    <ng-template #editLinksModal>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Links</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal('modalRef')">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ selectedLinkArray[0].label }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
+      </div>
+    </ng-template>
+    <!-- ./MODAL-->
   
   <!--CREATE LINK MODAL-->
   <ng-template #createLinkModal>

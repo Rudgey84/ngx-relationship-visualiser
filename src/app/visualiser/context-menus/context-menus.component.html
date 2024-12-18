@@ -14,7 +14,7 @@
   <ng-template contextMenuItem let-item (execute)="createLink()">
     Create Link...
   </ng-template>
-  <ng-template [visible]="isMenuItemOutsideValue" contextMenuItem let-item>
+  <ng-template [visible]="isMenuItemOutsideValue" (execute)="editLinks()" contextMenuItem let-item>
     Edit Links...
   </ng-template>
 </context-menu>
