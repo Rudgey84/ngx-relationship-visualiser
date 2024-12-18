@@ -163,7 +163,10 @@ export class VisualiserGraphComponent
     const data = JSON.parse(localStorage.getItem(this.savedGraphData));
     if (this.selectedNodesArray?.length === 2) {
       contextMenu = this.contextMenu.createLinkContextMenu;
-      item = this.selectedLinkArray;
+      item = {
+        graphData: data,
+        selectedNodes: this.selectedNodesArray
+    };
     } else {
       const targetEl = event.target;
       const localName = targetEl.localName;
@@ -378,7 +381,6 @@ export class VisualiserGraphComponent
   }
 
   openModal(modal: string) {
-    console.log(modal)
     const modalTemplate = this.modalsComponent[modal] as TemplateRef<any>;
     if (modalTemplate) {
       this.modalsComponent.openModal(modalTemplate);
