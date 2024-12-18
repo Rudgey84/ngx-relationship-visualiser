@@ -70,31 +70,28 @@
             <option value="Unconfirmed">Unconfirmed</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="sourceArrow">Source Arrow</label>
-          <input type="checkbox" id="sourceArrow" formControlName="sourceArrow" class="form-check-input">
-        </div>
         <div class="form-group form-check">
           <input type="checkbox" id="sourceArrow" formControlName="sourceArrow" class="form-check-input">
           <label for="sourceArrow">Source Arrow</label>
         </div>
-        <div class="form-group">
-          <label for="targetArrow">Target Arrow</label>
+        <div class="form-group form-check">
           <input type="checkbox" id="targetArrow" formControlName="targetArrow" class="form-check-input">
+          <label for="targetArrow">Target Arrow</label>
         </div>
+
         <div class="form-group">
           <label for="label">Labels</label>
           <div formArrayName="label">
             <div *ngFor="let label of labelArray.controls; let i = index" class="d-flex align-items-center">
-              <input [formControlName]="i" class="form-control mb-2">
+              <input [formControlName]="i" class="form-control">
               <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
             </div>
           </div>
           <button type="button" class="btn btn-secondary mt-2" (click)="addLabel()">Add Label</button>
         </div>
-        <div class="form-group">
-          <label for="linkStrength">Link Strength</label>
+        <div class="form-group form-check">
           <input type="checkbox" id="linkStrength" formControlName="linkStrength" class="form-check-input">
+          <label for="linkStrength">Link Strength</label>
         </div>
       </form>
     </div>

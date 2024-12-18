@@ -235,6 +235,7 @@ export class VisualiserGraphComponent
   }
 
   public onCreateLink(linkData): void {
+    console.log(linkData)
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
       const targetNode = this.selectedNodesArray[1];
