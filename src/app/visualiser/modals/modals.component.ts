@@ -12,7 +12,7 @@ export class ModalsComponent implements OnInit, OnChanges {
   @Output() closeModalEvent = new EventEmitter<string>();
   @Output() createLinkEvent = new EventEmitter<any>();
   @Output() deleteLinkEvent = new EventEmitter<any>();
-  @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
+  @ViewChild('editNodeModal') editNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
   @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
 

@@ -1,12 +1,15 @@
-<context-menu #viewNodeContextMenu>
-  <ng-template contextMenuItem let-item (execute)="viewNode()">
-    View Node...
+<context-menu #editNodeContextMenu>
+  <ng-template contextMenuItem let-item (execute)="editNode()">
+    Edit Node...
   </ng-template>
 </context-menu>
 
 <context-menu #findNodesContextMenu>
   <ng-template contextMenuItem let-item (execute)="findNodes()">
     Search Nodes...
+  </ng-template>
+  <ng-template contextMenuItem let-item>
+    Create Node...
   </ng-template>
 </context-menu>
 

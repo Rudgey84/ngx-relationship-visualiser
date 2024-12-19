@@ -6,12 +6,12 @@ import { ContextMenuComponent } from '@kreash/ngx-contextmenu';
   templateUrl: './context-menus.component.html'
 })
 export class ContextMenusComponent {
-  @ViewChild('viewNodeContextMenu') viewNodeContextMenu: ContextMenuComponent;
+  @ViewChild('editNodeContextMenu') editNodeContextMenu: ContextMenuComponent;
   @ViewChild('findNodesContextMenu') findNodesContextMenu: ContextMenuComponent;
   @ViewChild('createEditLinkContextMenu') createEditLinkContextMenu: ContextMenuComponent;
   @ViewChild('editLinkLabelContextMenu') editLinkLabelContextMenu: ContextMenuComponent;
 
-  @Output() viewNodeContextMenuEvent = new EventEmitter<any>();
+  @Output() editNodeContextMenuEvent = new EventEmitter<any>();
   @Output() findNodesContextMenuEvent = new EventEmitter<any>();
   @Output() createLinkContextMenuEvent = new EventEmitter<any>();
   @Output() editLinkLabelContextMenuEvent = new EventEmitter<any>();
@@ -19,8 +19,8 @@ export class ContextMenusComponent {
 
   public currentMatchingLink: any = null;
 
-  viewNode() {
-    this.viewNodeContextMenuEvent.emit(true);
+  editNode() {
+    this.editNodeContextMenuEvent.emit(true);
   }
 
   findNodes() {
@@ -49,7 +49,7 @@ export class ContextMenusComponent {
 
   public linksExist = (item: any): boolean => {
     const matchingLink = this.checkLinkBetweenSelectedNodes(item);
-  
+
     if (matchingLink) {
       this.currentMatchingLink = matchingLink;
       return true;
@@ -61,7 +61,7 @@ export class ContextMenusComponent {
 
   public linksDoNotExist = (item: any): boolean => {
     const matchingLink = this.checkLinkBetweenSelectedNodes(item);
-  
+
     if (!matchingLink) {
       console.log("No link exists between the selected nodes.");
       return true;
@@ -69,7 +69,7 @@ export class ContextMenusComponent {
       return false;
     }
   };
-  
+
 
   private checkLinkBetweenSelectedNodes(payload) {
     if (!payload || !payload.selectedNodes) {

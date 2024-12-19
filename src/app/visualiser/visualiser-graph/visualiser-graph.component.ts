@@ -97,7 +97,7 @@ export class VisualiserGraphComponent
         this.selectedNodeId = dblClickNodePayload[0].id;
 
         if (this.modalsComponent) {
-          this.modalsComponent.openModal(this.modalsComponent.viewNodeModal);
+          this.modalsComponent.openModal(this.modalsComponent.editNodeModal);
         } else {
           console.error('Modal component is not available.');
         }
@@ -171,7 +171,7 @@ export class VisualiserGraphComponent
       this.selectedNodeId = targetEl.id || (data && data.id);
 
       if (localName === 'image' || parentNodeId === 'nodeText') {
-        contextMenu = this.contextMenu.viewNodeContextMenu;
+        contextMenu = this.contextMenu.editNodeContextMenu;
         item = this.selectedNodeId;
       } else if (localName === 'textPath') {
         contextMenu = this.contextMenu.editLinkLabelContextMenu;
