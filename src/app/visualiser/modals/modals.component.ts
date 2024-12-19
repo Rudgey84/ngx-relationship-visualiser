@@ -28,7 +28,7 @@ export class ModalsComponent implements OnInit, OnChanges {
       lineStyle: ['Unconfirmed', Validators.required],
       sourceArrow: [false],
       targetArrow: [false],
-      label: this.fb.array([]),
+      label: this.fb.array([], Validators.required),
     });
   }
 
@@ -46,7 +46,7 @@ export class ModalsComponent implements OnInit, OnChanges {
   // Adds a new label group to the form array
   public addLabel() {
     const labelGroup = this.fb.group({
-      label: '',
+      label: ['', Validators.required],
       linkStrength: [false],
     });
     this.labelArray.push(labelGroup);
@@ -100,7 +100,7 @@ export class ModalsComponent implements OnInit, OnChanges {
       data.relationships.forEach((relationship) => {
         const labelGroup = this.fb.group({
           linkIndex: relationship.linkIndex,
-          label: relationship.label,
+          label: [relationship.label, Validators.required],
           linkStrength: relationship.linkStrength
         });
         this.labelArray.push(labelGroup);

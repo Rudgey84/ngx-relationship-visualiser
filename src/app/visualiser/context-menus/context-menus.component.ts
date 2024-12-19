@@ -72,6 +72,11 @@ export class ContextMenusComponent {
   
 
   private checkLinkBetweenSelectedNodes(payload) {
+    if (!payload || !payload.selectedNodes) {
+      console.warn("Payload or selectedNodes is undefined.");
+      return null;
+    }
+
     const selectedNodes = payload.selectedNodes;
     const links = payload.graphData.links;
 
