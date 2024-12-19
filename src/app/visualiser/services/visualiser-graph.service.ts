@@ -273,8 +273,9 @@ export class VisualiserGraphService {
 
     // Getting parents lineStyle and adding it to child objects
     const relationshipsArray = this.links.map(
-      ({ lineStyle, targetArrow, sourceArrow, relationships }) =>
+      ({ linkIndex, lineStyle, targetArrow, sourceArrow, relationships }) =>
         relationships.map((r) => ({
+          linkIndex: linkIndex,
           parentLineStyle: lineStyle,
           parentSourceArrow: sourceArrow,
           parentTargetArrow: targetArrow,

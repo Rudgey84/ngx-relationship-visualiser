@@ -101,7 +101,7 @@ export class ModalsComponent implements OnInit, OnChanges {
     if (data.relationships) {
       data.relationships.forEach((relationship) => {
         const labelGroup = this.fb.group({
-          index: relationship.index,
+          linkIndex: relationship.linkIndex,
           label: relationship.label,
           linkStrength: relationship.linkStrength
         });

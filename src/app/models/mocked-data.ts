@@ -80,7 +80,7 @@ export const MOCKEDDATA: Data = {
       linkId: '123_456',
       relationships: [
         {
-          index: 0,
+          linkIndex: 0,
           label: 'Worked at IBM',
           lineStyle: 'Unconfirmed',
           source: '123',
@@ -90,7 +90,7 @@ export const MOCKEDDATA: Data = {
           linkStrength: true,
         },
         {
-          index: 1,
+          linkIndex: 1,
           label: 'Both in same scrum team',
           lineStyle: 'Confirmed',
           source: '123',
@@ -115,7 +115,7 @@ export const MOCKEDDATA: Data = {
       linkId: '456_789',
       relationships: [
         {
-          index: 2,
+          linkIndex: 2,
           label: 'Play in the same football team',
           lineStyle: 'Confirmed',
           source: '456',
@@ -125,7 +125,7 @@ export const MOCKEDDATA: Data = {
           linkStrength: false,
         },
         {
-          index: 3,
+          linkIndex: 3,
           label: 'Daughters in the same class at school',
           lineStyle: 'Confirmed',
           source: '456',
@@ -135,7 +135,7 @@ export const MOCKEDDATA: Data = {
           linkStrength: true,
         },
         {
-          index: 4,
+          linkIndex: 4,
           label: 'Went on a family holiday together last year',
           lineStyle: 'Confirmed',
           source: '456',
@@ -156,7 +156,7 @@ export const MOCKEDDATA: Data = {
       linkId: '789_123',
       relationships: [
         {
-          index: 5,
+          linkIndex: 5,
           label: 'Drink in the same pub',
           lineStyle: 'Unconfirmed',
           source: '789',
@@ -166,7 +166,7 @@ export const MOCKEDDATA: Data = {
           linkStrength: true,
         },
         {
-          index: 6,
+          linkIndex: 6,
           label: 'Drinking friends',
           lineStyle: 'Unconfirmed',
           source: '789',
@@ -187,7 +187,7 @@ export const MOCKEDDATA: Data = {
       linkId: '4_123',
       relationships: [
         {
-          index: 7,
+          linkIndex: 7,
           label: ['Same University'],
           lineStyle: 'Unconfirmed',
           source: '4',
@@ -281,7 +281,7 @@ export const NEWDATA: Data = {
       linkId: '123_456',
       relationships: [
         {
-          index: 0,
+          linkIndex: 0,
           label: 'Worked at IBM',
           lineStyle: 'Unconfirmed',
           source: '123',
@@ -291,7 +291,7 @@ export const NEWDATA: Data = {
           linkStrength: false,
         },
         {
-          index: 1,
+          linkIndex: 1,
           label: 'Both in same scrum team',
           lineStyle: 'Confirmed',
           source: '123',
@@ -316,7 +316,7 @@ export const NEWDATA: Data = {
       linkId: '456_789',
       relationships: [
         {
-          index: 2,
+          linkIndex: 2,
           label: 'Play in the same football team',
           lineStyle: 'Confirmed',
           source: '456',
@@ -326,7 +326,7 @@ export const NEWDATA: Data = {
           linkStrength: false,
         },
         {
-          index: 3,
+          linkIndex: 3,
           label: 'Daughters in the same class at school',
           lineStyle: 'Confirmed',
           source: '456',
@@ -336,7 +336,7 @@ export const NEWDATA: Data = {
           linkStrength: false,
         },
         {
-          index: 4,
+          linkIndex: 4,
           label: 'Went on a family holiday together last year',
           lineStyle: 'Confirmed',
           source: '456',
@@ -357,7 +357,7 @@ export const NEWDATA: Data = {
       linkId: '789_123',
       relationships: [
         {
-          index: 5,
+          linkIndex: 5,
           label: 'Drink in the same pub',
           lineStyle: 'Unconfirmed',
           source: '789',
@@ -367,7 +367,7 @@ export const NEWDATA: Data = {
           linkStrength: false,
         },
         {
-          index: 6,
+          linkIndex: 6,
           label: 'Drinking friends',
           lineStyle: 'Unconfirmed',
           source: '789',
@@ -388,7 +388,7 @@ export const NEWDATA: Data = {
       linkId: '123_101112',
       relationships: [
         {
-          index: 7,
+          linkIndex: 7,
           label: 'Married',
           lineStyle: 'Unconfirmed',
           source: '123',

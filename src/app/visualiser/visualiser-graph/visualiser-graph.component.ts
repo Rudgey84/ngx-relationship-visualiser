@@ -244,13 +244,13 @@ export class VisualiserGraphComponent
       // Retrieve the saved graph data from localStorage
       const data = JSON.parse(localStorage.getItem(this.savedGraphData));
 
-      // Find the next available index
-      const allIndexes = data.links.flatMap(link => link.relationships.map(rel => rel.index));
+      // Find the next available linkIndex
+      const allIndexes = data.links.flatMap(link => link.relationships.map(rel => rel.linkIndex));
       let nextIndex = Math.max(...allIndexes, 0) + 1;
 
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
       const relationships: Relationship[] = linkData.label.map((item) => ({
-        index: item.index !== undefined ? item.index : nextIndex++,
+        linkIndex: item.linkIndex !== undefined ? item.linkIndex : nextIndex++,
         label: item.label,
         lineStyle: linkData.lineStyle,
         source: sourceNode.id,
@@ -351,14 +351,14 @@ export class VisualiserGraphComponent
           const data = JSON.parse(localStorage.getItem(this.savedGraphData));
 
           // Find the link in the data using source and target IDs
-          const link = data.links.find(link => 
+          const link = data.links.find(link =>
             (link.source === this.selectedLinkArray[0].source.id && link.target === this.selectedLinkArray[0].target.id) ||
             (link.source === this.selectedLinkArray[0].target.id && link.target === this.selectedLinkArray[0].source.id)
           );
 
           if (link) {
-            // Find the relationship with the same index
-            const relationship = link.relationships.find(rel => rel.index === this.selectedLinkArray[0].index);
+            // Find the relationship with the same linkIndex
+            const relationship = link.relationships.find(rel => rel.linkIndex === this.selectedLinkArray[0].linkIndex);
             if (relationship) {
               // Update the label in the matched object
               relationship.label = result;
