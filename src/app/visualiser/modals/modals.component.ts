@@ -95,14 +95,15 @@ export class ModalsComponent implements OnInit, OnChanges {
     this.createLinkForm.patchValue({
       lineStyle: data.lineStyle,
       sourceArrow: data.sourceArrow,
-      targetArrow: data.targetArrow,
+      targetArrow: data.targetArrow
     });
 
     if (data.relationships) {
       data.relationships.forEach((relationship) => {
         const labelGroup = this.fb.group({
+          index: relationship.index,
           label: relationship.label,
-          linkStrength: relationship.linkStrength,
+          linkStrength: relationship.linkStrength
         });
         this.labelArray.push(labelGroup);
       });

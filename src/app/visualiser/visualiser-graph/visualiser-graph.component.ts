@@ -242,6 +242,7 @@ export class VisualiserGraphComponent
 
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
       const relationships: Relationship[] = linkData.label.map((item) => ({
+        index: item.index,
         label: item.label,
         lineStyle: linkData.lineStyle,
         source: sourceNode.id,
@@ -278,8 +279,8 @@ export class VisualiserGraphComponent
         callback: (result) => {
           if (result) {
             const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-            const existingLinkIndex = data.links.findIndex(link => 
-              link.linkId === `${sourceNode.id}_${targetNode.id}`|| link.linkId === `${targetNode.id}_${sourceNode.id}`
+            const existingLinkIndex = data.links.findIndex(link =>
+              link.linkId === `${sourceNode.id}_${targetNode.id}` || link.linkId === `${targetNode.id}_${sourceNode.id}`
             );
             if (existingLinkIndex !== -1) {
               data.links[existingLinkIndex] = newLink;
@@ -322,6 +323,47 @@ export class VisualiserGraphComponent
 
             this.data = data;
             this.saveGraphDataEvent.emit(data);
+          }
+        }
+      }
+    });
+  }
+
+  public onEditLinkLabel() {
+    bootbox.prompt({
+      title: "Edit link label",
+      centerVertical: true,
+      value: this.selectedLinkArray[0].label,
+      callback: (result) => {
+        if (result) {
+          // Update the label property with the result
+          this.selectedLinkArray[0].label = result;
+
+          // Retrieve the saved graph data from localStorage
+          const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+
+          // Find the link in the data using source and target IDs
+          const link = data.links.find(link => 
+            (link.source === this.selectedLinkArray[0].source.id && link.target === this.selectedLinkArray[0].target.id) ||
+            (link.source === this.selectedLinkArray[0].target.id && link.target === this.selectedLinkArray[0].source.id)
+          );
+
+          if (link) {
+            console.log(link);
+            console.log(this.selectedLinkArray[0].index);
+            // Find the relationship with the same index
+            const relationship = link.relationships.find(rel => rel.index === this.selectedLinkArray[0].index);
+            if (relationship) {
+              console.log('relationship', relationship);
+              // Update the label in the matched object
+              relationship.label = result;
+            }
+            // Save the updated data back to localStorage
+            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+            this.data = data;
+            this.saveGraphDataEvent.emit(data);
+          } else {
+            console.error('Link not found.');
           }
         }
       }
