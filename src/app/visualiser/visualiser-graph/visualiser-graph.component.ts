@@ -108,12 +108,7 @@ export class VisualiserGraphComponent
     this.visualiserGraphService.dblClickLinkPayload.subscribe(
       (dblClickLinkPayload) => {
         this.selectedLinkArray = dblClickLinkPayload;
-
-        if (this.modalsComponent) {
-          this.modalsComponent.openModal(this.modalsComponent.editLinkLabelModal);
-        } else {
-          console.error('Modal component is not available.');
-        }
+        this.onEditLinkLabel()
       }
     );
 

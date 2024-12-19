@@ -8,14 +8,12 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 })
 export class ModalsComponent implements OnInit, OnChanges {
   @Input() selectedNodeId: string;
-  @Input() selectedLinkArray: any[];
   @Input() editLinksData: any;
   @Output() closeModalEvent = new EventEmitter<string>();
   @Output() createLinkEvent = new EventEmitter<any>();
   @Output() deleteLinkEvent = new EventEmitter<any>();
   @ViewChild('viewNodeModal') viewNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
-  @ViewChild('editLinkLabelModal') editLinkLabelModal: TemplateRef<any>;
   @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
 
   public modalRef?: BsModalRef;

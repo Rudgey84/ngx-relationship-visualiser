@@ -25,8 +25,8 @@ export const MOCKEDDATA: Data = {
       ypos: 0,
       x: 0,
       y: 0,
-      fx: 410,
-      fy: 284,
+      fx: 332,
+      fy: 684,
       linkStrength: false,
     },
     {
@@ -51,8 +51,8 @@ export const MOCKEDDATA: Data = {
       ypos: 0,
       x: 0,
       y: 0,
-      fx: null,
-      fy: null,
+      fx: 414,
+      fy: 369,
       linkStrength: false,
     },
     {
