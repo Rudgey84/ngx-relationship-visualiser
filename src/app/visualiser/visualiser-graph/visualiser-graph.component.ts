@@ -235,6 +235,7 @@ export class VisualiserGraphComponent
   }
 
   public onCreateLink(linkData): void {
+    console.log("linkData", linkData);
     // Ensure that exactly two nodes are selected
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
@@ -245,11 +246,11 @@ export class VisualiserGraphComponent
 
       // Find the next available index
       const allIndexes = data.links.flatMap(link => link.relationships.map(rel => rel.index));
-      const nextIndex = Math.max(...allIndexes, 0) + 1;
+      let nextIndex = Math.max(...allIndexes, 0) + 1;
 
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
       const relationships: Relationship[] = linkData.label.map((item) => ({
-        index: item.index !== undefined ? item.index : nextIndex,
+        index: item.index !== undefined ? item.index : nextIndex++,
         label: item.label,
         lineStyle: linkData.lineStyle,
         source: sourceNode.id,
@@ -288,6 +289,7 @@ export class VisualiserGraphComponent
             const existingLinkIndex = data.links.findIndex(link =>
               link.linkId === `${sourceNode.id}_${targetNode.id}` || link.linkId === `${targetNode.id}_${sourceNode.id}`
             );
+            console.log(newLink);
             if (existingLinkIndex !== -1) {
               data.links[existingLinkIndex] = newLink;
             } else {
