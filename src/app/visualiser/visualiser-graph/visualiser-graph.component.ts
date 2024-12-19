@@ -199,6 +199,7 @@ export class VisualiserGraphComponent
   public onConfirmSave(): void {
     bootbox.confirm({
       title: "Save Graph",
+      centerVertical: true,
       message: "Are you sure you want to save the graph?",
       buttons: {
         confirm: {
@@ -268,6 +269,7 @@ export class VisualiserGraphComponent
 
       bootbox.confirm({
         title: "Creating link",
+        centerVertical: true,
         message: "Creating a link will save graph data, are you sure?",
         buttons: {
           confirm: {
@@ -302,10 +304,35 @@ export class VisualiserGraphComponent
     }
   }
 
+  public onDeleteNode(){
+    bootbox.confirm({
+      title: "Deleting node",
+      centerVertical: true,
+      message: "Deleing a node will save graph data, are you sure? This will also delete all links associated with this node.",
+      buttons: {
+        confirm: {
+          label: 'Yes',
+          className: 'btn-success'
+        },
+        cancel: {
+          label: 'No',
+          className: 'btn-danger'
+        }
+      },
+      callback: (result) => {
+        if (result) {
+          const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+          console.log("onDeleteNode", this.selectedNodeId);
+        }
+      }
+    });
+  }
+
   public onDeleteLink(linkId): void {
     bootbox.confirm({
       title: "Deleting link",
-      message: "Are you sure you want to delete this link?",
+      centerVertical: true,
+      message: "Deleting a link will save graph data, are you sure?",
       buttons: {
         confirm: {
           label: 'Yes',
@@ -334,7 +361,7 @@ export class VisualiserGraphComponent
 
   public onEditLinkLabel() {
     bootbox.prompt({
-      title: "Edit link label",
+      title: "Editing a link label will save graph data, are you sure?",
       centerVertical: true,
       value: this.selectedLinkArray[0].label,
       callback: (result) => {

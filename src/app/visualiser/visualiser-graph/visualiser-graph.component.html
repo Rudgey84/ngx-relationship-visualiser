@@ -107,7 +107,8 @@
   [selectedNodeId]="selectedNodeId"
   [editLinksData]="editLinksData"
   (createLinkEvent)="onCreateLink($event)"
-  (deleteLinkEvent)="onDeleteLink($event)">
+  (deleteLinkEvent)="onDeleteLink($event)"
+  (deleteNodeEvent)="onDeleteNode()">
   </app-modals>
 
   <svg #svgId [attr.width]="width" height="780" (contextmenu)="visualiserContextMenus($event)"></svg>

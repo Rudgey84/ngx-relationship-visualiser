@@ -12,6 +12,7 @@ export class ModalsComponent implements OnInit, OnChanges {
   @Output() closeModalEvent = new EventEmitter<string>();
   @Output() createLinkEvent = new EventEmitter<any>();
   @Output() deleteLinkEvent = new EventEmitter<any>();
+  @Output() deleteNodeEvent = new EventEmitter<any>();
   @ViewChild('editNodeModal') editNodeModal: TemplateRef<any>;
   @ViewChild('createLinkModal') createLinkModal: TemplateRef<any>;
   @ViewChild('editLinksModal') editLinksModal: TemplateRef<any>;
@@ -117,7 +118,6 @@ export class ModalsComponent implements OnInit, OnChanges {
 
   // Handles link creation and emits the data
   public createLink(): void {
-
     // Check if the form is valid before emitting the data
     if (this.createLinkForm.valid) {
       const formData = this.createLinkForm.value;
@@ -131,6 +131,17 @@ export class ModalsComponent implements OnInit, OnChanges {
     }
   }
 
+  // Handles node deletion and emits the event
+  public deleteNode(): void {
+    this.deleteNodeEvent.emit(true);
+
+    // Reset form after deletion
+    this.resetForm();
+
+    // Close the modal after node deletion
+    this.closeModal('modalRef');
+  }
+
   // Handles link deletion and emits the linkId
   public deleteLink(): void {
     const linkId = this.editLinksData.linkId;
@@ -141,6 +152,5 @@ export class ModalsComponent implements OnInit, OnChanges {
 
     // Close the modal after link deletion
     this.closeModal('modalRef');
-
   }
 }
