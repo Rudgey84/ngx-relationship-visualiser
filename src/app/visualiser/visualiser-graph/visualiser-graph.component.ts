@@ -278,7 +278,9 @@ export class VisualiserGraphComponent
         callback: (result) => {
           if (result) {
             const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-            const existingLinkIndex = data.links.findIndex(link => link.linkId === newLink.linkId);
+            const existingLinkIndex = data.links.findIndex(link => 
+              link.linkId === `${sourceNode.id}_${targetNode.id}`|| link.linkId === `${targetNode.id}_${sourceNode.id}`
+            );
             if (existingLinkIndex !== -1) {
               data.links[existingLinkIndex] = newLink;
             } else {
