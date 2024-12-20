@@ -211,26 +211,6 @@ export class VisualiserGraphService {
     return nodeData;
   }
 
-  private circleNodePositions(nodeData, width, height) {
-    const middleX = width / 2;
-    const middleY = height / 2;
-    const radius = Math.min(middleX, middleY) * 0.8;
-
-    // Get the nodes without existing fx and fy values
-    const nodesWithoutPositions = nodeData.filter(
-      (node) => node.fx === null && node.fy === null
-    );
-    const nodeCount = nodesWithoutPositions.length;
-
-    for (let i = 0; i < nodeCount; i++) {
-      const node = nodesWithoutPositions[i];
-      const angle = (2 * Math.PI * i) / nodeCount;
-      node.fx = middleX + radius * Math.cos(angle);
-      node.fy = middleY + radius * Math.sin(angle);
-    }
-    return nodeData;
-  }
-
   public _update(_d3, svg, data) {
     const { nodes, links } = data;
     this.nodes = nodes || [];
