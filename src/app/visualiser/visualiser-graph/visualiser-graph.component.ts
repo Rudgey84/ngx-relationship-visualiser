@@ -6,7 +6,6 @@ import {
   Output,
   EventEmitter,
   OnInit,
-  OnDestroy,
   AfterViewInit,
   TemplateRef
 } from '@angular/core';
@@ -17,6 +16,7 @@ import { ContextMenusComponent } from '../context-menus/context-menus.component'
 import { Data, Link, Relationship } from '../../models/data.interface';
 import { NEWDATA } from '../../models/mocked-data';
 import { ModalsComponent } from '../modals/modals.component';
+import { DexieService } from 'src/app/db/graphDatabase';
 declare var bootbox: any;
 
 @Component({
@@ -24,8 +24,7 @@ declare var bootbox: any;
   templateUrl: "./visualiser-graph.component.html",
   styleUrls: ["./visualiser-graph.component.scss"],
 })
-export class VisualiserGraphComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+export class VisualiserGraphComponent implements OnInit, AfterViewInit {
   @ViewChild('svgId') graphElement: ElementRef;
   @ViewChild(ContextMenusComponent) public contextMenu: ContextMenusComponent;
   @Output() saveGraphDataEvent = new EventEmitter<any>();
@@ -35,7 +34,7 @@ export class VisualiserGraphComponent
   public saveGraphData;
   public width;
   public showSearch: boolean = false;
-  public savedGraphData: string;
+  public savedGraphData: Data;
   public showConfirmation: boolean = false;
   public buttonBarRightPosition: string;
   public editLinksData: any = null;
@@ -47,29 +46,27 @@ export class VisualiserGraphComponent
   constructor(
     readonly visualiserGraphService: VisualiserGraphService,
     readonly contextMenuService: ContextMenuService,
-    readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout
+    readonly dagreNodesOnlyLayout: DagreNodesOnlyLayout,
+    private dexieService: DexieService
   ) { }
-
-  public removeLocalStorageItemsByPrefix(prefix) {
-    for (var key in localStorage) {
-      if (key.startsWith(prefix)) {
-        localStorage.removeItem(key);
-      }
-    }
-  }
 
   @Input()
   set data(data: Data) {
-    this.removeLocalStorageItemsByPrefix('savedGraphData');
-    // Generate a random number so we can open two graphs without mixing the data
+    if (!data || !data.dataId) {
+      console.error('Invalid data input');
+      return;
+    }
+
+    // Generate a unique identifier for the saved graph data
     const dataId = data.dataId;
     const randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
-    this.savedGraphData = `savedGraphData${dataId}_${randomNumber}`;
+    this.savedGraphData = data;
+
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
-    setTimeout(() => {
+    setTimeout(async () => {
       this.dagreNodesOnlyLayout.renderLayout(data);
       // Take a copy of input for reset
-      localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+      await this.dexieService.saveGraphData(data);
       this.visualiserGraphService.update(
         data,
         this.graphElement.nativeElement,
@@ -81,8 +78,6 @@ export class VisualiserGraphComponent
 
   public ngOnInit() {
     this.buttonBarRightPosition = '0';
-    localStorage.setItem('nodes', JSON.stringify([]));
-    localStorage.removeItem('nodes');
     this.updateWidth();
     // Subscribe to the link selections in d3
     this.visualiserGraphService.selectedNodesArray.subscribe(
@@ -143,33 +138,31 @@ export class VisualiserGraphComponent
     this.width = document.getElementById('pageId').offsetWidth;
   }
 
-  public ngOnDestroy(): void {
-    localStorage.setItem('nodes', JSON.stringify([]));
-    localStorage.removeItem('nodes');
-    localStorage.removeItem(this.savedGraphData);
-  }
-
-  public visualiserContextMenus(event): void {
+  public async visualiserContextMenus(event): Promise<void> {
     if (this.readOnly) {
+      return;
+    }
+
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
       return;
     }
 
     let contextMenu;
     let item;
-    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+    const targetEl = event.target;
+    const localName = targetEl.localName;
+    const parentNodeId = targetEl.parentNode.id;
+    const data = targetEl.parentNode.__data__;
+    this.selectedNodeId = targetEl.id || (data && data.id);
+
     if (this.selectedNodesArray?.length === 2) {
       contextMenu = this.contextMenu.createEditLinkContextMenu;
       item = {
-        graphData: data,
+        graphData: this.savedGraphData,
         selectedNodes: this.selectedNodesArray
       };
     } else {
-      const targetEl = event.target;
-      const localName = targetEl.localName;
-      const parentNodeId = targetEl.parentNode.id;
-      const data = targetEl.parentNode.__data__;
-      this.selectedNodeId = targetEl.id || (data && data.id);
-
       if (localName === 'image' || parentNodeId === 'nodeText') {
         contextMenu = this.contextMenu.editNodeContextMenu;
         item = this.selectedNodeId;
@@ -190,6 +183,12 @@ export class VisualiserGraphComponent
 
     event.stopPropagation();
     event.preventDefault();
+
+    // Update context menu items based on data from Dexie
+    const updatedData = await this.dexieService.getGraphData(this.savedGraphData.dataId);
+    if (this.selectedNodesArray?.length === 2) {
+      item.graphData = updatedData;
+    }
   }
 
   public findCreateNodesEvent(action: string): void {
@@ -204,7 +203,12 @@ export class VisualiserGraphComponent
     this.modalsComponent.openModal(this.modalsComponent.createNodeModal);
   }
 
-  public onConfirmSave(): void {
+  public async onConfirmSave(): Promise<void> {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
     bootbox.confirm({
       title: "Save Graph",
       centerVertical: true,
@@ -219,7 +223,7 @@ export class VisualiserGraphComponent
           className: 'btn-danger'
         }
       },
-      callback: (result) => {
+      callback: async (result) => {
         if (result) {
           this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
             this.saveGraphData = saveGraphData;
@@ -228,18 +232,20 @@ export class VisualiserGraphComponent
           this.saveGraphDataEvent.emit(this.saveGraphData);
 
           this.disableButtons(true);
-          localStorage.setItem(
-            this.savedGraphData,
-            JSON.stringify(this.saveGraphData)
-          );
+          await this.dexieService.saveGraphData(this.saveGraphData);
           this.showConfirmationMessage();
         }
       }
     });
   }
 
-  public onCreateNode(nodeData): void {
-    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+  public async onCreateNode(nodeData): Promise<void> {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
+    const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
 
     // Generate a unique numeric ID for the new node
     let newId;
@@ -263,10 +269,10 @@ export class VisualiserGraphComponent
           className: 'btn-danger'
         }
       },
-      callback: (result) => {
+      callback: async (result) => {
         if (result) {
           data.nodes.push(nodeData);
-          localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+          await this.dexieService.saveGraphData(data);
 
           this.data = data;
           this.saveGraphDataEvent.emit(data);
@@ -275,17 +281,24 @@ export class VisualiserGraphComponent
     });
   }
 
-  public onCreateLink(linkData): void {
+  public async onCreateLink(linkData): Promise<void> {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
     // Ensure that exactly two nodes are selected
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
       const targetNode = this.selectedNodesArray[1];
 
-      // Retrieve the saved graph data from localStorage
-      const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+      // Retrieve the saved graph data from Dexie
+      const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
 
       // Find the next available linkIndex
-      const allIndexes = data.links.flatMap(link => link.relationships.map(rel => rel.linkIndex));
+      const allIndexes = data.links.reduce((acc, link) => {
+        return acc.concat(link.relationships.map(rel => rel.linkIndex));
+      }, []);
       let nextIndex = Math.max(...allIndexes, 0) + 1;
 
       // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
@@ -325,7 +338,7 @@ export class VisualiserGraphComponent
             className: 'btn-danger'
           }
         },
-        callback: (result) => {
+        callback: async (result) => {
           if (result) {
             const existingLinkIndex = data.links.findIndex(link =>
               link.linkId === `${sourceNode.id}_${targetNode.id}` || link.linkId === `${targetNode.id}_${sourceNode.id}`
@@ -335,7 +348,7 @@ export class VisualiserGraphComponent
             } else {
               data.links.push(newLink);
             }
-            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+            await this.dexieService.saveGraphData(data);
 
             this.data = data;
             this.saveGraphDataEvent.emit(data);
@@ -347,11 +360,16 @@ export class VisualiserGraphComponent
     }
   }
 
-  public onDeleteNode() {
+  public async onDeleteNode() {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
     bootbox.confirm({
       title: "Deleting node",
       centerVertical: true,
-      message: "Deleing a node will save graph data, are you sure? This will also delete all links associated with this node.",
+      message: "Deleting a node will save graph data, are you sure? This will also delete all links associated with this node.",
       buttons: {
         confirm: {
           label: 'Yes',
@@ -362,29 +380,32 @@ export class VisualiserGraphComponent
           className: 'btn-danger'
         }
       },
-      callback: (result) => {
+      callback: async (result) => {
         if (result) {
-          if (result) {
-            const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-    
-            // Remove the node with the matching id
-            data.nodes = data.nodes.filter(node => node.id !== this.selectedNodeId);
-    
-            // Remove links with matching source or target
-            data.links = data.links.filter(link => link.source !== this.selectedNodeId && link.target !== this.selectedNodeId);
-    
-            // Save the updated data back to localStorage
-            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+          const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
 
-            this.data = data;
-            this.saveGraphDataEvent.emit(data);
-          }
+          // Remove the node with the matching id
+          data.nodes = data.nodes.filter(node => node.id !== this.selectedNodeId);
+
+          // Remove links with matching source or target
+          data.links = data.links.filter(link => link.source !== this.selectedNodeId && link.target !== this.selectedNodeId);
+
+          // Save the updated data back to Dexie
+          await this.dexieService.saveGraphData(data);
+
+          this.data = data;
+          this.saveGraphDataEvent.emit(data);
         }
       }
     });
   }
 
-  public onDeleteLink(linkId): void {
+  public async onDeleteLink(linkId): Promise<void> {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
     bootbox.confirm({
       title: "Deleting link",
       centerVertical: true,
@@ -399,13 +420,13 @@ export class VisualiserGraphComponent
           className: 'btn-danger'
         }
       },
-      callback: (result) => {
+      callback: async (result) => {
         if (result) {
-          const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+          const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
           const existingLinkIndex = data.links.findIndex(link => link.linkId === linkId);
           if (existingLinkIndex !== -1) {
             data.links.splice(existingLinkIndex, 1);
-            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+            await this.dexieService.saveGraphData(data);
 
             this.data = data;
             this.saveGraphDataEvent.emit(data);
@@ -415,18 +436,23 @@ export class VisualiserGraphComponent
     });
   }
 
-  public onEditLinkLabel() {
+  public async onEditLinkLabel() {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
     bootbox.prompt({
       title: "Editing a link label will save graph data, are you sure?",
       centerVertical: true,
       value: this.selectedLinkArray[0].label,
-      callback: (result) => {
+      callback: async (result) => {
         if (result) {
           // Update the label property with the result
           this.selectedLinkArray[0].label = result;
 
-          // Retrieve the saved graph data from localStorage
-          const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+          // Retrieve the saved graph data from Dexie
+          const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
 
           // Find the link in the data using source and target IDs
           const link = data.links.find(link =>
@@ -441,8 +467,8 @@ export class VisualiserGraphComponent
               // Update the label in the matched object
               relationship.label = result;
             }
-            // Save the updated data back to localStorage
-            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+            // Save the updated data back to Dexie
+            await this.dexieService.saveGraphData(data);
             this.data = data;
             this.saveGraphDataEvent.emit(data);
           } else {
@@ -460,8 +486,13 @@ export class VisualiserGraphComponent
     }
   }
 
-  public resetGraph(): void {
-    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+  public async resetGraph(): Promise<void> {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
+    const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
     this.disableButtons(true);
     this.visualiserGraphService.resetGraph(
       data,
@@ -471,8 +502,13 @@ export class VisualiserGraphComponent
     );
   }
 
-  public applyLayout(): void {
-    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+  public async applyLayout(): Promise<void> {
+    if (!this.savedGraphData) {
+      console.error('savedGraphData is not set');
+      return;
+    }
+
+    const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
     const newDagreLayout = this.dagreNodesOnlyLayout.initRenderLayout(data);
 
     this.visualiserGraphService.resetGraph(
