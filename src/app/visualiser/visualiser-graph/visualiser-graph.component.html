@@ -97,7 +97,7 @@
 
   <app-context-menus
   (editNodeContextMenuEvent)="openModal('editNodeModal')"
-  (findNodesContextMenuEvent)="findNodesEvent()"
+  (findCreateNodesContextMenuEvent)="findCreateNodesEvent($event)"
   (createLinkContextMenuEvent)="openModal('createLinkModal')"
   (editLinkLabelContextMenuEvent)="onEditLinkLabel()"
   (editLinksContextMenuEvent)="handleEditLinksEvent($event)">

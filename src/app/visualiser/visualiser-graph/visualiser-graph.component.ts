@@ -177,7 +177,7 @@ export class VisualiserGraphComponent
         contextMenu = this.contextMenu.editLinkLabelContextMenu;
         item = this.selectedLinkArray;
       } else if (localName === 'svg') {
-        contextMenu = this.contextMenu.findNodesContextMenu;
+        contextMenu = this.contextMenu.findCreateNodesContextMenu;
         item = 'item';
       }
     }
@@ -192,8 +192,18 @@ export class VisualiserGraphComponent
     event.preventDefault();
   }
 
-  public findNodesEvent(): void {
-    this.toggleSearch();
+  public findCreateNodesEvent(action: string): void {
+    if (action === 'findNodes') {
+      this.toggleSearch();
+    } else if (action === 'createNode') {
+      this.opencreateNodeModal();
+    }
+  }
+
+  private opencreateNodeModal(): void {
+    // Implement the logic for creating a node
+    this.modalsComponent.openModal(this.modalsComponent.createNodeModal);
+    console.log('Creating a new node...');
   }
 
   public onConfirmSave(): void {
@@ -231,7 +241,6 @@ export class VisualiserGraphComponent
   }
 
   public onCreateLink(linkData): void {
-    console.log("linkData", linkData);
     // Ensure that exactly two nodes are selected
     if (this.selectedNodesArray.length === 2) {
       const sourceNode = this.selectedNodesArray[0];
@@ -286,7 +295,6 @@ export class VisualiserGraphComponent
             const existingLinkIndex = data.links.findIndex(link =>
               link.linkId === `${sourceNode.id}_${targetNode.id}` || link.linkId === `${targetNode.id}_${sourceNode.id}`
             );
-            console.log(newLink);
             if (existingLinkIndex !== -1) {
               data.links[existingLinkIndex] = newLink;
             } else {
@@ -399,7 +407,7 @@ export class VisualiserGraphComponent
 
   public handleEditLinksEvent(event: { open: boolean; data: any }) {
     if (event.open) {
-      this.openModal('editLinksModal');
+      this.modalsComponent.openModal(this.modalsComponent.editLinksModal);
       this.editLinksData = event.data;
     }
   }

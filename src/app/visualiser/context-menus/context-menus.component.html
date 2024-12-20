@@ -4,11 +4,11 @@
   </ng-template>
 </context-menu>
 
-<context-menu #findNodesContextMenu>
+<context-menu #findCreateNodesContextMenu>
   <ng-template contextMenuItem let-item (execute)="findNodes()">
     Search Nodes...
   </ng-template>
-  <ng-template contextMenuItem let-item>
+  <ng-template contextMenuItem let-item (execute)="createNode()">
     Create Node...
   </ng-template>
 </context-menu>
