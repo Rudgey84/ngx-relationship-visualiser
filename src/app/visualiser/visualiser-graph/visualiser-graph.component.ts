@@ -364,8 +364,22 @@ export class VisualiserGraphComponent
       },
       callback: (result) => {
         if (result) {
-          const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-          console.log("onDeleteNode", this.selectedNodeId);
+          if (result) {
+            const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+            console.log("onDeleteNode", this.selectedNodeId);
+    
+            // Remove the node with the matching id
+            data.nodes = data.nodes.filter(node => node.id !== this.selectedNodeId);
+    
+            // Remove links with matching source or target
+            data.links = data.links.filter(link => link.source !== this.selectedNodeId && link.target !== this.selectedNodeId);
+    
+            // Save the updated data back to localStorage
+            localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+
+            this.data = data;
+            this.saveGraphDataEvent.emit(data);
+          }
         }
       }
     });
