@@ -35,7 +35,7 @@
           <div *ngFor="let label of nodeLabelArray.controls; let i = index" [formGroupName]="i"
             class="d-flex flex-column align-items-start">
             <div class="d-flex align-items-center w-100">
-              <input formControlName="label" class="form-control" placeholder="Label" [id]="'node-label-' + i">
+              <input formControlName="label" class="form-control mb-2" placeholder="Label" [id]="'node-label-' + i">
               <button type="button" class="btn btn-danger ml-2" (click)="removeNodeLabel(i)">Remove</button>
             </div>
           </div>

@@ -118,6 +118,16 @@ export class ModalsComponent implements OnInit, OnChanges {
     this.labelArray.clear();
   }
 
+  // Reset the node form before populating it with new data
+  private resetNodeForm() {
+    this.createNodeForm.reset({
+      label: this.fb.array([]),
+      icon: '',
+      linkStrength: false,
+    });
+    this.nodeLabelArray.clear();
+  }
+
   // Populate the form with the data for editing links
   private populateEditLinkForm(data: any) {
     this.createLinkForm.patchValue({
@@ -173,8 +183,9 @@ export class ModalsComponent implements OnInit, OnChanges {
         linkStrength: createNodeData.linkStrength,
       };
       this.createNodeEvent.emit(payload);
+
       // Reset form after submission
-      this.resetForm();
+      this.resetNodeForm();
 
       // Close the modal after link form submission
       this.closeModal('modalRef');
