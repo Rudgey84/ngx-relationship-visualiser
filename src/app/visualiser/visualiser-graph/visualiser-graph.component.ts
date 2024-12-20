@@ -201,9 +201,7 @@ export class VisualiserGraphComponent
   }
 
   private opencreateNodeModal(): void {
-    // Implement the logic for creating a node
     this.modalsComponent.openModal(this.modalsComponent.createNodeModal);
-    console.log('Creating a new node...');
   }
 
   public onConfirmSave(): void {
@@ -235,6 +233,43 @@ export class VisualiserGraphComponent
             JSON.stringify(this.saveGraphData)
           );
           this.showConfirmationMessage();
+        }
+      }
+    });
+  }
+
+  public onCreateNode(nodeData): void {
+    const data = JSON.parse(localStorage.getItem(this.savedGraphData));
+
+    // Generate a unique numeric ID for the new node
+    let newId;
+    do {
+      newId = crypto.getRandomValues(new Uint32Array(1))[0];
+    } while (data.nodes.some(node => node.id === newId.toString()));
+
+    nodeData.id = newId.toString();
+
+    bootbox.confirm({
+      title: "Creating node",
+      centerVertical: true,
+      message: "Creating a node will save graph data, are you sure?",
+      buttons: {
+        confirm: {
+          label: 'Yes',
+          className: 'btn-success'
+        },
+        cancel: {
+          label: 'No',
+          className: 'btn-danger'
+        }
+      },
+      callback: (result) => {
+        if (result) {
+          data.nodes.push(nodeData);
+          localStorage.setItem(this.savedGraphData, JSON.stringify(data));
+
+          this.data = data;
+          this.saveGraphDataEvent.emit(data);
         }
       }
     });
@@ -312,7 +347,7 @@ export class VisualiserGraphComponent
     }
   }
 
-  public onDeleteNode(){
+  public onDeleteNode() {
     bootbox.confirm({
       title: "Deleting node",
       centerVertical: true,

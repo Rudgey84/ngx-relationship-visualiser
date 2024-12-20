@@ -11,6 +11,7 @@ export class ModalsComponent implements OnInit, OnChanges {
   @Input() editLinksData: any;
   @Output() closeModalEvent = new EventEmitter<string>();
   @Output() createLinkEvent = new EventEmitter<any>();
+  @Output() createNodeEvent = new EventEmitter<any>();
   @Output() deleteLinkEvent = new EventEmitter<any>();
   @Output() deleteNodeEvent = new EventEmitter<any>();
   @ViewChild('editNodeModal') editNodeModal: TemplateRef<any>;
@@ -21,6 +22,7 @@ export class ModalsComponent implements OnInit, OnChanges {
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };
   createLinkForm: FormGroup;
+  createNodeForm: FormGroup;
 
   constructor(private modalService: BsModalService, private fb: FormBuilder) { }
 
@@ -31,6 +33,13 @@ export class ModalsComponent implements OnInit, OnChanges {
       sourceArrow: [false],
       targetArrow: [false],
       label: this.fb.array([], Validators.required),
+    });
+
+    // Initialize createNodeForm
+    this.createNodeForm = this.fb.group({
+      label: this.fb.array([], Validators.required),
+      icon: ['', Validators.required],
+      linkStrength: [false],
     });
   }
 
@@ -45,6 +54,10 @@ export class ModalsComponent implements OnInit, OnChanges {
     return this.createLinkForm.get('label') as FormArray;
   }
 
+  get nodeLabelArray(): FormArray {
+    return this.createNodeForm.get('label') as FormArray;
+  }
+
   // Adds a new label group to the form array
   public addLabel() {
     const labelGroup = this.fb.group({
@@ -54,11 +67,26 @@ export class ModalsComponent implements OnInit, OnChanges {
     this.labelArray.push(labelGroup);
   }
 
+  // Adds a new label group to the form array for createNodeForm
+  public addNodeLabel() {
+    const labelGroup = this.fb.group({
+      label: ['', Validators.required],
+    });
+    this.nodeLabelArray.push(labelGroup);
+  }
+
   // Removes a label group at a specific index from the form array
   public removeLabel(index: number) {
     // Removing the label group from the form array by index
     if (this.labelArray.length > 0) {
       this.labelArray.removeAt(index);
+    }
+  }
+
+  // Removes a label group at a specific index from the form array for createNodeForm
+  public removeNodeLabel(index: number) {
+    if (this.nodeLabelArray.length > 0) {
+      this.nodeLabelArray.removeAt(index);
     }
   }
 
@@ -121,8 +149,8 @@ export class ModalsComponent implements OnInit, OnChanges {
   public createLink(): void {
     // Check if the form is valid before emitting the data
     if (this.createLinkForm.valid) {
-      const formData = this.createLinkForm.value;
-      this.createLinkEvent.emit(formData);
+      const createLinkData = this.createLinkForm.value;
+      this.createLinkEvent.emit(createLinkData);
 
       // Reset form after submission
       this.resetForm();
@@ -134,14 +162,23 @@ export class ModalsComponent implements OnInit, OnChanges {
 
   // Handles node creation and emits the data
   public createNode(): void {
-    console.log('createNode');
+    if (this.createNodeForm.valid) {
+      const createNodeData = this.createNodeForm.value;
+      const payload = {
+        id: '',
+        label: createNodeData.label.map(item => item.label),
+        icon: createNodeData.icon,
+        fx: null,
+        fy: null,
+        linkStrength: createNodeData.linkStrength,
+      };
+      this.createNodeEvent.emit(payload);
+      // Reset form after submission
+      this.resetForm();
 
-    // Reset form after submission
-    this.resetForm();
-
-    // Close the modal after link form submission
-    this.closeModal('modalRef');
-
+      // Close the modal after link form submission
+      this.closeModal('modalRef');
+    }
   }
 
   // Handles node deletion and emits the event

@@ -24,11 +24,8 @@ export interface Link {
 
 export interface Node {
   id: string;
-  version: number;
   label: string[];
   icon: string;
-  xpos: number;
-  ypos: number;
   x: number;
   y: number;
   fx: number | null;

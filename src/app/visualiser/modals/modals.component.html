@@ -22,10 +22,36 @@
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
-  <div class="modal-body"></div>
+  <div class="modal-body">
+    <form [formGroup]="createNodeForm">
+      <div class="form-group">
+        <label for="icon">Icon URL</label>
+        <input type="text" id="icon" formControlName="icon" class="form-control" placeholder="Icon URL">
+      </div>
+
+      <div class="form-group">
+        <label for="label">Labels</label>
+        <div formArrayName="label">
+          <div *ngFor="let label of nodeLabelArray.controls; let i = index" [formGroupName]="i"
+            class="d-flex flex-column align-items-start">
+            <div class="d-flex align-items-center w-100">
+              <input formControlName="label" class="form-control" placeholder="Label" [id]="'node-label-' + i">
+              <button type="button" class="btn btn-danger ml-2" (click)="removeNodeLabel(i)">Remove</button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary mt-2" (click)="addNodeLabel()">Add Label</button>
+      </div>
+
+      <div class="form-group form-check">
+        <input type="checkbox" id="nodeLinkStrength" formControlName="linkStrength" class="form-check-input">
+        <label for="nodeLinkStrength">Strong Link?</label>
+      </div>
+    </form>
+  </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="closeModal('modalRef')">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="createNode()">Create Node</button>
+    <button type="button" class="btn btn-primary" (click)="createNode()" [disabled]="!createNodeForm.valid">Create Node</button>
   </div>
 </ng-template>
 <!-- ./MODAL-->
