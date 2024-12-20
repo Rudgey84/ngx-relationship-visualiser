@@ -26,8 +26,6 @@ export interface Node {
   id: string;
   label: string[];
   icon: string;
-  x: number;
-  y: number;
   fx: number | null;
   fy: number | null;
   linkStrength: boolean;
