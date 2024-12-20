@@ -366,7 +366,6 @@ export class VisualiserGraphComponent
         if (result) {
           if (result) {
             const data = JSON.parse(localStorage.getItem(this.savedGraphData));
-            console.log("onDeleteNode", this.selectedNodeId);
     
             // Remove the node with the matching id
             data.nodes = data.nodes.filter(node => node.id !== this.selectedNodeId);

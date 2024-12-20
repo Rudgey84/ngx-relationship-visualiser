@@ -67,7 +67,6 @@ export class ContextMenusComponent {
     const matchingLink = this.checkLinkBetweenSelectedNodes(item);
 
     if (!matchingLink) {
-      console.log("No link exists between the selected nodes.");
       return true;
     } else {
       return false;
