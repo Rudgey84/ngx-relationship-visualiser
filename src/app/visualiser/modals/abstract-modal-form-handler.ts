@@ -13,8 +13,11 @@ export abstract class AbstractModalFormHandler {
     });
 
     this.createNodeForm = this.fb.group({
+      id: '',
       label: this.fb.array([], Validators.required),
       icon: ['', Validators.required],
+      fx: [null],
+      fy: [null],
       linkStrength: [false],
     });
   }
@@ -90,5 +93,19 @@ export abstract class AbstractModalFormHandler {
         this.labelArray.push(labelGroup);
       });
     }
+  }
+
+  protected populateEditNodeForm(data: any) {
+    this.createNodeForm.patchValue({
+      id: data.id,
+      icon: data.icon,
+      fx: data.fx,
+      fy: data.fy,
+      linkStrength: data.linkStrength,
+    });
+
+    this.createNodeForm.setControl('label', this.fb.array(
+      data.label.map(label => this.fb.group({ label: [label, Validators.required] }))
+    ));
   }
 }

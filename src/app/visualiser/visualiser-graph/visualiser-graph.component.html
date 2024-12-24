@@ -96,7 +96,7 @@
   </div>
 
   <app-context-menus
-  (editNodeContextMenuEvent)="openModal('editNodeModal')"
+  (editNodeContextMenuEvent)="handleEditNodesEvent($event)"
   (findCreateNodesContextMenuEvent)="findCreateNodesEvent($event)"
   (createLinkContextMenuEvent)="openModal('createLinkModal')"
   (editLinkLabelContextMenuEvent)="onEditLinkLabel()"
@@ -104,7 +104,7 @@
   </app-context-menus>
 
   <app-modals
-  [selectedNodeId]="selectedNodeId"
+  [editNodeData]="editNodeData"
   [editLinksData]="editLinksData"
   (createLinkEvent)="onCreateLink($event)"
   (createNodeEvent)="onCreateNode($event)"

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder } from '@angular/forms';
 import { AbstractModalFormHandler } from './abstract-modal-form-handler';
@@ -8,7 +8,7 @@ import { AbstractModalFormHandler } from './abstract-modal-form-handler';
   templateUrl: './modals.component.html',
 })
 export class ModalsComponent extends AbstractModalFormHandler implements OnChanges {
-  @Input() selectedNodeId: string;
+  @Input() editNodeData: any;
   @Input() editLinksData: any;
   @Output() closeModalEvent = new EventEmitter<string>();
   @Output() createLinkEvent = new EventEmitter<any>();
@@ -31,6 +31,10 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
     if (changes.editLinksData && this.editLinksData) {
       this.resetForm();
       this.populateEditLinkForm(this.editLinksData);
+    }
+    if (changes.editNodeData && this.editNodeData) {
+      this.resetNodeForm();
+      this.populateEditNodeForm(this.editNodeData);
     }
   }
 
@@ -69,11 +73,11 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
     if (this.createNodeForm.valid) {
       const createNodeData = this.createNodeForm.value;
       const payload = {
-        id: '',
+        id: createNodeData.id,
         label: createNodeData.label.map(item => item.label),
         icon: createNodeData.icon,
-        fx: null,
-        fy: null,
+        fx: createNodeData.fx,
+        fy: createNodeData.fy,
         linkStrength: createNodeData.linkStrength,
       };
       this.createNodeEvent.emit(payload);

@@ -38,6 +38,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
   public showConfirmation: boolean = false;
   public buttonBarRightPosition: string;
   public editLinksData: any = null;
+  public editNodeData: any = null;
   @Input() readOnly: boolean = false;
   @Input() zoom: boolean = true;
   @Input() controls: boolean = true;
@@ -247,13 +248,18 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
 
     const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
 
-    // Generate a unique numeric ID for the new node
-    let newId;
-    do {
-      newId = crypto.getRandomValues(new Uint32Array(1))[0];
-    } while (data.nodes.some(node => node.id === newId.toString()));
+    // Check if the node already exists
+    const existingNodeIndex = data.nodes.findIndex(node => node.id === nodeData.id);
 
-    nodeData.id = newId.toString();
+    if (existingNodeIndex === -1) {
+      // Generate a unique numeric ID for the new node
+      let newId;
+      do {
+        newId = crypto.getRandomValues(new Uint32Array(1))[0];
+      } while (data.nodes.some(node => node.id === newId.toString()));
+
+      nodeData.id = newId.toString();
+    }
 
     bootbox.confirm({
       title: "Creating node",
@@ -271,7 +277,13 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
       },
       callback: async (result) => {
         if (result) {
-          data.nodes.push(nodeData);
+          if (existingNodeIndex !== -1) {
+            // Update the existing node
+            data.nodes[existingNodeIndex] = nodeData;
+          } else {
+            // Add the new node
+            data.nodes.push(nodeData);
+          }
           await this.dexieService.saveGraphData(data);
 
           this.data = data;
@@ -483,6 +495,14 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
     if (event.open) {
       this.modalsComponent.openModal(this.modalsComponent.editLinksModal);
       this.editLinksData = event.data;
+    }
+  }
+
+  public async handleEditNodesEvent(event) {
+    if (event) {
+      this.modalsComponent.openModal(this.modalsComponent.editNodeModal);
+      const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
+      this.editNodeData = data.nodes.find(node => node.id === this.selectedNodeId);
     }
   }
 
