@@ -89,7 +89,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
 
   public deleteNode(): void {
     this.deleteNodeEvent.emit(true);
-    this.resetForm();
+    this.resetNodeForm();
     this.closeModal('modalRef');
   }
 
