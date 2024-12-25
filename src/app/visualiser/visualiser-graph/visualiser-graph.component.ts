@@ -58,9 +58,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Generate a unique identifier for the saved graph data
-    const dataId = data.dataId;
-    const randomNumber = crypto.getRandomValues(new Uint32Array(1))[0];
     this.savedGraphData = data;
 
     // Timeout: The input arrives before the svg is rendered, therefore the nativeElement does not exist
@@ -68,6 +65,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
       this.dagreNodesOnlyLayout.renderLayout(data);
       // Take a copy of input for reset
       await this.dexieService.saveGraphData(data);
+
       this.visualiserGraphService.update(
         data,
         this.graphElement.nativeElement,
@@ -233,7 +231,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
           this.saveGraphDataEvent.emit(this.saveGraphData);
 
           this.disableButtons(true);
-          await this.dexieService.saveGraphData(this.saveGraphData);
+          this.data = this.saveGraphData;
           this.showConfirmationMessage();
         }
       }
@@ -284,7 +282,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
             // Add the new node
             data.nodes.push(nodeData);
           }
-          await this.dexieService.saveGraphData(data);
 
           this.data = data;
           this.saveGraphDataEvent.emit(data);
@@ -360,7 +357,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
             } else {
               data.links.push(newLink);
             }
-            await this.dexieService.saveGraphData(data);
 
             this.data = data;
             this.saveGraphDataEvent.emit(data);
@@ -402,9 +398,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
           // Remove links with matching source or target
           data.links = data.links.filter(link => link.source !== this.selectedNodeId && link.target !== this.selectedNodeId);
 
-          // Save the updated data back to Dexie
-          await this.dexieService.saveGraphData(data);
-
           this.data = data;
           this.saveGraphDataEvent.emit(data);
         }
@@ -438,7 +431,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
           const existingLinkIndex = data.links.findIndex(link => link.linkId === linkId);
           if (existingLinkIndex !== -1) {
             data.links.splice(existingLinkIndex, 1);
-            await this.dexieService.saveGraphData(data);
 
             this.data = data;
             this.saveGraphDataEvent.emit(data);
@@ -479,8 +471,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
               // Update the label in the matched object
               relationship.label = result;
             }
-            // Save the updated data back to Dexie
-            await this.dexieService.saveGraphData(data);
             this.data = data;
             this.saveGraphDataEvent.emit(data);
           } else {
