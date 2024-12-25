@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, TemplateRef, ViewChild, OnChang
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder } from '@angular/forms';
 import { AbstractModalFormHandler } from './abstract-modal-form-handler';
+import { Link, Node } from '../../models/data.interface';
 
 @Component({
   selector: 'app-modals',
@@ -11,8 +12,8 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
   @Input() editNodeData: any;
   @Input() editLinksData: any;
   @Output() closeModalEvent = new EventEmitter<string>();
-  @Output() createLinkEvent = new EventEmitter<any>();
-  @Output() createNodeEvent = new EventEmitter<any>();
+  @Output() createLinkEvent = new EventEmitter<Link>();
+  @Output() createNodeEvent = new EventEmitter<Node>();
   @Output() deleteLinkEvent = new EventEmitter<any>();
   @Output() deleteNodeEvent = new EventEmitter<any>();
   @ViewChild('editNodeModal') editNodeModal: TemplateRef<any>;
@@ -62,7 +63,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
 
   public createLink(): void {
     if (this.createLinkForm.valid) {
-      const createLinkData = this.createLinkForm.value;
+      const createLinkData: Link = this.createLinkForm.value as Link;
       this.createLinkEvent.emit(createLinkData);
       this.resetForm();
       this.closeModal('modalRef');
@@ -71,10 +72,10 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
 
   public createNode(): void {
     if (this.createNodeForm.valid) {
-      const createNodeData = this.createNodeForm.value;
-      const payload = {
+      const createNodeData: Node = this.createNodeForm.value as Node;
+      const payload: Node = {
         id: createNodeData.id,
-        label: createNodeData.label.map(item => item.label),
+        label: (createNodeData.label as unknown as { label: string }[]).map((item: { label: string }) => item.label),
         icon: createNodeData.icon,
         fx: createNodeData.fx,
         fy: createNodeData.fy,

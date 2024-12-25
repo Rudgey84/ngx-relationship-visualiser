@@ -1,4 +1,5 @@
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Link, Relationship, Node } from '../../models/data.interface';
 
 export abstract class AbstractModalFormHandler {
   createLinkForm: FormGroup;
@@ -76,26 +77,26 @@ export abstract class AbstractModalFormHandler {
     this.nodeLabelArray.clear();
   }
 
-  protected populateEditLinkForm(data: any) {
+  protected populateEditLinkForm(data: Link) {
     this.createLinkForm.patchValue({
       lineStyle: data.lineStyle,
       sourceArrow: data.sourceArrow,
       targetArrow: data.targetArrow
     });
 
-    if (data.relationships) {
-      data.relationships.forEach((relationship) => {
+    if (data.relationships && Array.isArray(data.relationships)) {
+      data.relationships.forEach((relationship: Relationship) => {
         const labelGroup = this.fb.group({
-          linkIndex: relationship.linkIndex,
+          linkIndex: [relationship.linkIndex, Validators.required],
           label: [relationship.label, Validators.required],
-          linkStrength: relationship.linkStrength
+          linkStrength: [relationship.linkStrength]
         });
         this.labelArray.push(labelGroup);
       });
     }
   }
 
-  protected populateEditNodeForm(data: any) {
+  protected populateEditNodeForm(data: Node) {
     this.createNodeForm.patchValue({
       id: data.id,
       icon: data.icon,
