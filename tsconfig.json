@@ -14,8 +14,8 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["ES2018", "dom"],
     "paths": {
-      "visualiser-graph": ["dist/visualiser-graph"],
-      "visualiser-graph/*": ["dist/visualiser-graph/*"]
+      "ngx-relationship-visualiser": ["dist/ngx-relationship-visualiser"],
+      "ngx-relationship-visualiser/*": ["dist/ngx-relationship-visualiser/*"]
     },
   },
   "angularCompilerOptions": {
