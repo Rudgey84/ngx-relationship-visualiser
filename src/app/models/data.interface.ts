@@ -29,6 +29,7 @@ export interface Node {
   fx: number | null;
   fy: number | null;
   linkStrength: boolean;
+  newItem?: boolean;
 }
 
 export interface Data {

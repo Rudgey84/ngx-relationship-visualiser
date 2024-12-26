@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
 import { Subject, ReplaySubject } from 'rxjs';
+import { DexieService } from '../../db/graphDatabase';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VisualiserGraphService {
-  constructor() {}
+  constructor(private dexieService: DexieService) {}
   public links = [];
   public nodes = [];
   public gBrush = null;
@@ -211,7 +212,7 @@ export class VisualiserGraphService {
     return nodeData;
   }
 
-  public _update(_d3, svg, data) {
+  public async _update(_d3, svg, data) {
     const { nodes, links } = data;
     this.nodes = nodes || [];
     this.links = links || [];
@@ -227,21 +228,19 @@ export class VisualiserGraphService {
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
 
-    // Check to see if nodes are in store
-    if ('nodes' in localStorage) {
-      // Get old nodes from store
-      const oldNodes = JSON.parse(localStorage.getItem('nodes'));
+    // Check to see if nodes are in Dexie
+    const oldData = await this.dexieService.getGraphData('nodes');
+    const oldNodes = oldData ? oldData.nodes : [];
+    if (Array.isArray(oldNodes)) {
       // Compare and set property for new nodes
       this.nodes = this.compareAndMarkNodesNew(nodes, oldNodes);
-      // Empties old nodes from store
-      localStorage.setItem('nodes', JSON.stringify([]));
-      // Remove old nodes from store
-      localStorage.removeItem('nodes');
-      // Add new nodes to store
-      localStorage.setItem('nodes', JSON.stringify(data.nodes));
+      // Remove old nodes from Dexie
+      await this.dexieService.deleteGraphData('nodes');
+      // Add new nodes to Dexie
+      await this.dexieService.saveGraphData({ dataId: 'nodes', nodes: data.nodes, links: data.links });
     } else {
-      // Add first set of nodes to store
-      localStorage.setItem('nodes', JSON.stringify(data.nodes));
+      // Add first set of nodes to Dexie
+      await this.dexieService.saveGraphData({ dataId: 'nodes', nodes: data.nodes, links: data.links });
     }
 
     // If nodes don't have a fx/fy coordinate we generate a random one - dagre nodes without links and new nodes added to canvas have null coordinates by design
