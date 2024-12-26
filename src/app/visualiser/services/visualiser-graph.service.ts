@@ -1339,13 +1339,13 @@ export class VisualiserGraphService {
         return `${id}_${suffix}`;
       })
       .attr('width', 100)
-      .attr('height', 30)
+      .attr('height', 25)
       .attr('x', -50)
       .attr('y', function (d) {
         const textElement = d3.select(this.parentNode).select('text');
         const bbox = textElement.node().getBBox();
         const textHeight = bbox.height;
-        const dyOffset = -25;
+        const dyOffset = -20;
         return textHeight + dyOffset;
       })
       .attr('xlink:href', function (d) {
