@@ -41,7 +41,7 @@ export const MOCKEDDATA: Data = {
       icon: 'https://houseofv.ghost.io/content/images/2024/01/GC72JKwWwAAuyGk.png',
       fx: 313,
       fy: 255,
-      additionalIcon: '',
+      additionalIcon: './assets/font-awesome-icon-svgs/futbol.svg',
     },
   ],
   links: [
