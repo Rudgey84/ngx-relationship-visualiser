@@ -79,7 +79,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
         icon: createNodeData.icon,
         fx: createNodeData.fx,
         fy: createNodeData.fy,
-        linkStrength: createNodeData.linkStrength,
+        additionalIcon: createNodeData.additionalIcon,
       };
       this.createNodeEvent.emit(payload);
       this.resetNodeForm();

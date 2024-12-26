@@ -1327,7 +1327,7 @@ export class VisualiserGraphService {
 
     nodeEnter
       .filter(function (d) {
-        if (!d.linkStrength) {
+        if (!d.additionalIcon) {
           return null;
         }
         return true;

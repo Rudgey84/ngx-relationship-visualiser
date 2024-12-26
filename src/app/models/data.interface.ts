@@ -28,8 +28,7 @@ export interface Node {
   icon: string;
   fx: number | null;
   fy: number | null;
-  linkStrength: boolean;
- // newItem?: boolean;
+  additionalIcon: boolean;
 }
 
 export interface Data {
