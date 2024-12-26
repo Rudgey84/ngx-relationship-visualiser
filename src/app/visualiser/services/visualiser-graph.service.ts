@@ -1334,12 +1334,12 @@ export class VisualiserGraphService {
       })
       .append('image')
       .attr('id', function (d) {
-        const suffix = 'unauthImage';
+        const suffix = 'additionalIcon';
         const id = d.id ? d.id : '';
         return `${id}_${suffix}`;
       })
       .attr('width', 100)
-      .attr('height', 17)
+      .attr('height', 30)
       .attr('x', -50)
       .attr('y', function (d) {
         const textElement = d3.select(this.parentNode).select('text');
@@ -1349,7 +1349,7 @@ export class VisualiserGraphService {
         return textHeight + dyOffset;
       })
       .attr('xlink:href', function (d) {
-        return './assets/unauthPill.png';
+        return './assets/address-book.svg';
       });
 
     // transition effects for new pulsating nodes
