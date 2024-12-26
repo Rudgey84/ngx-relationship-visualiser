@@ -1,9 +1,11 @@
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Link, Relationship, Node } from '../../models/data.interface';
+import fontAwesomeIcons from '../../models/font-awesome-icons';
 
 export abstract class AbstractModalFormHandler {
   createLinkForm: FormGroup;
   createNodeForm: FormGroup;
+  public fontAwesomeIcons = fontAwesomeIcons;
 
   constructor(protected fb: FormBuilder) {
     this.createLinkForm = this.fb.group({
@@ -19,7 +21,7 @@ export abstract class AbstractModalFormHandler {
       icon: ['', Validators.required],
       fx: [null],
       fy: [null],
-      additionalIcon: [false],
+      additionalIcon: [''],
     });
   }
 

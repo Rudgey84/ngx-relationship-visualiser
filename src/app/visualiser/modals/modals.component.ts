@@ -3,6 +3,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder } from '@angular/forms';
 import { AbstractModalFormHandler } from './abstract-modal-form-handler';
 import { Link, Node } from '../../models/data.interface';
+import fontAwesomeIcons from '../../models/font-awesome-icons';
 
 @Component({
   selector: 'app-modals',
@@ -23,6 +24,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
 
   public modalRef?: BsModalRef;
   readonly defaultModalConfig = { class: 'modal-xl' };
+  public fontAwesomeIcons = fontAwesomeIcons;
 
   constructor(private modalService: BsModalService, fb: FormBuilder) {
     super(fb);

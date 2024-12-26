@@ -9,7 +9,7 @@ export const MOCKEDDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/men/24.jpg',
       fx: 1000,
       fy: 400,
-      additionalIcon: true,
+      additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
     },
     {
       id: '456',
@@ -17,7 +17,7 @@ export const MOCKEDDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/men/99.jpg',
       fx: 332,
       fy: 684,
-      additionalIcon: false,
+      additionalIcon: '',
     },
     {
       id: '789',
@@ -25,7 +25,7 @@ export const MOCKEDDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/men/21.jpg',
       fx: 55,
       fy: 60,
-      additionalIcon: true,
+      additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
     },
     {
       id: '4',
@@ -33,7 +33,7 @@ export const MOCKEDDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/men/9.jpg',
       fx: 414,
       fy: 369,
-      additionalIcon: false,
+      additionalIcon: '',
     },
     {
       id: '423',
@@ -41,7 +41,7 @@ export const MOCKEDDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/women/10.jpg',
       fx: null,
       fy: null,
-      additionalIcon: true,
+      additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
     },
   ],
   links: [
@@ -185,7 +185,7 @@ export const NEWDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/men/24.jpg',
       fx: 100,
       fy: 400,
-      additionalIcon: false,
+      additionalIcon: '',
     },
     {
       id: '456',
@@ -193,7 +193,7 @@ export const NEWDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/men/99.jpg',
       fx: 410,
       fy: 284,
-      additionalIcon: false,
+      additionalIcon: '',
     },
     {
       id: '789',
@@ -201,7 +201,7 @@ export const NEWDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/men/21.jpg',
       fx: 55,
       fy: 60,
-      additionalIcon: false,
+      additionalIcon: '',
     },
     {
       id: '101112',
@@ -209,7 +209,7 @@ export const NEWDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/women/3.jpg',
       fx: null,
       fy: null,
-      additionalIcon: false,
+      additionalIcon: '',
     },
     {
       id: '131415',
@@ -217,7 +217,7 @@ export const NEWDATA: Data = {
       icon: 'https://randomuser.me/api/portraits/thumb/women/66.jpg',
       fx: null,
       fy: null,
-      additionalIcon: false,
+      additionalIcon: '',
     },
   ],
   links: [

@@ -28,7 +28,7 @@ export interface Node {
   icon: string;
   fx: number | null;
   fy: number | null;
-  additionalIcon: boolean;
+  additionalIcon: string;
 }
 
 export interface Data {

@@ -1349,7 +1349,7 @@ export class VisualiserGraphService {
         return textHeight + dyOffset;
       })
       .attr('xlink:href', function (d) {
-        return './assets/address-book.svg';
+        return d.additionalIcon;
       });
 
     // transition effects for new pulsating nodes
