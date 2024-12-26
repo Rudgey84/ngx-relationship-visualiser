@@ -30,7 +30,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.editLinksData && this.editLinksData) {
-      this.resetForm();
+      this.resetLinksForm();
       this.populateEditLinkForm(this.editLinksData);
     }
     if (changes.editNodeData && this.editNodeData) {
@@ -46,11 +46,11 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
     }
 
     if (template === this.editLinksModal && this.editLinksData) {
-      this.resetForm();
       this.populateEditLinkForm(this.editLinksData);
-    } else if (template === this.createLinkModal) {
-      this.resetForm();
-    }
+    } 
+
+    this.resetLinksForm();
+    this.resetNodeForm();
 
     this.modalRef = this.modalService.show(template, this.defaultModalConfig);
   }
@@ -65,7 +65,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
     if (this.createLinkForm.valid) {
       const createLinkData: Link = this.createLinkForm.value as Link;
       this.createLinkEvent.emit(createLinkData);
-      this.resetForm();
+      this.resetLinksForm();
       this.closeModal('modalRef');
     }
   }
@@ -96,7 +96,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
   public deleteLink(): void {
     const linkId = this.editLinksData.linkId;
     this.deleteLinkEvent.emit(linkId);
-    this.resetForm();
+    this.resetLinksForm();
     this.closeModal('modalRef');
   }
 }

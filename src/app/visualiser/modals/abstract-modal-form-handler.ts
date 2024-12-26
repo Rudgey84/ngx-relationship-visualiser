@@ -58,7 +58,7 @@ export abstract class AbstractModalFormHandler {
     }
   }
 
-  protected resetForm() {
+  protected resetLinksForm() {
     this.createLinkForm.reset({
       lineStyle: 'Unconfirmed',
       sourceArrow: false,

@@ -89,12 +89,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
     this.visualiserGraphService.dblClickNodePayload.subscribe(
       (dblClickNodePayload) => {
         this.selectedNodeId = dblClickNodePayload[0].id;
-
-        if (this.modalsComponent) {
-          this.modalsComponent.openModal(this.modalsComponent.editNodeModal);
-        } else {
-          console.error('Modal component is not available.');
-        }
+        this.handleEditNodesEvent(true);
       }
     );
 
@@ -102,7 +97,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
     this.visualiserGraphService.dblClickLinkPayload.subscribe(
       (dblClickLinkPayload) => {
         this.selectedLinkArray = dblClickLinkPayload;
-        this.onEditLinkLabel()
+        this.onEditLinkLabel();
       }
     );
 
