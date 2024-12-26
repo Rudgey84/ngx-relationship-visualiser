@@ -8,7 +8,7 @@ import { MOCKEDDATA } from './models/mocked-data';
 })
 export class AppComponent {
 
-  public title = 'angular-visualiser';
+  public title = 'ngx-relationship-visualiser';
   public mockedData: Data = MOCKEDDATA;
 
   public saveGraphData(data) {
