@@ -37,11 +37,11 @@ export const MOCKEDDATA: Data = {
     },
     {
       id: '423',
-      label: ['Linda Jones', 'Pilot'],
-      icon: 'https://randomuser.me/api/portraits/thumb/women/10.jpg',
+      label: ['Aston Villa', 'Football Club', 'Founded 1874'],
+      icon: 'https://houseofv.ghost.io/content/images/2024/01/GC72JKwWwAAuyGk.png',
       fx: null,
       fy: null,
-      additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
+      additionalIcon: '',
     },
   ],
   links: [
