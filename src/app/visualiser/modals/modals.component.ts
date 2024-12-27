@@ -79,6 +79,7 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
         id: createNodeData.id,
         label: (createNodeData.label as unknown as { label: string }[]).map((item: { label: string }) => item.label),
         imageUrl: createNodeData.imageUrl,
+        icon: createNodeData.icon,
         fx: createNodeData.fx,
         fy: createNodeData.fy,
         additionalIcon: createNodeData.additionalIcon,

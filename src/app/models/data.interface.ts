@@ -26,6 +26,7 @@ export interface Node {
   id: string;
   label: string[];
   imageUrl: string;
+  icon: string;
   fx: number | null;
   fy: number | null;
   additionalIcon: string;

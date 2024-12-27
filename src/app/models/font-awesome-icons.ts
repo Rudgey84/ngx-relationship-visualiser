@@ -1,5 +1,3 @@
-const BASE_ICON_PATH = './assets/font-awesome-icon-svgs/';
-
 export default [
   { id: 1, name: 'Address book', icon: '\uf2b9' },
   { id: 2, name: 'Address card', icon: '\uf2bb' },

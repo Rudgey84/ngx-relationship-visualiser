@@ -157,7 +157,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
         selectedNodes: this.selectedNodesArray
       };
     } else {
-      if (localName === 'image' || parentNodeId === 'nodeText') {
+      if (localName === 'text' || localName === 'image' || parentNodeId === 'nodeText') {
         contextMenu = this.contextMenu.editNodeContextMenu;
         item = this.selectedNodeId;
       } else if (localName === 'textPath') {

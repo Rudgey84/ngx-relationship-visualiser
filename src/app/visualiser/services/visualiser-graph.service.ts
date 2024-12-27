@@ -7,7 +7,7 @@ import { DexieService } from '../../db/graphDatabase';
   providedIn: 'root',
 })
 export class VisualiserGraphService {
-  constructor(private dexieService: DexieService) {}
+  constructor(private dexieService: DexieService) { }
   public links = [];
   public nodes = [];
   public gBrush = null;
@@ -181,7 +181,7 @@ export class VisualiserGraphService {
         while (!canPlaceNode && currentMinDistance > 0) {
           node.fx = crypto.getRandomValues(new Uint32Array(1))[0] % width;
           node.fy = crypto.getRandomValues(new Uint32Array(1))[0] % height;
-          
+
           canPlaceNode = !nodeData.some((otherNode) => {
             if (
               otherNode.fx === null ||
@@ -797,11 +797,11 @@ export class VisualiserGraphService {
                 (d3.event.selection[0][0] <=
                   d.x * currentZoom.k + currentZoom.x &&
                   d.x * currentZoom.k + currentZoom.x <
-                    d3.event.selection[1][0] &&
+                  d3.event.selection[1][0] &&
                   d3.event.selection[0][1] <=
-                    d.y * currentZoom.k + currentZoom.y &&
+                  d.y * currentZoom.k + currentZoom.y &&
                   d.y * currentZoom.k + currentZoom.y <
-                    d3.event.selection[1][1])
+                  d3.event.selection[1][1])
               )));
           })
           .select('.nodeText')
@@ -1279,6 +1279,12 @@ export class VisualiserGraphService {
     });
 
     nodeEnter
+    .filter(function (d) {
+      if (!d.imageUrl || d.imageUrl === '') {
+        return null;
+      }
+      return true;
+    })
       .append('image')
       .attr('xlink:href', function (d) {
         return d.imageUrl;
@@ -1298,6 +1304,32 @@ export class VisualiserGraphService {
       .attr('height', 32)
       .attr('class', 'image')
       .style('cursor', 'pointer');
+
+      nodeEnter
+      .filter(function (d) {
+        if (!d.icon || d.icon === '') {
+          return null;
+        }
+        return true;
+      })
+      .append('text')
+      .text(function (d) {
+        return d.icon;
+      })
+      .attr('x', -18)
+      .attr('y', -30)
+      .attr('class', function (d) {
+        const suffix = 'icon';
+        const id = d.id ? d.id : '';
+        return `${id}_${suffix} fa`;
+      })
+      .attr('id', function (d) {
+        const id = d.id ? d.id : '';
+        return `${id}`;
+      })
+      .style('font-size', '40px')
+      .style('cursor', 'pointer');
+    
 
     const nodeText = nodeEnter
       .append('text')
@@ -1351,7 +1383,7 @@ export class VisualiserGraphService {
       .attr('class', 'fa')
       .text(function (d) {
         return d.additionalIcon;
-    });
+      });
 
     // transition effects for new pulsating nodes
     nodeEnter
