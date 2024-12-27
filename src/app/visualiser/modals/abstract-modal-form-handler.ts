@@ -23,7 +23,7 @@ export abstract class AbstractModalFormHandler {
       fx: [null],
       fy: [null],
       additionalIcon: [''],
-      iconType: ['url'],
+      iconType: ['select'],
     }, { validators: this.iconOrImageValidator });
   }
 
@@ -78,7 +78,7 @@ export abstract class AbstractModalFormHandler {
       imageUrl: '',
       icon: '',
       additionalIcon: '',
-      iconType: 'url',
+      iconType: 'select',
     });
     this.nodeLabelArray.clear();
   }
@@ -109,7 +109,8 @@ export abstract class AbstractModalFormHandler {
       icon: data.icon,
       fx: data.fx,
       fy: data.fy,
-      additionalIcon: data.additionalIcon
+      additionalIcon: data.additionalIcon,
+      iconType: data.imageUrl ? 'url' : 'select'
     });
 
     this.createNodeForm.setControl('label', this.fb.array(
