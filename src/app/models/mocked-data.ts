@@ -9,7 +9,7 @@ export const MOCKEDDATA: Data = {
       imageUrl: 'https://randomuser.me/api/portraits/thumb/men/24.jpg',
       fx: 1000,
       fy: 400,
-      additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
+      additionalIcon: '\uf3a5',
     },
     {
       id: '456',
@@ -25,7 +25,7 @@ export const MOCKEDDATA: Data = {
       imageUrl: 'https://randomuser.me/api/portraits/thumb/men/21.jpg',
       fx: 55,
       fy: 60,
-      additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
+      additionalIcon: '\uf2dc',
     },
     {
       id: '4',
@@ -41,7 +41,7 @@ export const MOCKEDDATA: Data = {
       imageUrl: 'https://houseofv.ghost.io/content/images/2024/01/GC72JKwWwAAuyGk.png',
       fx: 313,
       fy: 255,
-      additionalIcon: './assets/font-awesome-icon-svgs/futbol.svg',
+      additionalIcon: '\uf1e3',
     },
   ],
   links: [

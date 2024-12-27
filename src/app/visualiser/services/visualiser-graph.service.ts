@@ -1332,7 +1332,7 @@ export class VisualiserGraphService {
         }
         return true;
       })
-      .append('image')
+      .append('text')
       .attr('id', function (d) {
         const suffix = 'additionalIcon';
         const id = d.id ? d.id : '';
@@ -1340,17 +1340,18 @@ export class VisualiserGraphService {
       })
       .attr('width', 100)
       .attr('height', 25)
-      .attr('x', -50)
+      .attr('x', -10)
       .attr('y', function (d) {
         const textElement = d3.select(this.parentNode).select('text');
         const bbox = textElement.node().getBBox();
         const textHeight = bbox.height;
-        const dyOffset = -20;
+        const dyOffset = 0;
         return textHeight + dyOffset;
       })
-      .attr('xlink:href', function (d) {
+      .attr('class', 'fa')
+      .text(function (d) {
         return d.additionalIcon;
-      });
+    });
 
     // transition effects for new pulsating nodes
     nodeEnter
