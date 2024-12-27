@@ -9,6 +9,7 @@
     "@angular/forms": "17.3.12",
     "@dagrejs/dagre": "^1.1.4",
     "@kreash/ngx-contextmenu": "^18.1.0",
+    "@ng-select/ng-select": "^14.1.0",
     "bootbox": "^6.0.0",
     "bootstrap": "4.6.2",
     "classlist.js": "1.1.20150312",

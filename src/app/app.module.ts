@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { VisualiserGraphComponent } from './visualiser/visualiser-graph/visualiser-graph.component';
 import { ContextMenusComponent } from './visualiser/context-menus/context-menus.component';
 import { ModalsComponent } from './visualiser/modals/modals.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ModalsComponent } from './visualiser/modals/modals.component';
     BrowserModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
-    ContextMenuModule.forRoot({ useBootstrap4: true })
+    ContextMenuModule.forRoot({ useBootstrap4: true }),
+    NgSelectModule,
+    FormsModule
   ],
   bootstrap: [AppComponent]
 })

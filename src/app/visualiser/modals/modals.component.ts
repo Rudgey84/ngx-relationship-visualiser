@@ -26,6 +26,12 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
   readonly defaultModalConfig = { class: 'modal-xl' };
   public fontAwesomeIcons = fontAwesomeIcons;
 
+    // virtual scroll
+    loading = false;
+    iconsBuffer = [];
+    numberOfItemsFromEndBeforeFetchingMore = 10;
+    bufferSize = 50;
+
   constructor(private modalService: BsModalService, fb: FormBuilder) {
     super(fb);
   }
@@ -105,5 +111,35 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
 
   public clearImageUrl(): void {
     this.createNodeForm.get('imageUrl').setValue('');
+  }
+
+
+  trackByFn(item: any) {
+    return item.id;
+  }
+
+  onScrollToEnd() {
+    this.fetchMore();
+  }
+
+  onScroll({ end }) {
+    if (this.loading || this.fontAwesomeIcons.length <= this.iconsBuffer.length) {
+      return;
+    }
+
+    if (
+      end + this.numberOfItemsFromEndBeforeFetchingMore >=
+      this.iconsBuffer.length
+    ) {
+      this.fetchMore();
+    }
+  }
+
+  private fetchMore() {
+    const len = this.iconsBuffer.length;
+    const more = this.fontAwesomeIcons.slice(len, this.bufferSize + len);
+    this.loading = true;
+    this.loading = false;
+    this.iconsBuffer = this.iconsBuffer.concat(more);
   }
 }
