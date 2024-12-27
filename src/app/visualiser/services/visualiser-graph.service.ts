@@ -1372,15 +1372,10 @@ export class VisualiserGraphService {
       })
       .attr('width', 100)
       .attr('height', 25)
-      .attr('x', -10)
-      .attr('y', function (d) {
-        const textElement = d3.select(this.parentNode).select('text');
-        const bbox = textElement.node().getBBox();
-        const textHeight = bbox.height;
-        const dyOffset = 0;
-        return textHeight + dyOffset;
-      })
+      .attr('x', 30)
+      .attr('y', -50)
       .attr('class', 'fa')
+      .style('fill', '#856404')
       .text(function (d) {
         return d.additionalIcon;
       });

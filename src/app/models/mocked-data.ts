@@ -7,7 +7,7 @@ export const MOCKEDDATA: Data = {
       id: '123',
       label: ['John Doe', '01/01/1970'],
       imageUrl: '',
-      icon: '\uf2b9',
+      icon: '\uf007',
       fx: 1000,
       fy: 400,
       additionalIcon: '\uf3a5',
