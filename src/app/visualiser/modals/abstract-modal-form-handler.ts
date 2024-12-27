@@ -9,7 +9,7 @@ export abstract class AbstractModalFormHandler {
 
   constructor(protected fb: FormBuilder) {
     this.createLinkForm = this.fb.group({
-      lineStyle: ['Unconfirmed', Validators.required],
+      lineStyle: ['Dotted', Validators.required],
       sourceArrow: [false],
       targetArrow: [false],
       label: this.fb.array([], Validators.required),
@@ -37,7 +37,7 @@ export abstract class AbstractModalFormHandler {
   public addLabel() {
     const labelGroup = this.fb.group({
       label: ['', Validators.required],
-      linkStrength: [false],
+      linkIcon: [false],
     });
     this.labelArray.push(labelGroup);
   }
@@ -63,7 +63,7 @@ export abstract class AbstractModalFormHandler {
 
   protected resetLinksForm() {
     this.createLinkForm.reset({
-      lineStyle: 'Unconfirmed',
+      lineStyle: 'Dotted',
       sourceArrow: false,
       targetArrow: false,
       label: this.fb.array([]),
@@ -93,7 +93,7 @@ export abstract class AbstractModalFormHandler {
         const labelGroup = this.fb.group({
           linkIndex: [relationship.linkIndex, Validators.required],
           label: [relationship.label, Validators.required],
-          linkStrength: [relationship.linkStrength]
+          linkIcon: [relationship.linkIcon]
         });
         this.labelArray.push(labelGroup);
       });

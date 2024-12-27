@@ -305,7 +305,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
       }, []);
       let nextIndex = Math.max(...allIndexes, 0) + 1;
 
-      // Map over the labels and linkStrength values, assuming each label has a corresponding linkStrength
+      // Map over the labels and linkIcon values, assuming each label has a corresponding linkIcon
       const relationships: Relationship[] = linkData.label.map((item) => ({
         linkIndex: item.linkIndex !== undefined ? item.linkIndex : nextIndex++,
         label: item.label,
@@ -314,7 +314,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
         sourceArrow: linkData.sourceArrow,
         target: targetNode.id,
         targetArrow: linkData.targetArrow,
-        linkStrength: item.linkStrength
+        linkIcon: item.linkIcon
       }));
 
       const newLink: Link = {

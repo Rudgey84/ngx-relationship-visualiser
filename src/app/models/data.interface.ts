@@ -8,7 +8,7 @@ export interface Relationship {
   sourceArrow: boolean;
   target: string;
   targetArrow: boolean;
-  linkStrength: boolean;
+  linkIcon: boolean;
 }
 
 export interface Link {

@@ -910,7 +910,7 @@ export class VisualiserGraphService {
     const linkEnter = link
       .join('line')
       .style('stroke', function (d) {
-        if (d.parentLineStyle === 'Confirmed') {
+        if (d.parentLineStyle === 'Solid') {
           return '#777';
         } else {
           return '#b4b4b4';
@@ -918,7 +918,7 @@ export class VisualiserGraphService {
       })
       .style('stroke-opacity', '.6')
       .style('stroke-dasharray', function (d) {
-        if (d.parentLineStyle === 'Unconfirmed') {
+        if (d.parentLineStyle === 'Dotted') {
           return '8,5';
         }
         return null;
@@ -1005,7 +1005,7 @@ export class VisualiserGraphService {
     edgelabelsEnter
       .selectAll('textPath')
       .filter(function (d) {
-        return d.linkStrength;
+        return d.linkIcon;
       })
       .append('tspan')
       .style('fill', '#856404')
