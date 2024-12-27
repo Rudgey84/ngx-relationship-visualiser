@@ -1281,7 +1281,7 @@ export class VisualiserGraphService {
     nodeEnter
       .append('image')
       .attr('xlink:href', function (d) {
-        return d.icon;
+        return d.imageUrl;
       })
       .attr('x', -15)
       .attr('y', -60)

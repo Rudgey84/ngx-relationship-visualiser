@@ -25,7 +25,7 @@ export interface Link {
 export interface Node {
   id: string;
   label: string[];
-  icon: string;
+  imageUrl: string;
   fx: number | null;
   fy: number | null;
   additionalIcon: string;

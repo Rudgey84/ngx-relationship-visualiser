@@ -11,19 +11,19 @@
       <div class="form-group">
         <label for="iconType">Icon Type</label>
         <div>
-          <input type="radio" id="iconTypeUrl" formControlName="iconType" value="url"> Icon URL
+          <input type="radio" id="imageUrl" formControlName="iconType" value="url"> Image URL
           <input class="ml-5" type="radio" id="iconTypeSelect" formControlName="iconType" value="select"> Choose Icon
         </div>
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'url'">
-        <label for="icon">Icon URL</label>
-        <input type="text" id="icon" formControlName="icon" class="form-control" placeholder="Icon URL">
+        <label for="imageUrl">Image URL</label>
+        <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control" placeholder="Image URL">
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'select'">
         <label for="nodeIcon">Choose Icon</label>
-        <select id="nodeIcon" formControlName="icon" class="form-control">
+        <select id="nodeIcon" formControlName="imageUrl" class="form-control">
           <option value="">None</option>
-          <option *ngFor="let icon of fontAwesomeIcons" [value]="icon.icon">{{ icon.name }}</option>
+          <option *ngFor="let imageUrl of fontAwesomeIcons" [value]="imageUrl.icon">{{ imageUrl.name }}</option>
         </select>
       </div>
       <div class="form-group">
@@ -69,19 +69,19 @@
       <div class="form-group">
         <label for="iconType">Icon Type</label>
         <div>
-          <input type="radio" id="iconTypeUrl" formControlName="iconType" value="url"> Icon URL
+          <input type="radio" id="imageUrl" formControlName="iconType" value="url"> Image URL
           <input class="ml-5" type="radio" id="iconTypeSelect" formControlName="iconType" value="select"> Choose Icon
         </div>
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'url'">
-        <label for="icon">Icon URL</label>
-        <input type="text" id="icon" formControlName="icon" class="form-control" placeholder="Icon URL">
+        <label for="imageUrl">Image URL</label>
+        <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control" placeholder="Image URL">
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'select'">
         <label for="nodeIcon">Choose Icon</label>
-        <select id="nodeIcon" formControlName="icon" class="form-control">
+        <select id="nodeIcon" formControlName="imageUrl" class="form-control">
           <option value="">None</option>
-          <option *ngFor="let icon of fontAwesomeIcons" [value]="icon.icon">{{ icon.name }}</option>
+          <option *ngFor="let imageUrl of fontAwesomeIcons" [value]="imageUrl.icon">{{ imageUrl.name }}</option>
         </select>
       </div>
       <div class="form-group">

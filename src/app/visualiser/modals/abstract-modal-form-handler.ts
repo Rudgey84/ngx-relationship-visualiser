@@ -18,7 +18,7 @@ export abstract class AbstractModalFormHandler {
     this.createNodeForm = this.fb.group({
       id: '',
       label: this.fb.array([], Validators.required),
-      icon: ['', Validators.required],
+      imageUrl: ['', Validators.required],
       fx: [null],
       fy: [null],
       additionalIcon: [''],
@@ -74,7 +74,7 @@ export abstract class AbstractModalFormHandler {
   protected resetNodeForm() {
     this.createNodeForm.reset({
       label: this.fb.array([]),
-      icon: '',
+      imageUrl: '',
       additionalIcon: '',
       iconType: 'url',
     });
@@ -103,7 +103,7 @@ export abstract class AbstractModalFormHandler {
   protected populateEditNodeForm(data: Node) {
     this.createNodeForm.patchValue({
       id: data.id,
-      icon: data.icon,
+      imageUrl: data.imageUrl,
       fx: data.fx,
       fy: data.fy,
       additionalIcon: data.additionalIcon

@@ -6,7 +6,7 @@ export const MOCKEDDATA: Data = {
     {
       id: '123',
       label: ['John Doe', '01/01/1970'],
-      icon: 'https://randomuser.me/api/portraits/thumb/men/24.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/men/24.jpg',
       fx: 1000,
       fy: 400,
       additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
@@ -14,7 +14,7 @@ export const MOCKEDDATA: Data = {
     {
       id: '456',
       label: ['Richard Hill', '14/05/1982'],
-      icon: 'https://randomuser.me/api/portraits/thumb/men/99.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/men/99.jpg',
       fx: 332,
       fy: 684,
       additionalIcon: '',
@@ -22,7 +22,7 @@ export const MOCKEDDATA: Data = {
     {
       id: '789',
       label: ['Rick Smith', 'Software Developer'],
-      icon: 'https://randomuser.me/api/portraits/thumb/men/21.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/men/21.jpg',
       fx: 55,
       fy: 60,
       additionalIcon: './assets/font-awesome-icon-svgs/address-book.svg',
@@ -30,7 +30,7 @@ export const MOCKEDDATA: Data = {
     {
       id: '4',
       label: ['James Jones', 'BA'],
-      icon: 'https://randomuser.me/api/portraits/thumb/men/9.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/men/9.jpg',
       fx: 414,
       fy: 369,
       additionalIcon: '',
@@ -38,7 +38,7 @@ export const MOCKEDDATA: Data = {
     {
       id: '423',
       label: ['Aston Villa', 'Football Club', 'Founded 1874'],
-      icon: 'https://houseofv.ghost.io/content/images/2024/01/GC72JKwWwAAuyGk.png',
+      imageUrl: 'https://houseofv.ghost.io/content/images/2024/01/GC72JKwWwAAuyGk.png',
       fx: 313,
       fy: 255,
       additionalIcon: './assets/font-awesome-icon-svgs/futbol.svg',
@@ -182,7 +182,7 @@ export const NEWDATA: Data = {
     {
       id: '123',
       label: ['John Doe', '01/01/1970'],
-      icon: 'https://randomuser.me/api/portraits/thumb/men/24.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/men/24.jpg',
       fx: 100,
       fy: 400,
       additionalIcon: '',
@@ -190,7 +190,7 @@ export const NEWDATA: Data = {
     {
       id: '456',
       label: ['Richard Hill', '14/05/1982'],
-      icon: 'https://randomuser.me/api/portraits/thumb/men/99.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/men/99.jpg',
       fx: 410,
       fy: 284,
       additionalIcon: '',
@@ -198,7 +198,7 @@ export const NEWDATA: Data = {
     {
       id: '789',
       label: ['Rick Smith', 'Software Developer'],
-      icon: 'https://randomuser.me/api/portraits/thumb/men/21.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/men/21.jpg',
       fx: 55,
       fy: 60,
       additionalIcon: '',
@@ -206,7 +206,7 @@ export const NEWDATA: Data = {
     {
       id: '101112',
       label: ['Jane Doe', '13/09/1970'],
-      icon: 'https://randomuser.me/api/portraits/thumb/women/3.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/women/3.jpg',
       fx: null,
       fy: null,
       additionalIcon: '',
@@ -214,7 +214,7 @@ export const NEWDATA: Data = {
     {
       id: '131415',
       label: ['Rebecca Jones', 'Doctor'],
-      icon: 'https://randomuser.me/api/portraits/thumb/women/66.jpg',
+      imageUrl: 'https://randomuser.me/api/portraits/thumb/women/66.jpg',
       fx: null,
       fy: null,
       additionalIcon: '',
