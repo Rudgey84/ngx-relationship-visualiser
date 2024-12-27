@@ -17,14 +17,20 @@
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'url'">
         <label for="imageUrl">Image URL</label>
-        <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control" placeholder="Image URL">
+        <div class="input-group">
+          <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control" placeholder="Image URL">
+          <button type="button" class="btn btn-outline-secondary" (click)="clearImageUrl()">Clear</button>
+        </div>
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'select'">
         <label for="nodeIcon">Choose Icon</label>
-        <select id="nodeIcon" formControlName="imageUrl" class="form-control">
+        <select id="nodeIcon" formControlName="icon" class="form-control">
           <option value="">None</option>
-          <option *ngFor="let imageUrl of fontAwesomeIcons" [value]="imageUrl.icon">{{ imageUrl.name }}</option>
+          <option *ngFor="let icon of fontAwesomeIcons" [value]="icon.icon">{{ icon.name }}</option>
         </select>
+      </div>
+      <div *ngIf="createNodeForm.errors?.iconOrImage" class="text-danger">
+        Please provide either an Image URL or choose an Icon, but not both.
       </div>
       <div class="form-group">
         <label for="label">Labels</label>
@@ -75,14 +81,20 @@
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'url'">
         <label for="imageUrl">Image URL</label>
-        <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control" placeholder="Image URL">
+        <div class="input-group">
+          <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control" placeholder="Image URL">
+          <button type="button" class="btn btn-outline-secondary" (click)="clearImageUrl()">Clear</button>
+        </div>
       </div>
       <div class="form-group" *ngIf="createNodeForm.get('iconType').value === 'select'">
         <label for="nodeIcon">Choose Icon</label>
-        <select id="nodeIcon" formControlName="imageUrl" class="form-control">
+        <select id="nodeIcon" formControlName="icon" class="form-control">
           <option value="">None</option>
-          <option *ngFor="let imageUrl of fontAwesomeIcons" [value]="imageUrl.icon">{{ imageUrl.name }}</option>
+          <option *ngFor="let icon of fontAwesomeIcons" [value]="icon.icon">{{ icon.name }}</option>
         </select>
+      </div>
+      <div *ngIf="createNodeForm.errors?.iconOrImage" class="text-danger">
+        Please provide either an Image URL or choose an Icon, but not both.
       </div>
       <div class="form-group">
         <label for="label">Labels</label>

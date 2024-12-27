@@ -1327,7 +1327,7 @@ export class VisualiserGraphService {
         const id = d.id ? d.id : '';
         return `${id}`;
       })
-      .style('font-size', '40px')
+      .style('font-size', '35px')
       .style('cursor', 'pointer');
     
 

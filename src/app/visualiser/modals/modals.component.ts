@@ -102,4 +102,8 @@ export class ModalsComponent extends AbstractModalFormHandler implements OnChang
     this.resetLinksForm();
     this.closeModal('modalRef');
   }
+
+  public clearImageUrl(): void {
+    this.createNodeForm.get('imageUrl').setValue('');
+  }
 }

@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { Link, Relationship, Node } from '../../models/data.interface';
 import fontAwesomeIcons from '../../models/font-awesome-icons';
 
@@ -18,13 +18,13 @@ export abstract class AbstractModalFormHandler {
     this.createNodeForm = this.fb.group({
       id: '',
       label: this.fb.array([], Validators.required),
-      imageUrl: ['', Validators.required],
-      icon: ['', Validators.required],
+      imageUrl: [''],
+      icon: [''],
       fx: [null],
       fy: [null],
       additionalIcon: [''],
       iconType: ['url'],
-    });
+    }, { validators: this.iconOrImageValidator });
   }
 
   get labelArray(): FormArray {
@@ -115,5 +115,14 @@ export abstract class AbstractModalFormHandler {
     this.createNodeForm.setControl('label', this.fb.array(
       data.label.map(label => this.fb.group({ label: [label, Validators.required] }))
     ));
+  }
+
+  private iconOrImageValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const imageUrl = control.get('imageUrl').value;
+    const icon = control.get('icon').value;
+    if ((imageUrl && icon) || (!imageUrl && !icon)) {
+      return { 'iconOrImage': true };
+    }
+    return null;
   }
 }

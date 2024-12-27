@@ -14,7 +14,6 @@ import { DagreNodesOnlyLayout } from '../services/dagre-layout.service';
 import { ContextMenuService } from '@kreash/ngx-contextmenu';
 import { ContextMenusComponent } from '../context-menus/context-menus.component';
 import { Data, Link, Relationship } from '../../models/data.interface';
-import { NEWDATA } from '../../models/mocked-data';
 import { ModalsComponent } from '../modals/modals.component';
 import { DexieService } from 'src/app/db/graphDatabase';
 declare var bootbox: any;
@@ -615,9 +614,5 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
     } else {
       console.error(`Modal template ${modal} is not available.`);
     }
-  }
-
-  newData() {
-    this.data = NEWDATA;
   }
 }
