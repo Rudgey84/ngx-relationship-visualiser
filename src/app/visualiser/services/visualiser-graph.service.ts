@@ -1010,8 +1010,8 @@ export class VisualiserGraphService {
       .append('tspan')
       .style('fill', '#856404')
       .style('font-weight', '700')
-      .text(' (Strong Link)');
-
+      .attr('class', 'fa')
+      .text(' \uf0c1');
     // on normal label link click - highlight labels
     svg.selectAll('.edgelabel').on('click', function (d) {
       _d3.event.stopPropagation();
