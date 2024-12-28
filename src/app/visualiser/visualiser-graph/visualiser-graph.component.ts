@@ -308,7 +308,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
       const relationships: Relationship[] = linkData.label.map((item) => ({
         linkIndex: item.linkIndex !== undefined ? item.linkIndex : nextIndex++,
         label: item.label,
-        lineStyle: linkData.lineStyle,
         source: sourceNode.id,
         sourceArrow: linkData.sourceArrow,
         target: targetNode.id,
@@ -319,7 +318,6 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
       const newLink: Link = {
         source: sourceNode.id,
         target: targetNode.id,
-        label: linkData.label.map(item => item.label),
         lineStyle: linkData.lineStyle,
         sourceArrow: linkData.sourceArrow,
         targetArrow: linkData.targetArrow,

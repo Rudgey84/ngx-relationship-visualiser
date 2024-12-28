@@ -3,7 +3,6 @@
 export interface Relationship {
   linkIndex: number;
   label: string | string[];
-  lineStyle: string;
   source: string;
   sourceArrow: boolean;
   target: string;
@@ -14,7 +13,6 @@ export interface Relationship {
 export interface Link {
   source: string;
   target: string;
-  label: string[];
   lineStyle: string;
   sourceArrow: boolean;
   targetArrow: boolean;

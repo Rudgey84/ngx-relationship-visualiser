@@ -53,7 +53,6 @@ export const MOCKEDDATA: Data = {
     {
       source: '123',
       target: '456',
-      label: ['Worked at IBM', 'Both in same scrum team'],
       lineStyle: 'Dotted',
       sourceArrow: false,
       targetArrow: true,
@@ -62,7 +61,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 0,
           label: 'Worked at IBM',
-          lineStyle: 'Dotted',
           source: '123',
           sourceArrow: false,
           target: '456',
@@ -72,7 +70,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 1,
           label: 'Both in same scrum team',
-          lineStyle: 'Solid',
           source: '123',
           sourceArrow: true,
           target: '456',
@@ -84,11 +81,6 @@ export const MOCKEDDATA: Data = {
     {
       source: '456',
       target: '789',
-      label: [
-        'Play in the same football team',
-        'Daughters in the same class at school',
-        'Went on a family holiday together last year',
-      ],
       lineStyle: 'Solid',
       sourceArrow: true,
       targetArrow: true,
@@ -97,7 +89,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 2,
           label: 'Play in the same football team',
-          lineStyle: 'Solid',
           source: '456',
           sourceArrow: false,
           target: '789',
@@ -107,7 +98,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 3,
           label: 'Daughters in the same class at school',
-          lineStyle: 'Solid',
           source: '456',
           sourceArrow: true,
           target: '789',
@@ -117,7 +107,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 4,
           label: 'Went on a family holiday together last year',
-          lineStyle: 'Solid',
           source: '456',
           sourceArrow: true,
           target: '789',
@@ -129,7 +118,6 @@ export const MOCKEDDATA: Data = {
     {
       source: '789',
       target: '123',
-      label: ['Drink in the same pub', 'Drinking friends'],
       lineStyle: 'Dotted',
       sourceArrow: true,
       targetArrow: true,
@@ -138,7 +126,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 5,
           label: 'Drink in the same pub',
-          lineStyle: 'Dotted',
           source: '789',
           sourceArrow: false,
           target: '123',
@@ -148,7 +135,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 6,
           label: 'Drinking friends',
-          lineStyle: 'Dotted',
           source: '789',
           sourceArrow: true,
           target: '123',
@@ -160,7 +146,6 @@ export const MOCKEDDATA: Data = {
     {
       source: '4',
       target: '123',
-      label: ['Same University'],
       lineStyle: 'Dotted',
       sourceArrow: true,
       targetArrow: false,
@@ -169,7 +154,6 @@ export const MOCKEDDATA: Data = {
         {
           linkIndex: 7,
           label: ['Same University'],
-          lineStyle: 'Dotted',
           source: '4',
           sourceArrow: false,
           target: '123',
