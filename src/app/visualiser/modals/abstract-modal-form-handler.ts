@@ -17,7 +17,7 @@ export abstract class AbstractModalFormHandler {
 
     this.createNodeForm = this.fb.group({
       id: '',
-      label: this.fb.array([], Validators.required),
+      label: this.fb.array([], [Validators.required, this.minLengthArray(1)]),
       imageUrl: [''],
       icon: [''],
       fx: [null],
@@ -51,13 +51,13 @@ export abstract class AbstractModalFormHandler {
   }
 
   public removeLabel(index: number) {
-    if (this.labelArray.length > 0) {
+    if (this.labelArray.length > 1) {
       this.labelArray.removeAt(index);
     }
   }
 
   public removeNodeLabel(index: number) {
-    if (this.nodeLabelArray.length > 0) {
+    if (this.nodeLabelArray.length > 1) {
       this.nodeLabelArray.removeAt(index);
     }
   }
@@ -125,5 +125,14 @@ export abstract class AbstractModalFormHandler {
       return { 'iconOrImage': true };
     }
     return null;
+  }
+
+  private minLengthArray(min: number) {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (control instanceof FormArray) {
+        return control.length >= min ? null : { minLengthArray: true };
+      }
+      return null;
+    };
   }
 }

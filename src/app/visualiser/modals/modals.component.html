@@ -59,7 +59,7 @@
             class="d-flex flex-column align-items-start">
             <div class="d-flex align-items-center w-100">
               <input formControlName="label" class="form-control mb-2" placeholder="Label" [id]="'node-label-' + i">
-              <button type="button" class="btn btn-danger ml-2" (click)="removeNodeLabel(i)">Remove</button>
+              <button type="button" class="btn btn-danger ml-2" (click)="removeNodeLabel(i)" [disabled]="nodeLabelArray.length <= 1">Remove</button>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@
             class="d-flex flex-column align-items-start">
             <div class="d-flex align-items-center w-100">
               <input formControlName="label" class="form-control mb-2" placeholder="Label" [id]="'node-label-' + i">
-              <button type="button" class="btn btn-danger ml-2" (click)="removeNodeLabel(i)">Remove</button>
+              <button type="button" class="btn btn-danger ml-2" (click)="removeNodeLabel(i)" [disabled]="nodeLabelArray.length <= 1">Remove</button>
             </div>
           </div>
         </div>
@@ -238,7 +238,7 @@
             class="d-flex flex-column align-items-start">
             <div class="d-flex align-items-center w-100">
               <input formControlName="label" class="form-control" placeholder="Label" [id]="'label-' + i">
-              <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
+              <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)" [disabled]="labelArray.length <= 1">Remove</button>
             </div>
             <div class="form-group form-check">
               <input type="checkbox" formControlName="linkIcon" class="form-check-input" [id]="'linkIcon-' + i">
@@ -292,7 +292,7 @@
             class="d-flex flex-column align-items-start">
             <div class="d-flex align-items-center w-100">
               <input formControlName="label" class="form-control" placeholder="Label" [id]="'label-' + i">
-              <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)">Remove</button>
+              <button type="button" class="btn btn-danger ml-2" (click)="removeLabel(i)" [disabled]="labelArray.length <= 1">Remove</button>
             </div>
             <div class="form-group form-check">
               <input type="checkbox" formControlName="linkIcon" class="form-check-input" [id]="'linkIcon-' + i">
