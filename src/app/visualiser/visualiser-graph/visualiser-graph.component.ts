@@ -298,15 +298,15 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
       // Retrieve the saved graph data from Dexie
       const data = await this.dexieService.getGraphData(this.savedGraphData.dataId);
 
-      // Find the next available linkIndex
+      // Find the next available labelIndex
       const allIndexes = data.links.reduce((acc, link) => {
-        return acc.concat(link.relationships.map(rel => rel.linkIndex));
+        return acc.concat(link.relationships.map(rel => rel.labelIndex));
       }, []);
       let nextIndex = Math.max(...allIndexes, 0) + 1;
 
       // Map over the labels and linkIcon values, assuming each label has a corresponding linkIcon
       const relationships: Relationship[] = linkData.label.map((item) => ({
-        linkIndex: item.linkIndex !== undefined ? item.linkIndex : nextIndex++,
+        labelIndex: item.labelIndex !== undefined ? item.labelIndex : nextIndex++,
         label: item.label,
         source: sourceNode.id,
         target: targetNode.id,
@@ -455,8 +455,8 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
           );
 
           if (link) {
-            // Find the relationship with the same linkIndex
-            const relationship = link.relationships.find(rel => rel.linkIndex === this.selectedLinkArray[0].linkIndex);
+            // Find the relationship with the same labelIndex
+            const relationship = link.relationships.find(rel => rel.labelIndex === this.selectedLinkArray[0].labelIndex);
             if (relationship) {
               // Update the label in the matched object
               relationship.label = result;

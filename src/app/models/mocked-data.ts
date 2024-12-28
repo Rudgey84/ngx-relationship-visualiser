@@ -59,14 +59,14 @@ export const MOCKEDDATA: Data = {
       linkId: '123_456',
       relationships: [
         {
-          linkIndex: 0,
+          labelIndex: 0,
           label: 'Worked at IBM',
           source: '123',
           target: '456',
           linkIcon: true,
         },
         {
-          linkIndex: 1,
+          labelIndex: 1,
           label: 'Both in same scrum team',
           source: '123',
           target: '456',
@@ -83,21 +83,21 @@ export const MOCKEDDATA: Data = {
       linkId: '456_789',
       relationships: [
         {
-          linkIndex: 2,
+          labelIndex: 2,
           label: 'Play in the same football team',
           source: '456',
           target: '789',
           linkIcon: false,
         },
         {
-          linkIndex: 3,
+          labelIndex: 3,
           label: 'Daughters in the same class at school',
           source: '456',
           target: '789',
           linkIcon: true,
         },
         {
-          linkIndex: 4,
+          labelIndex: 4,
           label: 'Went on a family holiday together last year',
           source: '456',
           target: '789',
@@ -114,14 +114,14 @@ export const MOCKEDDATA: Data = {
       linkId: '789_123',
       relationships: [
         {
-          linkIndex: 5,
+          labelIndex: 5,
           label: 'Drink in the same pub',
           source: '789',
           target: '123',
           linkIcon: true,
         },
         {
-          linkIndex: 6,
+          labelIndex: 6,
           label: 'Drinking friends',
           source: '789',
           target: '123',
@@ -138,7 +138,7 @@ export const MOCKEDDATA: Data = {
       linkId: '4_123',
       relationships: [
         {
-          linkIndex: 7,
+          labelIndex: 7,
           label: ['Same University'],
           source: '4',
           target: '123',

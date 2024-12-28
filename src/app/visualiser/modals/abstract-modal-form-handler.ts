@@ -93,7 +93,7 @@ export abstract class AbstractModalFormHandler {
     if (data.relationships && Array.isArray(data.relationships)) {
       data.relationships.forEach((relationship: Relationship) => {
         const labelGroup = this.fb.group({
-          linkIndex: [relationship.linkIndex, Validators.required],
+          labelIndex: [relationship.labelIndex, Validators.required],
           label: [relationship.label, Validators.required],
           linkIcon: [relationship.linkIcon]
         });

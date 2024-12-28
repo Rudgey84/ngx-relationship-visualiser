@@ -1,7 +1,7 @@
 // data.interface.ts
 
 export interface Relationship {
-  linkIndex: number;
+  labelIndex: number;
   label: string | string[];
   source: string;
   target: string;
