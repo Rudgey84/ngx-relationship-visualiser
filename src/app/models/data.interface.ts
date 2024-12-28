@@ -4,9 +4,7 @@ export interface Relationship {
   linkIndex: number;
   label: string | string[];
   source: string;
-  sourceArrow: boolean;
   target: string;
-  targetArrow: boolean;
   linkIcon: boolean;
 }
 

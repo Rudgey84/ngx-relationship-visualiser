@@ -309,9 +309,7 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
         linkIndex: item.linkIndex !== undefined ? item.linkIndex : nextIndex++,
         label: item.label,
         source: sourceNode.id,
-        sourceArrow: linkData.sourceArrow,
         target: targetNode.id,
-        targetArrow: linkData.targetArrow,
         linkIcon: item.linkIcon
       }));
 
