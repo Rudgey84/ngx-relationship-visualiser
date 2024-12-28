@@ -77,6 +77,17 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.buttonBarRightPosition = '0';
     this.updateWidth();
+
+    // Initialize with default empty data if no data is provided
+    if (!this.savedGraphData) {
+      console.warn('No data provided, using empty data set');
+      this.data = {
+        dataId: '1',
+        nodes: [],
+        links: [],
+      };
+    }
+
     // Subscribe to the link selections in d3
     this.visualiserGraphService.selectedNodesArray.subscribe(
       (selectedNodesArray) => {
