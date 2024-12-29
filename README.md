@@ -22,6 +22,11 @@ import { NgxRelationshipVisualiserModule } from 'ngx-relationship-visualiser';
   ...
 })
 ```
+Add styles to your global styles.scss:
+
+```bash
+@import 'node_modules/ngx-relationship-visualiser/src/styles.scss';
+```
 
 Add the component to your page:
 ```bash

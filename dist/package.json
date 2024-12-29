@@ -1,6 +1,6 @@
 {
   "name": "ngx-relationship-visualiser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",

@@ -1,6 +1,6 @@
 {
   "name": "ngx-relationship-visualiser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",
@@ -62,5 +62,7 @@
     "typescript": "^5.4.5",
     "zone.js": "^0.14.10"
   },
-  "publishConfig": { "registry": "https://r.privjs.com" }
+  "publishConfig": {
+    "registry": "https://r.privjs.com"
+  }
 }

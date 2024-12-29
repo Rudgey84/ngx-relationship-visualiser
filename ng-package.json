@@ -17,5 +17,6 @@
     "ngx-bootstrap",
     "popper.js",
     "rxjs-compat" 
-  ]
+  ],
+  "assets": ["src/styles.scss"]
 }
