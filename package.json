@@ -1,6 +1,6 @@
 {
   "name": "ngx-relationship-visualiser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",
@@ -61,5 +61,6 @@
     "tslint": "~5.11.0",
     "typescript": "^5.4.5",
     "zone.js": "^0.14.10"
-  }
+  },
+  "publishConfig": { "registry": "https://r.privjs.com" }
 }
