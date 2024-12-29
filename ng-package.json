@@ -2,5 +2,20 @@
   "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
   "lib": {
     "entryFile": "public_api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": [
+    "@dagrejs/dagre",
+    "@kreash/ngx-contextmenu",
+    "@ng-select/ng-select",
+    "bootbox",
+    "bootstrap",
+    "classlist.js",
+    "core-js",
+    "d3",
+    "dexie",
+    "jquery",
+    "ngx-bootstrap",
+    "popper.js",
+    "rxjs-compat" 
+  ]
 }

@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "private": false,
   "dependencies": {
-    "@angular/animations": "17.3.12",
-    "@angular/cdk": "17.3.6",
-    "@angular/common": "17.3.12",
-    "@angular/forms": "17.3.12",
     "@dagrejs/dagre": "^1.1.4",
     "@kreash/ngx-contextmenu": "^18.1.0",
     "@ng-select/ng-select": "^14.1.0",
@@ -19,8 +15,14 @@
     "jquery": "3.6.4",
     "ngx-bootstrap": "^11.0.2",
     "popper.js": "1.16.1",
-    "rxjs": "6.6.7",
     "rxjs-compat": "6.6.7"
+  },
+  "peerDependencies": {
+    "@angular/animations": "17.3.12",
+    "@angular/cdk": "17.3.6",
+    "@angular/common": "17.3.12",
+    "@angular/forms": "17.3.12",
+    "rxjs": "6.6.7"
   },
   "scripts": {
     "ng": "ng",
