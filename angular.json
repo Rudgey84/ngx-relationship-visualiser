@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["@dagrejs/dagre"],
+            "allowedCommonJsDependencies": ["@dagrejs/dagre,"],
             "outputPath": "dist/ngx-relationship-visualiser",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -88,7 +88,7 @@
               "buildTarget": "ngx-relationship-visualiser:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "production"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
