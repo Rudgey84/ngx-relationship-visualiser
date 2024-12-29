@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { Data } from './models/data.interface';
-import { MOCKEDDATA } from './models/mocked-data';
+import { Data } from './ngx-relationship-visualiser/models/data.interface';
+import { MOCKEDDATA } from './ngx-relationship-visualiser/models/mocked-data';
 
 @Component({
   selector: 'app-root',

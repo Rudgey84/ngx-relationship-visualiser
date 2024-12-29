@@ -15,7 +15,7 @@ import { ContextMenuService } from '@kreash/ngx-contextmenu';
 import { ContextMenusComponent } from '../context-menus/context-menus.component';
 import { Data, Link, Relationship } from '../../models/data.interface';
 import { ModalsComponent } from '../modals/modals.component';
-import { DexieService } from 'src/app/db/graphDatabase';
+import { DexieService } from 'src/app/ngx-relationship-visualiser/db/graphDatabase';
 declare var bootbox: any;
 
 @Component({
