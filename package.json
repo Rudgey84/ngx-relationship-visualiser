@@ -1,7 +1,7 @@
 {
-  "name": "nbwilylr.github",
-  "version": "0.0.0",
-  "private": true,
+  "name": "ngx-relationship-visualiser",
+  "version": "1.0.0",
+  "private": false,
   "dependencies": {
     "@angular/animations": "17.3.12",
     "@angular/cdk": "17.3.6",
@@ -28,7 +28,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "packagr": "ng-packagr -p ng-package.json"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.11",
