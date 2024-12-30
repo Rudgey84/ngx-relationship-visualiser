@@ -1002,8 +1002,10 @@ class VisualiserGraphService {
             const count = nonSelectedNodes.size();
             const notSelectedSize = totalSize - count;
             if (notSelectedSize !== totalSize) {
-                selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-                selectAllNodes.style.opacity = '0.65';
+                if (selectAllNodes) {
+                    selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+                    selectAllNodes.style.opacity = '0.65';
+                }
                 _d3.selectAll('.node-wrapper').classed('selected', function (p) {
                     p.previouslySelected = p.selected;
                     return (p.selected = true);
@@ -1013,8 +1015,10 @@ class VisualiserGraphService {
                     .style('font-weight', (d) => (d.selected ? 700 : 400));
             }
             else {
-                selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-                selectAllNodes.style.opacity = '1';
+                if (selectAllNodes) {
+                    selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+                    selectAllNodes.style.opacity = '1';
+                }
                 _d3.selectAll('.node-wrapper').classed('selected', false);
                 _d3.selectAll('.node-wrapper').classed('selected', function (p) {
                     return (p.selected = p.previouslySelected = false);
@@ -1077,13 +1081,17 @@ class VisualiserGraphService {
             const updatedSelectedCount = selectedCount > 0 ? totalSize - selectedCount : totalSize;
             if (updatedSelectedCount === totalSize) {
                 // Update the state of another button if all nodes are selected
-                selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-                selectAllNodes.style.opacity = '0.65';
+                if (selectAllNodes) {
+                    selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+                    selectAllNodes.style.opacity = '0.65';
+                }
             }
             else {
                 // Update the state of another button if not all nodes are selected
-                selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-                selectAllNodes.style.opacity = '1';
+                if (selectAllNodes) {
+                    selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+                    selectAllNodes.style.opacity = '1';
+                }
             }
             // reset link style
             _d3
@@ -1322,12 +1330,16 @@ class VisualiserGraphService {
             const count = nonSelectedNodes.size();
             const notSelectedSize = totalSize - count;
             if (notSelectedSize === totalSize) {
-                selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-                selectAllNodes.style.opacity = '0.65';
+                if (selectAllNodes) {
+                    selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+                    selectAllNodes.style.opacity = '0.65';
+                }
             }
             else {
-                selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-                selectAllNodes.style.opacity = '1';
+                if (selectAllNodes) {
+                    selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+                    selectAllNodes.style.opacity = '1';
+                }
             }
             // counts number of selected classes to not exceed 2
             const selectedSize = nodeEnter.selectAll('.selected').size();
@@ -1484,8 +1496,10 @@ class VisualiserGraphService {
                 d.previouslySelected = false;
             });
             node.classed('selected', false);
-            selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-            selectAllNodes.style.opacity = '1';
+            if (selectAllNodes) {
+                selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+                selectAllNodes.style.opacity = '1';
+            }
             _d3
                 .selectAll('.nodeText')
                 .style('fill', '#212529')
@@ -1593,8 +1607,10 @@ class VisualiserGraphService {
             _d3.event.stopPropagation();
             // setting the select attribute to the object on single select so we can drag them
             d.selected = true;
-            selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-            selectAllNodes.style.opacity = '1';
+            if (selectAllNodes) {
+                selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+                selectAllNodes.style.opacity = '1';
+            }
             // If ctrl key is held on click
             if (_d3.event.ctrlKey) {
                 // toggle the class on and off when ctrl click is active
@@ -1608,8 +1624,10 @@ class VisualiserGraphService {
                 const count = nonSelectedNodes.size();
                 const notSelectedSize = totalSize - count;
                 if (notSelectedSize === totalSize) {
-                    selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-                    selectAllNodes.style.opacity = '0.65';
+                    if (selectAllNodes) {
+                        selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+                        selectAllNodes.style.opacity = '0.65';
+                    }
                 }
                 // remove the single click styling on other nodes and labels
                 _d3
@@ -1718,8 +1736,10 @@ class VisualiserGraphService {
                 .style('fill', '#212529')
                 .style('font-weight', 400);
             self.selectedNodesArray.next([]);
-            selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-            selectAllNodes.style.opacity = '1';
+            if (selectAllNodes) {
+                selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+                selectAllNodes.style.opacity = '1';
+            }
         });
         nodeEnter
             .filter(function (d) {
@@ -2104,9 +2124,9 @@ class VisualiserGraphComponent {
     buttonBarRightPosition;
     editLinksData = null;
     editNodeData = null;
-    readOnly = false;
+    readOnly = true;
     zoom = true;
-    controls = true;
+    controls = false;
     zoomToFit = false;
     modalsComponent;
     constructor(visualiserGraphService, contextMenuService, dagreNodesOnlyLayout, dexieService) {
@@ -2148,12 +2168,16 @@ class VisualiserGraphComponent {
         // Subscribe to the double-click node payload
         this.visualiserGraphService.dblClickNodePayload.subscribe((dblClickNodePayload) => {
             this.selectedNodeId = dblClickNodePayload[0].id;
-            this.handleEditNodesEvent(true);
+            if (!this.readOnly) {
+                this.handleEditNodesEvent(true);
+            }
         });
         // Subscribe to the double-click Link payload
         this.visualiserGraphService.dblClickLinkPayload.subscribe((dblClickLinkPayload) => {
             this.selectedLinkArray = dblClickLinkPayload;
-            this.onEditLinkLabel();
+            if (!this.readOnly) {
+                this.onEditLinkLabel();
+            }
         });
         this.visualiserGraphService.selectedLinkArray.subscribe((selectedLinkArray) => {
             this.selectedLinkArray = selectedLinkArray;
@@ -2590,7 +2614,7 @@ class VisualiserGraphComponent {
         }
     }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: VisualiserGraphComponent, deps: [{ token: VisualiserGraphService }, { token: i2.ContextMenuService }, { token: DagreNodesOnlyLayout }, { token: DexieService }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.12", type: VisualiserGraphComponent, selector: "visualiser-graph", inputs: { readOnly: "readOnly", zoom: "zoom", controls: "controls", zoomToFit: "zoomToFit", data: "data" }, outputs: { saveGraphDataEvent: "saveGraphDataEvent" }, viewQueries: [{ propertyName: "graphElement", first: true, predicate: ["svgId"], descendants: true }, { propertyName: "contextMenu", first: true, predicate: ContextMenusComponent, descendants: true }, { propertyName: "modalsComponent", first: true, predicate: ModalsComponent, descendants: true }], ngImport: i0, template: "<div class=\"page\" id=\"pageId\" (window:resize)=\"onResize($event)\">\n  <div id=\"draggable\" class=\"buttonBar\" [style.right]=\"buttonBarRightPosition\">\n    <div *ngIf=\"controls\">\n      <div class=\"d-flex justify-content-end\">\n        <div class=\"btn-group\" role=\"group\" aria-label=\"Controls\">\n          <button type=\"button\" id=\"draggableHandle\" class=\"btn btn-light\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Move toolbar\">\n            <i class=\"bi bi-grip-vertical\"></i>\n          </button>\n\n          <button type=\"button\" id=\"dagre_layout\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Dagre layout\" (click)=\"applyLayout()\">\n            <i class=\"bi bi-diagram-3\"></i>\n          </button>\n          <button type=\"button\" id=\"save_graph\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Save data\" (click)=\"onConfirmSave()\">\n            <i class=\"bi bi-save\"></i>\n          </button>\n          <button type=\"button\" id=\"reset_graph\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Reset data\" (click)=\"resetGraph()\">\n            <i class=\"bi bi-skip-backward\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom in\" id=\"zoom_in\">\n            <i class=\"bi bi-zoom-in\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom out\" id=\"zoom_out\">\n            <i class=\"bi bi-zoom-out\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom reset\" id=\"zoom_reset\" disabled=\"true\">\n            <i class=\"bi bi-arrow-counterclockwise\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom to fit\" id=\"zoom_to_fit\">\n            <i class=\"bi bi-arrows-fullscreen\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Select all\" id=\"select_all\">\n            <i class=\"bi bi-grid-fill\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Invert selection\" id=\"toggle_selection\">\n            <i class=\"bi bi-ui-checks-grid\"></i>\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Toggle search\" id=\"toggle_search\"\n            [ngClass]=\"{'searchButtonActive': showSearch, 'searchButtonInactive': !showSearch}\"\n            (click)=\"toggleSearch()\">\n            <i class=\"bi bi-search\"></i>\n          </button>\n        </div>\n      </div>\n      <div class=\"search float-right input-group mt-3 pr-0\" [hidden]=\"!showSearch\">\n        <div class=\"input-group-prepend\">\n          <button type=\"button\" id=\"prevButton\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Previous\" disabled>\n            <i class=\"bi bi-arrow-left-square\"></i>\n          </button>\n          <button type=\"button\" id=\"nextButton\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Next\" disabled>\n            <i class=\"bi bi-arrow-right-square\"></i>\n          </button>\n        </div>\n        <input type=\"text\" id=\"searchInput\" class=\"form-control\" placeholder=\"Search\" aria-label=\"Search\"\n          aria-describedby=\"search\" />\n        <div class=\"input-group-append\">\n          <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"searchButton\" data-toggle=\"tooltip\"\n            data-placement=\"top\" title=\"Search\">\n            <i class=\"bi bi-search\"></i>\n          </button>\n        </div>\n        <div class=\"input-group-append\">\n          <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"clearButton\" data-toggle=\"tooltip\"\n            data-placement=\"top\" title=\"Clear\" disabled>\n            clear\n          </button>\n        </div>\n      </div>\n    </div>\n    <div [hidden]=\"!showSearch\" id=\"noMatchesText\" class=\"noMatchesText float-right\">No matches found</div>\n  </div>\n  <!-- Zoom indicator-->\n  <div *ngIf=\"zoom\" class=\"zoomIndicator\">\n    <span id=\"zoom_level\"></span>\n  </div>\n  <!-- Save confirmation-->\n  <div *ngIf=\"showConfirmation\" class=\"confirmation-message-container\">\n    <div class=\"alert alert-success confirmation-message\" role=\"alert\" [ngClass]=\"{ 'fade-out': !showConfirmation }\">\n      Saved <i class=\"bi bi-check-circle\"></i>\n    </div>\n  </div>\n\n  <app-context-menus\n  (editNodeContextMenuEvent)=\"handleEditNodesEvent($event)\"\n  (findCreateNodesContextMenuEvent)=\"findCreateNodesEvent($event)\"\n  (createLinkContextMenuEvent)=\"openModal('createLinkModal')\"\n  (editLinkLabelContextMenuEvent)=\"onEditLinkLabel()\"\n  (editLinksContextMenuEvent)=\"handleEditLinksEvent($event)\">\n  </app-context-menus>\n\n  <app-modals\n  [editNodeData]=\"editNodeData\"\n  [editLinksData]=\"editLinksData\"\n  (createLinkEvent)=\"onCreateLink($event)\"\n  (createNodeEvent)=\"onCreateNode($event)\"\n  (deleteLinkEvent)=\"onDeleteLink($event)\"\n  (deleteNodeEvent)=\"onDeleteNode()\">\n  </app-modals>\n\n  <svg #svgId [attr.width]=\"width\" height=\"780\" (contextmenu)=\"visualiserContextMenus($event)\"></svg>\n</div>", styles: ["#zoom_level{position:relative;background-color:#000c;color:#fff;padding:5px;border-radius:5px;opacity:0;transition:opacity 1s ease-in-out}.buttonBar{position:absolute;padding:10px}.zoomIndicator{position:absolute;left:0;padding:10px}.noMatchesText{opacity:0;transition:opacity .5s;color:red}.noMatchesText.show{opacity:1}@keyframes floatInFromTop{0%{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:translateY(0)}}.input-group{animation-name:floatInFromTop;animation-duration:.3s;animation-fill-mode:forwards;position:relative;width:407px}.searchButtonActive{outline:none;-webkit-box-shadow:inset 0px 0px 5px #323232;-moz-box-shadow:inset 0px 0px 5px #323232;box-shadow:inset 0 0 5px #323232}.searchButtonActive:focus,.searchButtonActive:active{outline:none;-webkit-box-shadow:inset 0px 0px 5px #323232;-moz-box-shadow:inset 0px 0px 5px #323232;box-shadow:inset 0 0 5px #323232}.searchButtonInactive{opacity:1;outline:none;box-shadow:none;background-color:#6c757d!important;border-color:#6c757d!important}.confirmation-message-container{position:absolute;left:50%;transform:translate(-50%)}.confirmation-message{position:relative;top:60px;opacity:0;animation:fade-in .5s ease-in-out forwards}@keyframes fade-in{0%{opacity:0}to{opacity:1}}.fade-out{animation:fade-out .5s ease-in-out forwards}@keyframes fade-out{0%{opacity:1}to{opacity:0}}#draggableHandle{cursor:move}\n"], dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i3.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: ContextMenusComponent, selector: "app-context-menus", outputs: ["editNodeContextMenuEvent", "findCreateNodesContextMenuEvent", "createLinkContextMenuEvent", "editLinkLabelContextMenuEvent", "editLinksContextMenuEvent"] }, { kind: "component", type: ModalsComponent, selector: "app-modals", inputs: ["editNodeData", "editLinksData"], outputs: ["closeModalEvent", "createLinkEvent", "createNodeEvent", "deleteLinkEvent", "deleteNodeEvent"] }] });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.12", type: VisualiserGraphComponent, selector: "visualiser-graph", inputs: { zoom: "zoom", zoomToFit: "zoomToFit", data: "data" }, outputs: { saveGraphDataEvent: "saveGraphDataEvent" }, viewQueries: [{ propertyName: "graphElement", first: true, predicate: ["svgId"], descendants: true }, { propertyName: "contextMenu", first: true, predicate: ContextMenusComponent, descendants: true }, { propertyName: "modalsComponent", first: true, predicate: ModalsComponent, descendants: true }], ngImport: i0, template: "<div class=\"page\" id=\"pageId\" (window:resize)=\"onResize($event)\">\n  <div id=\"draggable\" class=\"buttonBar\" [style.right]=\"buttonBarRightPosition\">\n    <div *ngIf=\"controls\">\n      <div class=\"d-flex justify-content-end\">\n        <div class=\"btn-group\" role=\"group\" aria-label=\"Controls\">\n          <button type=\"button\" id=\"draggableHandle\" class=\"btn btn-light\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Move toolbar\">\n            <i class=\"bi bi-grip-vertical\"></i>\n          </button>\n\n          <button type=\"button\" id=\"dagre_layout\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Dagre layout\" (click)=\"applyLayout()\">\n            <i class=\"bi bi-diagram-3\"></i>\n          </button>\n          <button type=\"button\" id=\"save_graph\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Save data\" (click)=\"onConfirmSave()\">\n            <i class=\"bi bi-save\"></i>\n          </button>\n          <button type=\"button\" id=\"reset_graph\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Reset data\" (click)=\"resetGraph()\">\n            <i class=\"bi bi-skip-backward\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom in\" id=\"zoom_in\">\n            <i class=\"bi bi-zoom-in\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom out\" id=\"zoom_out\">\n            <i class=\"bi bi-zoom-out\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom reset\" id=\"zoom_reset\" disabled=\"true\">\n            <i class=\"bi bi-arrow-counterclockwise\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Zoom to fit\" id=\"zoom_to_fit\">\n            <i class=\"bi bi-arrows-fullscreen\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Select all\" id=\"select_all\">\n            <i class=\"bi bi-grid-fill\"></i>\n          </button>\n          <button type=\"button\" *ngIf=\"zoom\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Invert selection\" id=\"toggle_selection\">\n            <i class=\"bi bi-ui-checks-grid\"></i>\n          </button>\n          <button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Toggle search\" id=\"toggle_search\"\n            [ngClass]=\"{'searchButtonActive': showSearch, 'searchButtonInactive': !showSearch}\"\n            (click)=\"toggleSearch()\">\n            <i class=\"bi bi-search\"></i>\n          </button>\n        </div>\n      </div>\n      <div class=\"search float-right input-group mt-3 pr-0\" [hidden]=\"!showSearch\">\n        <div class=\"input-group-prepend\">\n          <button type=\"button\" id=\"prevButton\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Previous\" disabled>\n            <i class=\"bi bi-arrow-left-square\"></i>\n          </button>\n          <button type=\"button\" id=\"nextButton\" class=\"btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n            title=\"Next\" disabled>\n            <i class=\"bi bi-arrow-right-square\"></i>\n          </button>\n        </div>\n        <input type=\"text\" id=\"searchInput\" class=\"form-control\" placeholder=\"Search\" aria-label=\"Search\"\n          aria-describedby=\"search\" />\n        <div class=\"input-group-append\">\n          <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"searchButton\" data-toggle=\"tooltip\"\n            data-placement=\"top\" title=\"Search\">\n            <i class=\"bi bi-search\"></i>\n          </button>\n        </div>\n        <div class=\"input-group-append\">\n          <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"clearButton\" data-toggle=\"tooltip\"\n            data-placement=\"top\" title=\"Clear\" disabled>\n            clear\n          </button>\n        </div>\n      </div>\n    </div>\n    <div [hidden]=\"!showSearch\" id=\"noMatchesText\" class=\"noMatchesText float-right\">No matches found</div>\n  </div>\n  <!-- Zoom indicator-->\n  <div *ngIf=\"zoom\" class=\"zoomIndicator\">\n    <span id=\"zoom_level\"></span>\n  </div>\n  <!-- Save confirmation-->\n  <div *ngIf=\"showConfirmation\" class=\"confirmation-message-container\">\n    <div class=\"alert alert-success confirmation-message\" role=\"alert\" [ngClass]=\"{ 'fade-out': !showConfirmation }\">\n      Saved <i class=\"bi bi-check-circle\"></i>\n    </div>\n  </div>\n\n  <app-context-menus\n  (editNodeContextMenuEvent)=\"handleEditNodesEvent($event)\"\n  (findCreateNodesContextMenuEvent)=\"findCreateNodesEvent($event)\"\n  (createLinkContextMenuEvent)=\"openModal('createLinkModal')\"\n  (editLinkLabelContextMenuEvent)=\"onEditLinkLabel()\"\n  (editLinksContextMenuEvent)=\"handleEditLinksEvent($event)\">\n  </app-context-menus>\n\n  <app-modals\n  [editNodeData]=\"editNodeData\"\n  [editLinksData]=\"editLinksData\"\n  (createLinkEvent)=\"onCreateLink($event)\"\n  (createNodeEvent)=\"onCreateNode($event)\"\n  (deleteLinkEvent)=\"onDeleteLink($event)\"\n  (deleteNodeEvent)=\"onDeleteNode()\">\n  </app-modals>\n\n  <svg #svgId [attr.width]=\"width\" height=\"780\" (contextmenu)=\"visualiserContextMenus($event)\"></svg>\n</div>", styles: ["#zoom_level{position:relative;background-color:#000c;color:#fff;padding:5px;border-radius:5px;opacity:0;transition:opacity 1s ease-in-out}.buttonBar{position:absolute;padding:10px}.zoomIndicator{position:absolute;left:0;padding:10px}.noMatchesText{opacity:0;transition:opacity .5s;color:red}.noMatchesText.show{opacity:1}@keyframes floatInFromTop{0%{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:translateY(0)}}.input-group{animation-name:floatInFromTop;animation-duration:.3s;animation-fill-mode:forwards;position:relative;width:407px}.searchButtonActive{outline:none;-webkit-box-shadow:inset 0px 0px 5px #323232;-moz-box-shadow:inset 0px 0px 5px #323232;box-shadow:inset 0 0 5px #323232}.searchButtonActive:focus,.searchButtonActive:active{outline:none;-webkit-box-shadow:inset 0px 0px 5px #323232;-moz-box-shadow:inset 0px 0px 5px #323232;box-shadow:inset 0 0 5px #323232}.searchButtonInactive{opacity:1;outline:none;box-shadow:none;background-color:#6c757d!important;border-color:#6c757d!important}.confirmation-message-container{position:absolute;left:50%;transform:translate(-50%)}.confirmation-message{position:relative;top:60px;opacity:0;animation:fade-in .5s ease-in-out forwards}@keyframes fade-in{0%{opacity:0}to{opacity:1}}.fade-out{animation:fade-out .5s ease-in-out forwards}@keyframes fade-out{0%{opacity:1}to{opacity:0}}#draggableHandle{cursor:move}\n"], dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i3.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: ContextMenusComponent, selector: "app-context-menus", outputs: ["editNodeContextMenuEvent", "findCreateNodesContextMenuEvent", "createLinkContextMenuEvent", "editLinkLabelContextMenuEvent", "editLinksContextMenuEvent"] }, { kind: "component", type: ModalsComponent, selector: "app-modals", inputs: ["editNodeData", "editLinksData"], outputs: ["closeModalEvent", "createLinkEvent", "createNodeEvent", "deleteLinkEvent", "deleteNodeEvent"] }] });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: VisualiserGraphComponent, decorators: [{
             type: Component,
@@ -2603,11 +2627,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.12", ngImpo
                 args: [ContextMenusComponent]
             }], saveGraphDataEvent: [{
                 type: Output
-            }], readOnly: [{
-                type: Input
             }], zoom: [{
-                type: Input
-            }], controls: [{
                 type: Input
             }], zoomToFit: [{
                 type: Input

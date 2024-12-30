@@ -26,7 +26,7 @@ export declare class VisualiserGraphComponent implements OnInit, AfterViewInit {
     buttonBarRightPosition: string;
     editLinksData: any;
     editNodeData: any;
-    readOnly: boolean;
+    private readOnly;
     zoom: boolean;
     controls: boolean;
     zoomToFit: boolean;
@@ -60,5 +60,5 @@ export declare class VisualiserGraphComponent implements OnInit, AfterViewInit {
     private registerDragElement;
     openModal(modal: string): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<VisualiserGraphComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<VisualiserGraphComponent, "visualiser-graph", never, { "readOnly": { "alias": "readOnly"; "required": false; }; "zoom": { "alias": "zoom"; "required": false; }; "controls": { "alias": "controls"; "required": false; }; "zoomToFit": { "alias": "zoomToFit"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "saveGraphDataEvent": "saveGraphDataEvent"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<VisualiserGraphComponent, "visualiser-graph", never, { "zoom": { "alias": "zoom"; "required": false; }; "zoomToFit": { "alias": "zoomToFit"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "saveGraphDataEvent": "saveGraphDataEvent"; }, never, never, false, never>;
 }

@@ -455,8 +455,10 @@ export class VisualiserGraphService {
       const notSelectedSize = totalSize - count;
 
       if (notSelectedSize !== totalSize) {
-        selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-        selectAllNodes.style.opacity = '0.65';
+        if (selectAllNodes) {
+          selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+          selectAllNodes.style.opacity = '0.65';
+        }
         _d3.selectAll('.node-wrapper').classed('selected', function (p) {
           p.previouslySelected = p.selected;
           return (p.selected = true);
@@ -465,8 +467,10 @@ export class VisualiserGraphService {
           .style('fill', (d) => (d.selected ? 'blue' : '#999'))
           .style('font-weight', (d) => (d.selected ? 700 : 400));
       } else {
-        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-        selectAllNodes.style.opacity = '1';
+        if (selectAllNodes) {
+          selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+          selectAllNodes.style.opacity = '1';
+        }
         _d3.selectAll('.node-wrapper').classed('selected', false);
         _d3.selectAll('.node-wrapper').classed('selected', function (p) {
           return (p.selected = p.previouslySelected = false);
@@ -536,12 +540,16 @@ export class VisualiserGraphService {
         selectedCount > 0 ? totalSize - selectedCount : totalSize;
       if (updatedSelectedCount === totalSize) {
         // Update the state of another button if all nodes are selected
-        selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-        selectAllNodes.style.opacity = '0.65';
+        if (selectAllNodes) {
+          selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+          selectAllNodes.style.opacity = '0.65';
+        }
       } else {
         // Update the state of another button if not all nodes are selected
-        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-        selectAllNodes.style.opacity = '1';
+        if (selectAllNodes) {
+          selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+          selectAllNodes.style.opacity = '1';
+        }
       }
       // reset link style
       _d3
@@ -835,11 +843,15 @@ export class VisualiserGraphService {
         const notSelectedSize = totalSize - count;
 
         if (notSelectedSize === totalSize) {
-          selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-          selectAllNodes.style.opacity = '0.65';
+          if (selectAllNodes) {
+            selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+            selectAllNodes.style.opacity = '0.65';
+          }
         } else {
-          selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-          selectAllNodes.style.opacity = '1';
+          if (selectAllNodes) {
+            selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+            selectAllNodes.style.opacity = '1';
+          }
         }
 
         // counts number of selected classes to not exceed 2
@@ -1019,8 +1031,10 @@ export class VisualiserGraphService {
         d.previouslySelected = false;
       });
       node.classed('selected', false);
-      selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-      selectAllNodes.style.opacity = '1';
+      if (selectAllNodes) {
+        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+        selectAllNodes.style.opacity = '1';
+      }
       _d3
         .selectAll('.nodeText')
         .style('fill', '#212529')
@@ -1141,8 +1155,10 @@ export class VisualiserGraphService {
       // setting the select attribute to the object on single select so we can drag them
       d.selected = true;
 
-      selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-      selectAllNodes.style.opacity = '1';
+      if (selectAllNodes) {
+        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+        selectAllNodes.style.opacity = '1';
+      }
       // If ctrl key is held on click
       if (_d3.event.ctrlKey) {
         // toggle the class on and off when ctrl click is active
@@ -1158,8 +1174,10 @@ export class VisualiserGraphService {
         const notSelectedSize = totalSize - count;
 
         if (notSelectedSize === totalSize) {
-          selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-          selectAllNodes.style.opacity = '0.65';
+          if (selectAllNodes) {
+            selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
+            selectAllNodes.style.opacity = '0.65';
+          }
         }
         // remove the single click styling on other nodes and labels
         _d3
@@ -1273,8 +1291,10 @@ export class VisualiserGraphService {
         .style('fill', '#212529')
         .style('font-weight', 400);
       self.selectedNodesArray.next([]);
-      selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-      selectAllNodes.style.opacity = '1';
+      if (selectAllNodes) {
+        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
+        selectAllNodes.style.opacity = '1';
+      }
     });
 
     nodeEnter

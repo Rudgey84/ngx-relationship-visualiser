@@ -38,9 +38,9 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
   public buttonBarRightPosition: string;
   public editLinksData: any = null;
   public editNodeData: any = null;
-  @Input() readOnly: boolean = false;
+  private readOnly: boolean = true;
   @Input() zoom: boolean = true;
-  @Input() controls: boolean = true;
+  public controls: boolean = false;
   @Input() zoomToFit: boolean = false;
   @ViewChild(ModalsComponent) public modalsComponent: ModalsComponent;
   constructor(
@@ -99,7 +99,9 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
     this.visualiserGraphService.dblClickNodePayload.subscribe(
       (dblClickNodePayload) => {
         this.selectedNodeId = dblClickNodePayload[0].id;
+        if(!this.readOnly) {
         this.handleEditNodesEvent(true);
+        }
       }
     );
 
@@ -107,7 +109,9 @@ export class VisualiserGraphComponent implements OnInit, AfterViewInit {
     this.visualiserGraphService.dblClickLinkPayload.subscribe(
       (dblClickLinkPayload) => {
         this.selectedLinkArray = dblClickLinkPayload;
+        if(!this.readOnly) {
         this.onEditLinkLabel();
+        }
       }
     );
 
