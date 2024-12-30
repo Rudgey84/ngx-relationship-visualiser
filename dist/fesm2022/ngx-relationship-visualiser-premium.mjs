@@ -2618,21 +2618,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.12", ngImpo
                 type: Input
             }] } });
 
-class NgxRelationshipVisualiserModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserModule, declarations: [VisualiserGraphComponent,
+class NgxRelationshipVisualiserPremiumModule {
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserPremiumModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserPremiumModule, declarations: [VisualiserGraphComponent,
             ContextMenusComponent,
             ModalsComponent], imports: [BrowserModule,
             ReactiveFormsModule, i1.ModalModule, i2.ContextMenuModule, NgSelectModule,
             FormsModule], exports: [VisualiserGraphComponent] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserModule, imports: [BrowserModule,
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserPremiumModule, imports: [BrowserModule,
             ReactiveFormsModule,
             ModalModule.forRoot(),
             ContextMenuModule.forRoot({ useBootstrap4: true }),
             NgSelectModule,
             FormsModule] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: NgxRelationshipVisualiserPremiumModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [
@@ -2656,5 +2656,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.12", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { NgxRelationshipVisualiserModule, VisualiserGraphComponent };
-//# sourceMappingURL=ngx-relationship-visualiser.mjs.map
+export { NgxRelationshipVisualiserPremiumModule, VisualiserGraphComponent };
+//# sourceMappingURL=ngx-relationship-visualiser-premium.mjs.map

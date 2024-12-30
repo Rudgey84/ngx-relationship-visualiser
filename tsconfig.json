@@ -14,8 +14,8 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["ES2018", "dom"],
     "paths": {
-      "ngx-relationship-visualiser": ["dist/ngx-relationship-visualiser"],
-      "ngx-relationship-visualiser/*": ["dist/ngx-relationship-visualiser/*"]
+      "ngx-relationship-visualiser-premium": ["dist/ngx-relationship-visualiser-premium"],
+      "ngx-relationship-visualiser-premium/*": ["dist/ngx-relationship-visualiser-premium/*"]
     },
   },
   "angularCompilerOptions": {

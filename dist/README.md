@@ -1,31 +1,31 @@
-# ngx-relationship-visualiser
+# ngx-relationship-visualiser-premium
 
 A D3 force-directed-graph, implemented in Typescript for Angular, generates a visualisation graph with customisable link lengths and multiple labels between nodes. The graph can handle new data that will update lines, nodes, links, and path labels. Whenever new nodes are added, they will be animated with a pulse effect. Additionally, the graph includes features such as brushing (multiple select and drag), zoom, and panning capabilities. Additional features include the ability to make multiple selections in sync with the brushing functionality by using Ctrl + click. Context menus can be customized and appear when right-clicking on nodes and links, providing access to parent data and opening their own modals. The graph incorporates a dagre layout when it is initialized, and this layout can also be triggered on demand by clicking a button. Additionally, there are several other buttons and tools available to enhance the user experience of the graph.
 
 
 ## Installation
 
-Install ngx-relationship-visualiser with npm
+Install ngx-relationship-visualiser-premium with npm
 
 ```bash
-  npm install ngx-relationship-visualiser --save
+  npm install ngx-relationship-visualiser-premium --save
 ```
 
 Add the package to NgModule imports:
 
 ```bash
-import { NgxRelationshipVisualiserModule } from 'ngx-relationship-visualiser';
+import { NgxRelationshipVisualiserPremiumModule } from 'ngx-relationship-visualiser-premium';
 
 @NgModule({
   ...
-  imports: [NgxRelationshipVisualiserModule],
+  imports: [NgxRelationshipVisualiserPremiumModule],
   ...
 })
 ```
 Add styles to your global styles.scss:
 
 ```bash
-@import 'node_modules/ngx-relationship-visualiser/src/styles.scss';
+@import 'node_modules/ngx-relationship-visualiser-premium/src/styles.scss';
 ```
 
 Add the component to your page:

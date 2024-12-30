@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-relationship-visualiser": {
+    "ngx-relationship-visualiser-premium": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": ["@dagrejs/dagre,"],
-            "outputPath": "dist/ngx-relationship-visualiser",
+            "outputPath": "dist/ngx-relationship-visualiser-premium",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -78,14 +78,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "ngx-relationship-visualiser:build"
+            "buildTarget": "ngx-relationship-visualiser-premium:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "ngx-relationship-visualiser:build:production"
+              "buildTarget": "ngx-relationship-visualiser-premium:build:production"
             },
             "development": {
-              "buildTarget": "ngx-relationship-visualiser:build:development"
+              "buildTarget": "ngx-relationship-visualiser-premium:build:development"
             }
           },
           "defaultConfiguration": "production"
@@ -93,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ngx-relationship-visualiser:build"
+            "buildTarget": "ngx-relationship-visualiser-premium:build"
           }
         },
         "test": {

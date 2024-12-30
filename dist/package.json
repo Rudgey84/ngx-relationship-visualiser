@@ -1,6 +1,6 @@
 {
-  "name": "ngx-relationship-visualiser",
-  "version": "1.0.3",
+  "name": "ngx-relationship-visualiser-premium",
+  "version": "1.0.4",
   "private": false,
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",
@@ -28,7 +28,7 @@
   "publishConfig": {
     "registry": "https://r.privjs.com"
   },
-  "module": "fesm2022/ngx-relationship-visualiser.mjs",
+  "module": "fesm2022/ngx-relationship-visualiser-premium.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -36,9 +36,9 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2022": "./esm2022/ngx-relationship-visualiser.mjs",
-      "esm": "./esm2022/ngx-relationship-visualiser.mjs",
-      "default": "./fesm2022/ngx-relationship-visualiser.mjs"
+      "esm2022": "./esm2022/ngx-relationship-visualiser-premium.mjs",
+      "esm": "./esm2022/ngx-relationship-visualiser-premium.mjs",
+      "default": "./fesm2022/ngx-relationship-visualiser-premium.mjs"
     }
   },
   "sideEffects": false

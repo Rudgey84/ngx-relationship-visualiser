@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { NgxRelationshipVisualiserModule } from '../../projects/ngx-relationship-visualiser-lib/lib/ngx-relationship-visualiser.module';
+import { NgxRelationshipVisualiserPremiumModule } from '../../projects/ngx-relationship-visualiser-premium-lib/lib/ngx-relationship-visualiser-premium.module';
 
 @NgModule({
   declarations: [
@@ -9,7 +9,7 @@ import { NgxRelationshipVisualiserModule } from '../../projects/ngx-relationship
   ],
   imports: [
     BrowserModule,
-    NgxRelationshipVisualiserModule
+    NgxRelationshipVisualiserPremiumModule
   ],
   bootstrap: [AppComponent]
 })
