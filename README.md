@@ -304,6 +304,8 @@ export const MOCKEDDATA: Data = {
 };
 ```
 
+An external imageUrl can be set for a node OR an icon can be set using Font Awesome Unicodes e.g. \uf2dc. In [**Premium Only**], a user will be able to select an ion from a dropdown so these codes wont need to be known.
+
 ## Summary of controls:
 
 1. Clicking on a node or link selects it and de-selects everything else.
