@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { Data } from '../../projects/ngx-relationship-visualiser-premium-lib/lib/models/data.interface';
-import { MOCKEDDATA } from '../../projects/ngx-relationship-visualiser-premium-lib/lib/models/mocked-data';
+import { Data } from '../../projects/ngx-relationship-visualiser-lib/lib/models/data.interface';
+import { MOCKEDDATA } from '../../projects/ngx-relationship-visualiser-lib/lib/models/mocked-data';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { MOCKEDDATA } from '../../projects/ngx-relationship-visualiser-premium-l
 })
 export class AppComponent {
 
-  public title = 'ngx-relationship-visualiser-premium';
+  public title = 'ngx-relationship-visualiser';
   public mockedData: Data = MOCKEDDATA;
 
   public saveGraphData(data) {

@@ -26,4 +26,4 @@ import { FormsModule } from '@angular/forms';
   exports: [VisualiserGraphComponent]
 })
 
-export class NgxRelationshipVisualiserPremiumModule { }
+export class NgxRelationshipVisualiserModule { }
