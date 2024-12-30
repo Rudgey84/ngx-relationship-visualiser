@@ -306,7 +306,7 @@ export const MOCKEDDATA: Data = {
 };
 ```
 
-An external imageUrl can be set for a node OR an icon can be set using Font Awesome Unicodes e.g. \uf2dc. In [**Premium Only**], a user will be able to select an ion from a dropdown so these codes wont need to be known.
+An external imageUrl can be set for a node OR an icon can be set using Font Awesome Unicodes e.g. \uf2dc. In [**Premium Only**], a user will be able to select an icon from a dropdown so these codes won't need to be known.
 
 ## Summary of controls:
 
