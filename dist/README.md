@@ -2,6 +2,8 @@
 
 A D3 force-directed-graph, implemented in Typescript for Angular, generates a visualisation graph with customisable link lengths and multiple labels between nodes. The graph can handle new data that will update lines, nodes, links, and path labels. Whenever new nodes are added, they will be animated with a pulse effect. Additionally, the graph includes features such as brushing (multiple select and drag), zoom, and panning capabilities. Additional features include the ability to make multiple selections in sync with the brushing functionality by using Ctrl + click and drag the cursor. 
 
+The premium version can be [procured through privjs](https://www.privjs.com/packages/ngx-relationship-visualiser-premium).
+
 #### [Premium Only] - Creating, editing and deleting
 
 Context menus appear when right-clicking/double clicking on nodes and links, providing access to edit or create the nodes or links through the opening of modals. Here the user will also be given the option to delete and node or link.
@@ -304,7 +306,7 @@ export const MOCKEDDATA: Data = {
 };
 ```
 
-An external imageUrl can be set for a node OR an icon can be set using Font Awesome Unicodes e.g. \uf2dc. In [**Premium Only**], a user will be able to select an ion from a dropdown so these codes wont need to be known.
+An external imageUrl can be set for a node OR an icon can be set using Font Awesome Unicodes e.g. \uf2dc. In [**Premium Only**], a user will be able to select an icon from a dropdown so these codes won't need to be known.
 
 ## Summary of controls:
 
