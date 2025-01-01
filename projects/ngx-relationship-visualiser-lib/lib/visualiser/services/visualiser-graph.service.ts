@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as d3 from 'd3';
-import { Subject, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { DexieService } from '../../db/graphDatabase';
 
 @Injectable({
@@ -17,12 +17,6 @@ export class VisualiserGraphService {
   public extent = null;
   public zoom = false;
   public zoomToFit = false;
-  public resetSearch;
-  /** RxJS subject to listen for updates of the selection */
-  public selectedNodesArray = new Subject<any[]>();
-  public dblClickNodePayload = new Subject();
-  public dblClickLinkPayload = new Subject();
-  public selectedLinkArray = new Subject();
   public saveGraphData = new ReplaySubject();
 
   public update(data, element, zoom, zoomToFit) {
@@ -218,12 +212,9 @@ export class VisualiserGraphService {
     this.links = links || [];
 
     // Disable the reset btn
-    let resetBtn = document.getElementById('reset_graph');
+
     let saveBtn = document.getElementById('save_graph');
-    if (resetBtn) {
-      resetBtn.setAttribute('disabled', 'true');
-      saveBtn.setAttribute('disabled', 'true');
-    }
+    saveBtn.setAttribute('disabled', 'true');
     // Width/Height of canvas
     const parentWidth = _d3.select('svg').node().parentNode.clientWidth;
     const parentHeight = _d3.select('svg').node().parentNode.clientHeight;
@@ -446,326 +437,7 @@ export class VisualiserGraphService {
     });
 
     // Zoom End
-    // Selection buttons
-    const selectAllNodes = document.getElementById('select_all');
-    const handleSelectAllNodes = () => {
-      const totalSize = nodeEnter.size();
-      const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
-      const count = nonSelectedNodes.size();
-      const notSelectedSize = totalSize - count;
 
-      if (notSelectedSize !== totalSize) {
-        if (selectAllNodes) {
-          selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-          selectAllNodes.style.opacity = '0.65';
-        }
-        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-          p.previouslySelected = p.selected;
-          return (p.selected = true);
-        });
-        d3.selectAll('.nodeText')
-          .style('fill', (d) => (d.selected ? 'blue' : '#999'))
-          .style('font-weight', (d) => (d.selected ? 700 : 400));
-      } else {
-        if (selectAllNodes) {
-          selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-          selectAllNodes.style.opacity = '1';
-        }
-        _d3.selectAll('.node-wrapper').classed('selected', false);
-        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-          return (p.selected = p.previouslySelected = false);
-        });
-        _d3
-          .selectAll('.nodeText')
-          .style('font-weight', 400)
-          .style('fill', '#212529');
-      }
-      // reset link style
-      _d3
-        .selectAll('.edgelabel')
-        .style('font-weight', 400)
-        .style('fill', '#212529');
-    };
-    d3.select('#select_all').on('click', handleSelectAllNodes);
-
-    const handleToggleSelection = () => {
-      const totalSize = nodeEnter.size();
-      const selectedNodes = d3.selectAll('.node-wrapper.selected');
-      const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
-      const selectedCount = selectedNodes.size();
-      const nonSelectedCount = nonSelectedNodes.size();
-
-      if (selectedCount > 0) {
-        // Deselect selected nodes and select non-selected nodes
-        selectedNodes.classed('selected', function (p) {
-          p.previouslySelected = p.selected;
-          return (p.selected = false);
-        });
-
-        nonSelectedNodes.classed('selected', function (p) {
-          p.previouslySelected = p.selected;
-          return (p.selected = true);
-        });
-
-        // If there are only two nodes selected we need to update the subject selectedNodesArray so we can create a new link with the correct nodes attached.
-        const selectedSize = svg.selectAll('.selected').size();
-        if (selectedSize <= 2) {
-          // get data from node
-          const localselectedNodesArray = _d3.selectAll('.selected').data();
-          const filterId = localselectedNodesArray.filter((x) => x);
-          self.selectedNodesArray.next(filterId);
-        }
-
-        // Update styles of node elements
-        _d3
-          .selectAll('.nodeText')
-          .style('fill', (d) => (d.selected ? 'blue' : '#212529'))
-          .style('font-weight', (d) => (d.selected ? 700 : 400));
-      } else if (nonSelectedCount > 0) {
-        // Select all nodes if none are selected
-        _d3.selectAll('.node-wrapper').classed('selected', function (p) {
-          p.previouslySelected = p.selected;
-          return (p.selected = true);
-        });
-
-        // Update styles of node elements
-        _d3
-          .selectAll('.nodeText')
-          .style('font-weight', 700)
-          .style('fill', 'blue');
-      }
-
-      // Update the state of another button based on the current selection
-      const updatedSelectedCount =
-        selectedCount > 0 ? totalSize - selectedCount : totalSize;
-      if (updatedSelectedCount === totalSize) {
-        // Update the state of another button if all nodes are selected
-        if (selectAllNodes) {
-          selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-          selectAllNodes.style.opacity = '0.65';
-        }
-      } else {
-        // Update the state of another button if not all nodes are selected
-        if (selectAllNodes) {
-          selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-          selectAllNodes.style.opacity = '1';
-        }
-      }
-      // reset link style
-      _d3
-        .selectAll('.edgelabel')
-        .style('font-weight', 400)
-        .style('fill', '#212529');
-    };
-
-    d3.select('#toggle_selection').on('click', handleToggleSelection);
-
-    // search
-    const searchBtn = document.getElementById('searchButton');
-    // Check to see if exists - control bool
-    if (searchBtn) {
-      const searchInput = document.getElementById(
-        'searchInput'
-      ) as HTMLInputElement;
-      const clearButton = document.getElementById(
-        'clearButton'
-      ) as HTMLButtonElement;
-      const handleSearch = (event: KeyboardEvent) => {
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          performSearch();
-        }
-      };
-
-      let matchingNodes = [];
-      let currentMatchIndex = -1;
-
-      const showCurrentMatch = () => {
-        // Remove any previously added background circle
-        d3.selectAll('circle.highlight-background').remove();
-
-        const matchingNode = matchingNodes[currentMatchIndex];
-        // Highlight the matching node
-        const nodeWrapper = d3.selectAll('.node-wrapper').filter(function () {
-          return d3.select(this).attr('id') === matchingNode.id;
-        });
-
-        // Add a new background circle to the entire <g> node
-        const bbox = nodeWrapper.node().getBBox();
-        const centerX = bbox.x + bbox.width / 2;
-        const centerY = bbox.y + bbox.height / 2;
-        const radius = Math.max(bbox.width + 30, bbox.height) / 2;
-
-        const backgroundCircle = nodeWrapper
-          .insert('circle', ':first-child')
-          .attr('class', 'highlight-background')
-          .attr('fill', 'yellow')
-          .attr('opacity', '0.3')
-          .attr('cx', centerX)
-          .attr('cy', centerY);
-
-        // Animate the background circle
-        backgroundCircle
-          .transition()
-          .duration(1000)
-          .attr('r', radius)
-          .transition()
-          .duration(1000)
-          .attr('r', radius / 4)
-          .attr('opacity', '0.5')
-          .transition()
-          .duration(1000)
-          .attr('r', radius)
-          .attr('opacity', '0.3');
-
-        // Zoom to the matching node
-        const zoomTransform = d3.zoomTransform(svg.node());
-        const { x, y, k } = zoomTransform;
-        const { fx, fy } = matchingNode;
-        const newZoomTransform = d3.zoomIdentity
-          .translate(-fx * k + parentWidth / 2, -fy * k + parentHeight / 2)
-          .scale(k);
-        zoomContainer
-          .transition()
-          .duration(750)
-          .call(zoom.transform, newZoomTransform);
-
-        // Disable/Enable navigation buttons
-        const prevButton = document.getElementById(
-          'prevButton'
-        ) as HTMLButtonElement;
-        const nextButton = document.getElementById(
-          'nextButton'
-        ) as HTMLButtonElement;
-        prevButton.disabled = currentMatchIndex === 0;
-        nextButton.disabled = currentMatchIndex === matchingNodes.length - 1;
-      };
-
-      const performSearch = () => {
-        // Remove any previously added background circle
-        d3.selectAll('circle.highlight-background').remove();
-
-        const searchTerm = searchInput.value.toLowerCase().trim();
-
-        if (searchTerm.length >= 3) {
-          // Perform the search
-          matchingNodes = this.nodes.filter((node) => {
-            const label = node.label.map((item) => item.toLowerCase());
-
-            return (
-              label.some((labelItem) => labelItem.includes(searchTerm)) ||
-              node.label.some((obj) =>
-                Object.values(obj).some((value) =>
-                  String(value).toLowerCase().includes(searchTerm)
-                )
-              )
-            );
-          });
-
-          if (matchingNodes.length > 0) {
-            currentMatchIndex = 0;
-            showCurrentMatch();
-          } else {
-            currentMatchIndex = -1;
-            showNoMatches();
-          }
-        } else {
-          // Clear search
-          matchingNodes = [];
-          currentMatchIndex = -1;
-          showNoMatches();
-        }
-
-        updateClearButton();
-      };
-
-      const showNoMatches = () => {
-        // Reset zoom level
-        const newZoomTransform = d3.zoomIdentity.translate(0, 0).scale(1);
-        zoomContainer
-          .transition()
-          .duration(750)
-          .call(zoom.transform, newZoomTransform);
-        updateZoomLevel();
-        // Disable navigation buttons
-        const prevButton = document.getElementById(
-          'prevButton'
-        ) as HTMLButtonElement;
-        const nextButton = document.getElementById(
-          'nextButton'
-        ) as HTMLButtonElement;
-        prevButton.disabled = true;
-        nextButton.disabled = true;
-
-        // Show "no matches found" text with fade-in transition
-        const noMatchesText = document.getElementById('noMatchesText');
-        if (searchInput.value !== '') {
-          noMatchesText.classList.add('show');
-          // Fade away after a few seconds
-          setTimeout(() => {
-            // Hide "no matches found" text with fade-out transition
-            noMatchesText.classList.remove('show');
-          }, 3000);
-        }
-      };
-
-      const navigateNext = () => {
-        if (currentMatchIndex < matchingNodes.length - 1) {
-          currentMatchIndex++;
-          showCurrentMatch();
-        }
-      };
-
-      const navigatePrevious = () => {
-        if (currentMatchIndex > 0) {
-          currentMatchIndex--;
-          showCurrentMatch();
-        }
-      };
-
-      const clearSearchInput = () => {
-        searchInput.value = '';
-        searchInput.focus();
-        updateClearButton();
-        matchingNodes = [];
-        currentMatchIndex = -1;
-        // Remove any previously added background circle
-        d3.selectAll('circle.highlight-background').remove();
-
-        // Disable the nextButton & prevButton
-        const nextButton = document.getElementById(
-          'nextButton'
-        ) as HTMLButtonElement;
-        nextButton.disabled = true;
-        const prevButton = document.getElementById(
-          'prevButton'
-        ) as HTMLButtonElement;
-        prevButton.disabled = true;
-      };
-
-      const updateClearButton = () => {
-        clearButton.disabled = searchInput.value.trim().length === 0;
-      };
-
-      // We reset the search when we reset the data
-      if (this.resetSearch) {
-        clearSearchInput();
-        this.resetSearch = false;
-      }
-
-      searchInput.addEventListener('input', updateClearButton);
-      searchBtn.addEventListener('click', performSearch);
-      clearButton.addEventListener('click', clearSearchInput);
-      document
-        .getElementById('searchInput')
-        .addEventListener('keydown', handleSearch);
-      document
-        .getElementById('nextButton')
-        .addEventListener('click', navigateNext);
-      document
-        .getElementById('prevButton')
-        .addEventListener('click', navigatePrevious);
-    }
     // For arrows
     this.initDefinitions(svg);
 
@@ -836,37 +508,6 @@ export class VisualiserGraphService {
           })
           .style('fill', '#212529')
           .style('font-weight', 400);
-
-        const totalSize = nodeEnter.size();
-        const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
-        const count = nonSelectedNodes.size();
-        const notSelectedSize = totalSize - count;
-
-        if (notSelectedSize === totalSize) {
-          if (selectAllNodes) {
-            selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-            selectAllNodes.style.opacity = '0.65';
-          }
-        } else {
-          if (selectAllNodes) {
-            selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-            selectAllNodes.style.opacity = '1';
-          }
-        }
-
-        // counts number of selected classes to not exceed 2
-        const selectedSize = nodeEnter.selectAll('.selected').size();
-        if (selectedSize <= 2) {
-          // get data from node
-          const localselectedNodesArray = nodeEnter
-            .selectAll('.selected')
-            .data();
-          const filterId = localselectedNodesArray.filter((x) => x);
-          self.selectedNodesArray.next(filterId);
-          return filterId;
-        } else {
-          self.selectedNodesArray.next([]);
-        }
       });
 
     let keyup = () => {
@@ -996,10 +637,6 @@ export class VisualiserGraphService {
         return d.dy;
       });
 
-    svg.selectAll('.edgelabel').on('dblclick', function () {
-      const dblClick = d3.select(this).data();
-      self.dblClickLinkPayload.next(dblClick);
-    });
 
     edgelabelsEnter
       .append('textPath')
@@ -1031,10 +668,6 @@ export class VisualiserGraphService {
         d.previouslySelected = false;
       });
       node.classed('selected', false);
-      if (selectAllNodes) {
-        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-        selectAllNodes.style.opacity = '1';
-      }
       _d3
         .selectAll('.nodeText')
         .style('fill', '#212529')
@@ -1044,23 +677,6 @@ export class VisualiserGraphService {
         .style('font-weight', 400)
         .style('fill', '#212529');
       _d3.select(this).style('fill', 'blue').style('font-weight', 700);
-      self.selectedNodesArray.next([]);
-    });
-
-    // on right label link click - hightlight labels and package data for context menu
-    svg.selectAll('.edgelabel').on('contextmenu', function (d) {
-      self.selectedNodesArray.next([]);
-      _d3
-        .selectAll('.nodeText')
-        .style('fill', '#212529')
-        .style('font-weight', 400);
-      _d3
-        .selectAll('.edgelabel')
-        .style('font-weight', 400)
-        .style('fill', '#212529');
-      _d3.select(this).style('fill', 'blue').style('font-weight', 700);
-      const localSelectedLinkArray = d3.select(this).data();
-      self.selectedLinkArray.next(localSelectedLinkArray);
     });
 
     const node = zoomContainer.selectAll().data(this.nodes, function (d) {
@@ -1076,12 +692,8 @@ export class VisualiserGraphService {
           .drag()
           .on('start', function dragstarted(d) {
             // Enable the save & reset btn
-            if (resetBtn) {
-              document
-                .getElementById('reset_graph')
-                .removeAttribute('disabled');
-              document.getElementById('save_graph').removeAttribute('disabled');
-            }
+            document.getElementById('save_graph').removeAttribute('disabled');
+
             if (!_d3.event.active) simulation.alphaTarget(0.9).restart();
 
             if (!d.selected && !this.shiftKey) {
@@ -1142,11 +754,6 @@ export class VisualiserGraphService {
     // no collision - already using this in statement
     const self = this;
 
-    svg.selectAll('.node-wrapper').on('dblclick', function () {
-      const dblClick = d3.select(this).data();
-      self.dblClickNodePayload.next(dblClick);
-    });
-
     // node click and ctrl + click
     svg.selectAll('.node-wrapper').on('click', function (d) {
       // so we don't activate the canvas .click event
@@ -1155,72 +762,12 @@ export class VisualiserGraphService {
       // setting the select attribute to the object on single select so we can drag them
       d.selected = true;
 
-      if (selectAllNodes) {
-        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-        selectAllNodes.style.opacity = '1';
-      }
-      // If ctrl key is held on click
-      if (_d3.event.ctrlKey) {
-        // toggle the class on and off when ctrl click is active
-        const clickedNode = d3.select(this);
-        const isSelected = clickedNode.classed('selected');
-        clickedNode.classed('selected', !isSelected);
-        d.selected = !isSelected;
-        d.previouslySelected = !isSelected;
-
-        const totalSize = nodeEnter.size();
-        const nonSelectedNodes = d3.selectAll('.node-wrapper:not(.selected)');
-        const count = nonSelectedNodes.size();
-        const notSelectedSize = totalSize - count;
-
-        if (notSelectedSize === totalSize) {
-          if (selectAllNodes) {
-            selectAllNodes.innerHTML = '<i class="bi bi-grid"></i>';
-            selectAllNodes.style.opacity = '0.65';
-          }
-        }
-        // remove the single click styling on other nodes and labels
-        _d3
-          .selectAll('.edgelabel')
-          .style('fill', '#212529')
-          .style('font-weight', 400);
-        _d3
-          .selectAll('.nodeText')
-          .style('font-weight', 400)
-          .style('fill', '#212529');
-        svg
-          .selectAll('.selected')
-          .selectAll('.nodeText')
-          .style('fill', 'blue')
-          .style('font-weight', 700);
-        // counts number of selected classes to not exceed 2
-        const selectedSize = svg.selectAll('.selected').size();
-
-        if (selectedSize <= 2) {
-          // As we allow for single click without a ctrl+click to select two nodes, we have to apply d.selected to it
-          _d3
-            .selectAll('.selected')
-            .attr('selected', true)
-            .each(function (d) {
-              if (d) {
-                d.selected = true;
-              }
-            });
-          // get data from node
-          const localselectedNodesArray = _d3.selectAll('.selected').data();
-          const filterId = localselectedNodesArray.filter((x) => x);
-          self.selectedNodesArray.next(filterId);
-          return filterId;
-        }
-        return null;
-      } else {
-        svg.selectAll('.node-wrapper').classed('selected', false);
-        d3.select(this).classed('selected', true);
-        nodeEnter.each(function (d) {
-          d.selected = false;
-          d.previouslySelected = false;
-        });
-      }
+      svg.selectAll('.node-wrapper').classed('selected', false);
+      d3.select(this).classed('selected', true);
+      nodeEnter.each(function (d) {
+        d.selected = false;
+        d.previouslySelected = false;
+      });
 
       // remove style from selected node before the class is removed
       _d3
@@ -1239,38 +786,8 @@ export class VisualiserGraphService {
         .select('.nodeText')
         .style('fill', 'blue')
         .style('font-weight', 700);
-      self.selectedNodesArray.next([]);
 
       return null;
-    });
-
-    // Right click on a node highlights for context menu
-    svg.selectAll('.node-wrapper').on('contextmenu', function (d) {
-      // counts number of selected classes to not exceed 2
-      const selectedSize = svg
-        .selectAll('.selected')
-        .selectAll('.nodeText')
-        .size();
-
-      if (selectedSize !== 2) {
-        // We don't want to remove style if they are obtaining the context menu for just two nodes (create link option)
-        svg.selectAll('.selected').classed('selected', false);
-        self.selectedNodesArray.next([]);
-        _d3
-          .selectAll('.edgelabel')
-          .style('fill', '#212529')
-          .style('font-weight', 400);
-        _d3
-          .selectAll('.nodeText')
-          .style('fill', '#212529')
-          .style('font-weight', 400);
-        // Add style on single right click
-        _d3
-          .select(this)
-          .select('.nodeText')
-          .style('fill', 'blue')
-          .style('font-weight', 700);
-      }
     });
 
     //click on canvas to remove selected nodes
@@ -1290,20 +807,15 @@ export class VisualiserGraphService {
         .selectAll('.edgelabel')
         .style('fill', '#212529')
         .style('font-weight', 400);
-      self.selectedNodesArray.next([]);
-      if (selectAllNodes) {
-        selectAllNodes.innerHTML = '<i class="bi bi-grid-fill"></i>';
-        selectAllNodes.style.opacity = '1';
-      }
     });
 
     nodeEnter
-    .filter(function (d) {
-      if (!d.imageUrl || d.imageUrl === '') {
-        return null;
-      }
-      return true;
-    })
+      .filter(function (d) {
+        if (!d.imageUrl || d.imageUrl === '') {
+          return null;
+        }
+        return true;
+      })
       .append('image')
       .attr('xlink:href', function (d) {
         return d.imageUrl;
@@ -1324,7 +836,7 @@ export class VisualiserGraphService {
       .attr('class', 'image')
       .style('cursor', 'pointer');
 
-      nodeEnter
+    nodeEnter
       .filter(function (d) {
         if (!d.icon || d.icon === '') {
           return null;
@@ -1348,7 +860,6 @@ export class VisualiserGraphService {
       })
       .style('font-size', '35px')
       .style('cursor', 'pointer');
-    
 
     const nodeText = nodeEnter
       .append('text')
@@ -1505,8 +1016,6 @@ export class VisualiserGraphService {
   }
 
   public resetGraph(initialData, element, zoom, zoomToFit) {
-    // To reset the search when we reset the data
-    this.resetSearch = true;
     // Reset the data to its initial state
     this.nodes = [];
     this.links = [];

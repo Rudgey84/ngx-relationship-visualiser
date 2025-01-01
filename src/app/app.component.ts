@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Data } from '../../projects/ngx-relationship-visualiser-lib/lib/models/data.interface';
 import { MOCKEDDATA } from '../../projects/ngx-relationship-visualiser-lib/lib/models/mocked-data';
 
