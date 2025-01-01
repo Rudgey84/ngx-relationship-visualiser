@@ -2,13 +2,15 @@
 
 A D3 force-directed-graph, implemented in Typescript for Angular, generates a visualisation graph with customisable link lengths and multiple labels between nodes. The graph can handle new data that will update lines, nodes, links, and path labels. Whenever new nodes are added, they will be animated with a pulse effect. Additionally, the graph includes features such as brushing (multiple select and drag), zoom, and panning capabilities. Additional features include the ability to make multiple selections in sync with the brushing functionality by using Ctrl + click and drag the cursor.
 
+## Live Demo
+
 Demo [ngx-relationship-visualiser](https://rudgey84.github.io/ngx-relationship-visualiser/)
 
 Demo Premium [ngx-relationship-visualiser-premium](https://rudgey84.github.io/ngx-relationship-visualiser-premium/)
 
 The premium version can be [procured through privjs](https://www.privjs.com/packages/ngx-relationship-visualiser-premium).
 
-#### [Premium Only] - Creating, editing and deleting
+## [Premium Only] - Creating, editing and deleting
 
 Context menus appear when right-clicking/double clicking on nodes and links, providing access to edit or create the nodes or links through the opening of modals. Here the user will also be given the option to delete and node or link.
   
@@ -22,7 +24,7 @@ When right-clicking/double clicking on the canvas you will be presented with two
 
 When right-clicking/double clicking on a single node, you will be presented with an option to open up a prepopulated form to edit the node with an option to delete.
 
-#### [Premium Only] - Toolbar
+## [Premium Only] - Toolbar
 
 The toolbar can be dragged to any part of the canvas for convenience.
 
@@ -91,7 +93,7 @@ Add the component to your page:
 [data]=""
 ```
 
-The module comes preinstalled with mockedData which can be used for quick demos, left empty the graph will work and output the below payload. However, this is the data recieved from a back end service that updates the graph asynchronously. The graph uses its own db for quicker updates.
+This is the data recieved from a backend service that updates the graph asynchronously. The graph uses its own db for quicker updates. Example data below. 
 
 ```bash
 [readOnly]="true/false"
@@ -120,6 +122,10 @@ Outputs the payload below upon graph save.
 
 
 #### data.interface.ts 
+
+```bash
+import { Data } from 'ngx-relationship-visualiser/projects/ngx-relationship-visualiser-lib/lib/models/data.interface';
+```
 
 ```bash
 export interface Relationship {
