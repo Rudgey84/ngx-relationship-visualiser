@@ -341,3 +341,13 @@ An external imageUrl can be set for a node OR an icon can be set using Font Awes
 13. [**Premium Only**] Dagre layout - the layout will be applied on first initialsation of the graph render. A dagre graph can only render positions for nodes with associated links. Therefore, nodes with a previous fx/fy cooridinate will be honoured and that nodes position will be fixed regardless of if that node hasnt an associted link/edge. The initial layout will only apply to those nodes and links without a fx/fy value i.e. null.
 \
 After applying the dagre layout following initialization(by clicking the button), nodes and links that previously had fx/fy values will be replaced with new dagre coordinates. Nodes that do not have any associated links will have their values set to null, resulting in these nodes being randomly positioned within the visible area of the canvas. It's worth noting that at any time after activating the new layout, users can reset to the original values as long as the save button was not used previously. 
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
+## 🔗 Links
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tomrudge)
+
