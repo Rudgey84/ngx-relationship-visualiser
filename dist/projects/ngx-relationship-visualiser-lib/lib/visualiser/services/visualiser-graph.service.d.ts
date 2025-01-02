@@ -1,4 +1,4 @@
-import { Subject, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { DexieService } from '../../db/graphDatabase';
 import * as i0 from "@angular/core";
 export declare class VisualiserGraphService {
@@ -13,12 +13,6 @@ export declare class VisualiserGraphService {
     extent: any;
     zoom: boolean;
     zoomToFit: boolean;
-    resetSearch: any;
-    /** RxJS subject to listen for updates of the selection */
-    selectedNodesArray: Subject<any[]>;
-    dblClickNodePayload: Subject<unknown>;
-    dblClickLinkPayload: Subject<unknown>;
-    selectedLinkArray: Subject<unknown>;
     saveGraphData: ReplaySubject<unknown>;
     update(data: any, element: any, zoom: any, zoomToFit: any): Promise<void>;
     private ticked;
