@@ -352,5 +352,3 @@ After applying the dagre layout following initialization(by clicking the button)
 
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tomrudge)
 
-<video src='https://www.loom.com/share/f5701b0508c74be59a90857756f41d3a?sid=93ac5b70-73eb-461d-942e-3140a42a630e' width=180/>
-
