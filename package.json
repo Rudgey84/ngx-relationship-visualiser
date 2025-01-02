@@ -2,6 +2,21 @@
   "name": "ngx-relationship-visualiser",
   "version": "1.0.0",
   "private": false,
+  "keywords": [
+    "graph",
+    "d3",
+    "d3 force directed graph",
+    "visualiser",
+    "ngx-graph",
+    "angular",
+    "ngx-graph"
+  ],
+  "author": "Tom Rudge <me@tomrudge.com> (https://tomrudge.com)",
+  "homepage": "https://rudgey84.github.io/ngx-relationship-visualiser/",
+  "repository": {
+    "type": "git"
+  },
+  "license": "MIT",
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",
     "@kreash/ngx-contextmenu": "^18.1.0",
