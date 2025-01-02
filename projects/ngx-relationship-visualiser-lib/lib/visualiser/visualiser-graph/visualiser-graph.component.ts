@@ -26,6 +26,7 @@ export class VisualiserGraphComponent implements OnInit {
   public width;
   public savedGraphData: Data;
   public showConfirmation: boolean = false;
+  public buttonBarRightPosition: string;
 
   @Input() zoom: boolean = true;
   @Input() zoomToFit: boolean = false;
@@ -61,7 +62,7 @@ export class VisualiserGraphComponent implements OnInit {
 
   public ngOnInit() {
     this.updateWidth();
-
+    this.buttonBarRightPosition = '0';
     // Initialize with default empty data if no data is provided
     if (!this.savedGraphData) {
       console.warn('No data provided, using empty data set');

@@ -14,6 +14,7 @@ export declare class VisualiserGraphComponent implements OnInit {
     width: any;
     savedGraphData: Data;
     showConfirmation: boolean;
+    buttonBarRightPosition: string;
     zoom: boolean;
     zoomToFit: boolean;
     constructor(visualiserGraphService: VisualiserGraphService, dagreNodesOnlyLayout: DagreNodesOnlyLayout, dexieService: DexieService);
