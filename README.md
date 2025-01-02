@@ -4,6 +4,8 @@ A D3 force-directed-graph, implemented in Typescript for Angular, generates a vi
 
 ## Live Demo
 
+https://github.com/user-attachments/assets/074f942a-3351-42df-ac39-c07e612db412
+
 Demo [ngx-relationship-visualiser](https://rudgey84.github.io/ngx-relationship-visualiser/)
 
 Demo Premium [ngx-relationship-visualiser-premium](https://rudgey84.github.io/ngx-relationship-visualiser-premium/)
