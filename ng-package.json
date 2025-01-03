@@ -5,9 +5,6 @@
   },
   "allowedNonPeerDependencies": [
     "@dagrejs/dagre",
-    "@kreash/ngx-contextmenu",
-    "@ng-select/ng-select",
-    "bootbox",
     "bootstrap",
     "classlist.js",
     "core-js",
@@ -16,7 +13,7 @@
     "jquery",
     "ngx-bootstrap",
     "popper.js",
-    "rxjs-compat" 
-  ],
-  "assets": ["src/styles.scss"]
+    "rxjs-compat",
+    "sweetalert2"
+  ]
 }

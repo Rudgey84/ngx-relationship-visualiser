@@ -11,7 +11,8 @@ import { VisualiserGraphService } from '../services/visualiser-graph.service';
 import { DagreNodesOnlyLayout } from '../services/dagre-layout.service';
 import { Data } from '../../models/data.interface';
 import { DexieService } from '../../db/graphDatabase';
-declare var bootbox: any;
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'visualiser-graph',
@@ -25,7 +26,6 @@ export class VisualiserGraphComponent implements OnInit {
 
   public width;
   public savedGraphData: Data;
-  public showConfirmation: boolean = false;
   public buttonBarRightPosition: string;
 
   @Input() zoom: boolean = true;
@@ -88,32 +88,30 @@ export class VisualiserGraphComponent implements OnInit {
       return;
     }
 
-    bootbox.confirm({
+    Swal.fire({
       title: "Save Graph",
-      centerVertical: true,
-      message: "Are you sure you want to save the graph?",
-      buttons: {
-        confirm: {
-          label: 'Yes',
-          className: 'btn-success'
-        },
-        cancel: {
-          label: 'No',
-          className: 'btn-danger'
-        }
-      },
-      callback: async (result) => {
-        if (result) {
-          this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
-            this.saveGraphData = saveGraphData;
-          });
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Save"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
+          this.saveGraphData = saveGraphData;
+        });
 
-          this.saveGraphDataEvent.emit(this.saveGraphData);
+        this.saveGraphDataEvent.emit(this.saveGraphData);
 
-          this.disableButtons(true);
-          this.data = this.saveGraphData;
-          this.showConfirmationMessage();
-        }
+        this.disableButtons(true);
+        this.data = this.saveGraphData;
+
+        Swal.fire({
+          title: "Saved!",
+          text: "Your graph has been saved.",
+          icon: "success"
+        });
       }
     });
   }
@@ -121,12 +119,5 @@ export class VisualiserGraphComponent implements OnInit {
     document.querySelectorAll('#save_graph, #reset_graph').forEach(btn => {
       btn.setAttribute('disabled', String(disabled));
     });
-  }
-
-  private showConfirmationMessage(): void {
-    this.showConfirmation = true;
-    setTimeout(() => {
-      this.showConfirmation = false;
-    }, 3000);
   }
 }

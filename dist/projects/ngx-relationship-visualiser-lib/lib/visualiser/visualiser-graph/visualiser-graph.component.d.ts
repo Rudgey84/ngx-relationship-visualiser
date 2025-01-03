@@ -13,7 +13,6 @@ export declare class VisualiserGraphComponent implements OnInit {
     saveGraphData: any;
     width: any;
     savedGraphData: Data;
-    showConfirmation: boolean;
     buttonBarRightPosition: string;
     zoom: boolean;
     zoomToFit: boolean;
@@ -24,7 +23,6 @@ export declare class VisualiserGraphComponent implements OnInit {
     updateWidth(): void;
     onConfirmSave(): Promise<void>;
     private disableButtons;
-    private showConfirmationMessage;
     static ɵfac: i0.ɵɵFactoryDeclaration<VisualiserGraphComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<VisualiserGraphComponent, "visualiser-graph", never, { "zoom": { "alias": "zoom"; "required": false; }; "zoomToFit": { "alias": "zoomToFit"; "required": false; }; "data": { "alias": "data"; "required": false; }; }, { "saveGraphDataEvent": "saveGraphDataEvent"; }, never, never, false, never>;
 }

@@ -13,11 +13,5 @@
   <div *ngIf="zoom" class="zoomIndicator">
     <span id="zoom_level"></span>
   </div>
-  <!-- Save confirmation-->
-  <div *ngIf="showConfirmation" class="confirmation-message-container">
-    <div class="alert alert-success confirmation-message" role="alert" [ngClass]="{ 'fade-out': !showConfirmation }">
-      Saved <i class="bi bi-check-circle"></i>
-    </div>
-  </div>
   <svg #svgId [attr.width]="width" height="780"></svg>
 </div>

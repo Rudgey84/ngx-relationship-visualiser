@@ -1,6 +1,7 @@
 import * as i0 from '@angular/core';
 import { Injectable, EventEmitter, Component, ViewChild, Output, Input, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
 import * as d3 from 'd3';
 import { ReplaySubject } from 'rxjs';
 import Dexie from 'dexie';
@@ -1094,7 +1095,6 @@ class VisualiserGraphComponent {
     saveGraphData;
     width;
     savedGraphData;
-    showConfirmation = false;
     buttonBarRightPosition;
     zoom = true;
     zoomToFit = false;
@@ -1141,30 +1141,27 @@ class VisualiserGraphComponent {
             console.error('savedGraphData is not set');
             return;
         }
-        bootbox.confirm({
+        Swal.fire({
             title: "Save Graph",
-            centerVertical: true,
-            message: "Are you sure you want to save the graph?",
-            buttons: {
-                confirm: {
-                    label: 'Yes',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: 'No',
-                    className: 'btn-danger'
-                }
-            },
-            callback: async (result) => {
-                if (result) {
-                    this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
-                        this.saveGraphData = saveGraphData;
-                    });
-                    this.saveGraphDataEvent.emit(this.saveGraphData);
-                    this.disableButtons(true);
-                    this.data = this.saveGraphData;
-                    this.showConfirmationMessage();
-                }
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Save"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.visualiserGraphService.saveGraphData.subscribe((saveGraphData) => {
+                    this.saveGraphData = saveGraphData;
+                });
+                this.saveGraphDataEvent.emit(this.saveGraphData);
+                this.disableButtons(true);
+                this.data = this.saveGraphData;
+                Swal.fire({
+                    title: "Saved!",
+                    text: "Your graph has been saved.",
+                    icon: "success"
+                });
             }
         });
     }
@@ -1173,18 +1170,12 @@ class VisualiserGraphComponent {
             btn.setAttribute('disabled', String(disabled));
         });
     }
-    showConfirmationMessage() {
-        this.showConfirmation = true;
-        setTimeout(() => {
-            this.showConfirmation = false;
-        }, 3000);
-    }
     static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: VisualiserGraphComponent, deps: [{ token: VisualiserGraphService }, { token: DagreNodesOnlyLayout }, { token: DexieService }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.12", type: VisualiserGraphComponent, selector: "visualiser-graph", inputs: { zoom: "zoom", zoomToFit: "zoomToFit", data: "data" }, outputs: { saveGraphDataEvent: "saveGraphDataEvent" }, viewQueries: [{ propertyName: "graphElement", first: true, predicate: ["svgId"], descendants: true }], ngImport: i0, template: "<div class=\"page\" id=\"pageId\" (window:resize)=\"onResize($event)\">\n  <div class=\"buttonBar\" [style.right]=\"buttonBarRightPosition\">\n    <div class=\"d-flex justify-content-end\">\n      <div class=\"btn-group\" role=\"group\" aria-label=\"Controls\">\n        <button type=\"button\" id=\"save_graph\" class=\"m-3 btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n          title=\"Save data\" (click)=\"onConfirmSave()\">\n          <i class=\"bi bi-save\"></i>\n        </button>\n      </div>\n    </div>\n  </div>\n  <!-- Zoom indicator-->\n  <div *ngIf=\"zoom\" class=\"zoomIndicator\">\n    <span id=\"zoom_level\"></span>\n  </div>\n  <!-- Save confirmation-->\n  <div *ngIf=\"showConfirmation\" class=\"confirmation-message-container\">\n    <div class=\"alert alert-success confirmation-message\" role=\"alert\" [ngClass]=\"{ 'fade-out': !showConfirmation }\">\n      Saved <i class=\"bi bi-check-circle\"></i>\n    </div>\n  </div>\n  <svg #svgId [attr.width]=\"width\" height=\"780\"></svg>\n</div>", styles: ["@import\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\";@import\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\";#zoom_level{position:relative;background-color:#000c;color:#fff;padding:5px;border-radius:5px;opacity:0;transition:opacity 1s ease-in-out}.zoomIndicator{position:absolute;left:0;padding:10px}.buttonBar{position:absolute;padding:10px}.confirmation-message-container{position:absolute;left:50%;transform:translate(-50%)}.confirmation-message{position:relative;top:60px;opacity:0;animation:fade-in .5s ease-in-out forwards}@keyframes fade-in{0%{opacity:0}to{opacity:1}}.fade-out{animation:fade-out .5s ease-in-out forwards}@keyframes fade-out{0%{opacity:1}to{opacity:0}}\n"], dependencies: [{ kind: "directive", type: i4.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i4.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.12", type: VisualiserGraphComponent, selector: "visualiser-graph", inputs: { zoom: "zoom", zoomToFit: "zoomToFit", data: "data" }, outputs: { saveGraphDataEvent: "saveGraphDataEvent" }, viewQueries: [{ propertyName: "graphElement", first: true, predicate: ["svgId"], descendants: true }], ngImport: i0, template: "<div class=\"page\" id=\"pageId\" (window:resize)=\"onResize($event)\">\n  <div class=\"buttonBar\" [style.right]=\"buttonBarRightPosition\">\n    <div class=\"d-flex justify-content-end\">\n      <div class=\"btn-group\" role=\"group\" aria-label=\"Controls\">\n        <button type=\"button\" id=\"save_graph\" class=\"m-3 btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n          title=\"Save data\" (click)=\"onConfirmSave()\">\n          <i class=\"bi bi-save\"></i>\n        </button>\n      </div>\n    </div>\n  </div>\n  <!-- Zoom indicator-->\n  <div *ngIf=\"zoom\" class=\"zoomIndicator\">\n    <span id=\"zoom_level\"></span>\n  </div>\n  <svg #svgId [attr.width]=\"width\" height=\"780\"></svg>\n</div>", styles: ["@import\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\";@import\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\";#zoom_level{position:relative;background-color:#000c;color:#fff;padding:5px;border-radius:5px;opacity:0;transition:opacity 1s ease-in-out}.zoomIndicator{position:absolute;left:0;padding:10px}.buttonBar{position:absolute;padding:10px}\n"], dependencies: [{ kind: "directive", type: i4.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }] });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.12", ngImport: i0, type: VisualiserGraphComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'visualiser-graph', template: "<div class=\"page\" id=\"pageId\" (window:resize)=\"onResize($event)\">\n  <div class=\"buttonBar\" [style.right]=\"buttonBarRightPosition\">\n    <div class=\"d-flex justify-content-end\">\n      <div class=\"btn-group\" role=\"group\" aria-label=\"Controls\">\n        <button type=\"button\" id=\"save_graph\" class=\"m-3 btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n          title=\"Save data\" (click)=\"onConfirmSave()\">\n          <i class=\"bi bi-save\"></i>\n        </button>\n      </div>\n    </div>\n  </div>\n  <!-- Zoom indicator-->\n  <div *ngIf=\"zoom\" class=\"zoomIndicator\">\n    <span id=\"zoom_level\"></span>\n  </div>\n  <!-- Save confirmation-->\n  <div *ngIf=\"showConfirmation\" class=\"confirmation-message-container\">\n    <div class=\"alert alert-success confirmation-message\" role=\"alert\" [ngClass]=\"{ 'fade-out': !showConfirmation }\">\n      Saved <i class=\"bi bi-check-circle\"></i>\n    </div>\n  </div>\n  <svg #svgId [attr.width]=\"width\" height=\"780\"></svg>\n</div>", styles: ["@import\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\";@import\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\";#zoom_level{position:relative;background-color:#000c;color:#fff;padding:5px;border-radius:5px;opacity:0;transition:opacity 1s ease-in-out}.zoomIndicator{position:absolute;left:0;padding:10px}.buttonBar{position:absolute;padding:10px}.confirmation-message-container{position:absolute;left:50%;transform:translate(-50%)}.confirmation-message{position:relative;top:60px;opacity:0;animation:fade-in .5s ease-in-out forwards}@keyframes fade-in{0%{opacity:0}to{opacity:1}}.fade-out{animation:fade-out .5s ease-in-out forwards}@keyframes fade-out{0%{opacity:1}to{opacity:0}}\n"] }]
+            args: [{ selector: 'visualiser-graph', template: "<div class=\"page\" id=\"pageId\" (window:resize)=\"onResize($event)\">\n  <div class=\"buttonBar\" [style.right]=\"buttonBarRightPosition\">\n    <div class=\"d-flex justify-content-end\">\n      <div class=\"btn-group\" role=\"group\" aria-label=\"Controls\">\n        <button type=\"button\" id=\"save_graph\" class=\"m-3 btn btn-secondary\" data-toggle=\"tooltip\" data-placement=\"top\"\n          title=\"Save data\" (click)=\"onConfirmSave()\">\n          <i class=\"bi bi-save\"></i>\n        </button>\n      </div>\n    </div>\n  </div>\n  <!-- Zoom indicator-->\n  <div *ngIf=\"zoom\" class=\"zoomIndicator\">\n    <span id=\"zoom_level\"></span>\n  </div>\n  <svg #svgId [attr.width]=\"width\" height=\"780\"></svg>\n</div>", styles: ["@import\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\";@import\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css\";#zoom_level{position:relative;background-color:#000c;color:#fff;padding:5px;border-radius:5px;opacity:0;transition:opacity 1s ease-in-out}.zoomIndicator{position:absolute;left:0;padding:10px}.buttonBar{position:absolute;padding:10px}\n"] }]
         }], ctorParameters: () => [{ type: VisualiserGraphService }, { type: DagreNodesOnlyLayout }, { type: DexieService }], propDecorators: { graphElement: [{
                 type: ViewChild,
                 args: ['svgId']
