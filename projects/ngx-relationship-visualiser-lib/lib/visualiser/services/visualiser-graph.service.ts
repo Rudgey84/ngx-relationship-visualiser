@@ -462,6 +462,12 @@ export class VisualiserGraphService {
           .selectAll('.edgelabel')
           .style('font-weight', 400)
           .style('fill', '#212529');
+
+        // Apply styling for the rect.selection
+        d3.selectAll('rect.selection')
+          .style('stroke', 'none')
+          .style('fill', 'steelblue')
+          .style('fill-opacity', 0.4);
       })
       .on('brush', () => {
         this.extent = d3.event.selection;
