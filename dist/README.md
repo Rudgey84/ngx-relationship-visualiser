@@ -4,13 +4,13 @@ A D3 force-directed-graph, implemented in Typescript for Angular, generates a vi
 
 ## Live Demos
 
-Video Example - https://github.com/user-attachments/assets/074f942a-3351-42df-ac39-c07e612db412
+[Video Demo](https://github.com/user-attachments/assets/074f942a-3351-42df-ac39-c07e612db412)
 
-Demo [ngx-relationship-visualiser](https://rudgey84.github.io/ngx-relationship-visualiser/)
+Live Demo [ngx-relationship-visualiser](https://rudgey84.github.io/ngx-relationship-visualiser/)
 
 Playground [ngx-relationship-visualiser StackBlitz playground](https://stackblitz.com/edit/ngx-relationship-visualiser)
 
-Demo Premium [ngx-relationship-visualiser-premium](https://rudgey84.github.io/ngx-relationship-visualiser-premium/)
+Live Demo Premium [ngx-relationship-visualiser-premium](https://rudgey84.github.io/ngx-relationship-visualiser-premium/)
 
 The premium version can be [procured through privjs](https://www.privjs.com/packages/ngx-relationship-visualiser-premium).
 
@@ -74,11 +74,6 @@ import { NgxRelationshipVisualiserModule } from 'ngx-relationship-visualiser';
   ...
 })
 ```
-Add styles to your global styles.scss:
-
-```bash
-@import 'node_modules/ngx-relationship-visualiser/src/styles.scss';
-```
 
 Add the component to your page:
 ```bash
@@ -126,10 +121,6 @@ Outputs the payload below upon graph save.
 
 
 #### data.interface.ts 
-
-```bash
-import { Data } from 'ngx-relationship-visualiser/projects/ngx-relationship-visualiser-lib/lib/models/data.interface';
-```
 
 ```bash
 export interface Relationship {
